@@ -1,0 +1,39 @@
+\documentclass{standalone}
+\usepackage[default]{inter}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{soul}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage[table]{xcolor}
+\usepackage{paralist}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{pgfplots}
+\begin{document}
+\begin{table}
+% \centering
+% \caption{ 
+%     Results of evaluating checkpoints after repository-level pretraining. 
+%     Evaluation dataset is LCA-large for the line categories: \textit{inproject} and \textit{infile}.
+%     FL-4K and PD-16K report Exact Match scores for File-level and Path Distance \texttt{.py} evaluation composers.
+% }
+% \label{tab:condensed-results-composers}
+\begin{tabular}{l cc c cc}
+\toprule
+\multirow{3}{*}{\makecell{\textbf{Pretraining strategy}}}  & \multicolumn{2}{c}{\bf inproject} & & \multicolumn{2}{c}{\bf infile} \\\cmidrule(lr){2-3}\cmidrule(lr){5-6}
+& FL-4K & PD-16K & & FL-4K & PD-16K \\
+\midrule
+Base model (no training) & 26.4 & 0.0 & & 32.6 & 0.0   \\
+File-level (73M tokens) & 25.9 & 45.2 & & 33.0 & 44.6 \\
+Path Distance \texttt{.py} (1.1B tokens) & 26.2 & 48.8 & & 33.1 & 47.6 \\
+Other Pretraining Composers & 25.5 -- 26.5 & 46.8 -- 48.7 & & 32.3 -- 33.3 & 45.6 -- 47.8\\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{document}

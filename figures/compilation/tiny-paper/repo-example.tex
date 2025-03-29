@@ -1,0 +1,56 @@
+\documentclass{standalone}
+\usepackage[default,defaultsans,defaulttt,scale=0.95]{opensans}
+\usepackage{forest}
+\usepackage{xcolor}
+
+\definecolor{foldercolor}{RGB}{255,153,0}
+\definecolor{filecolor}{RGB}{0,128,0}
+
+\begin{document}
+\begin{forest}
+  for tree={
+    font=\sffamily\small,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=12pt},
+    s sep=0.05em, % Reduced vertical separation between siblings
+    l sep=0.5em,  % Reduced level separation
+  }
+[.
+  [\textcolor{filecolor}{completion\_file.py}]
+  [\textcolor{brown}{README.md}]
+  [\textcolor{foldercolor}{docs/}
+    [\textcolor{brown}{api\_reference.md}]
+    [\ldots]
+  ]
+  [\textcolor{foldercolor}{data/}
+    [\textcolor{foldercolor}{raw/}
+      [\textcolor{gray}{dataset.csv}]
+      [\ldots]
+    ]
+    [\ldots]
+  ]
+  [\textcolor{foldercolor}{src/}
+    [\textcolor{foldercolor}{models/}
+      [\textcolor{filecolor}{base\_model.py}]
+      [\ldots]
+    ]
+    [\ldots]
+  ]
+  [\ldots]
+]
+\end{forest}
+\end{document}
