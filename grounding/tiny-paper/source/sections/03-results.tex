@@ -1,0 +1,21 @@
+\section{Results}
+In the following subsections, we present our main results: first, we achieve state-of-the-art quality on LCA-large with much less extensive repository-level pretraining; second, we demonstrate the impact of the context composer choice on the result of repository-level pretraining. 
+Additionally, we provide a more detailed comparative study of repository-level pretraining in the Appendix.
+
+
+\subsection{Benchmarking Against State-of-the-Art}
+To estimate the effectiveness of our trained models, we compare them to DeepSeek Coder 1.3B, OpenCoder 1.5B with no repository-level pretraining, and Qwen2.5-Coder 0.5B and 1.5B. These models serve as strong baselines, representing state-of-the-art performance in similar parameter ranges. Results are shown in Table \ref{tab:sota-comparison}. 
+
+\input{Repo-level Completion/figures/sota-comparison}
+
+We started with OpenCoder model which is pretty good on file-level code completion among the similar size models and got a significant gain by file-level pretraining on just 1B tokens. This approach serves as a guideline for scenarios with limited data and low GPU resources, since we do not need repositories, and do not actually need long context for training. We can even achieve Qwen2.5-Coder performance level with 1B tokens of curated repository-level data.
+
+
+\subsection{Impact of Context Composer Choice}
+Findings in the previous subsection leave an open question if there is even better composer for repository-level pretraining.
+
+To answer this question, we evaluate all studied composers and present condensed results for in Table \ref{tab:condensed-results-composers} and extended results in Table \ref{tab:extended-results}. Our experiments demonstrate the performance variations across repository level pretrainings with different context composers.
+
+\input{Repo-level Completion/figures/condensed-results-table}
+
+We observe that file-level composer pretraining results in +19.3 repository-context boost, with other pretraining strategies getting repository-context boost within a +20.3 to +22.9 range. Combining with comparable values of the Exact Match, we validate that adapting to the longer context window, \ie new RoPE's base frequency, rather than the specific sequence composition, is the primary factor in repository-level pretraining, with context composers contributing only marginally for suggested approaches.

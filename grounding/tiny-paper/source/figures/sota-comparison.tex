@@ -1,0 +1,23 @@
+\begin{table}[t]
+\caption{ 
+    Comparison of existing models on LCA-large for the line categories: \textit{inproject} and \textit{infile}. \ FL-4K and PD-16K report Exact Match scores for File-level and Path Distance \texttt{.py} evaluation composers. \ RCB represents the repository-context boost score. 
+}
+\label{tab:sota-comparison}
+\begin{center}
+\begin{tabular}{l ccc c ccc}
+\toprule
+ & \multicolumn{3}{c}{\bf inproject} & & \multicolumn{3}{c}{\bf infile} \\\cmidrule(lr){2-4}\cmidrule(lr){6-8}
+ \bf Model               & FL-4K   & PD-16K & RCB & & FL-4K & PD-16K & RCB \\ 
+\midrule
+Qwen2.5-Coder 0.5B       & 22.6 & 44.2 & +21.6  & & 27.5 & 43.2 & +15.7 \\\cmidrule(lr){1-1} \cmidrule(lr){2-4}\cmidrule(lr){6-8}
+DeepSeek Coder 1.3B      & 25.1 & 42.3 & +17.2 & & 30.3 & 43.8 & +13.5 \\
+OpenCoder 1.5B           & \underline{26.4} & 0.0 & --26.4   & & 32.6 & 0.0 & --32.6 \\
+Qwen2.5-Coder 1.5B       & \textbf{27.2} & \underline{48.5} & \underline{+21.3} & & \textbf{34.3} & \textbf{49.7} & \textbf{+15.4} \\ 
+
+\textbf{Ours} (OpenCoder 1.5B)         &  & & & & \\
+~~~File-level pretr.      & 25.9 & 45.2 & +19.3 & & 33.0 & 44.6 & +11.6 \\ 
+~~~Path Distance \texttt{.py} pretr.   & 26.2 & \textbf{48.8} & \textbf{+22.6} & & \underline{33.1} & \underline{47.6} & \underline{+14.5} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}

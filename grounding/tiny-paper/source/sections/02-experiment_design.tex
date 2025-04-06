@@ -1,0 +1,56 @@
+\section{Experiment Design}
+We start this section with a description of the data sourcing and preparation steps, then explain our training setup, and finally we detail our evaluation strategy. In addition, we discuss the role of context composers --- repository processing functions, and their distinct modes for the training and evaluation phases.
+
+
+\subsection{Training Data}
+\label{paper:data}
+To collect the training data, we follow the approach from the Long Code Arena benchmark, see \citet{LCA} for more details. Starting with open-source GitHub repositories in Python and then traverse the Git commit history for each repository to extract repository data. Filtering process is described in \ref{appendix:data-filtering}
+
+The repository data for each commit consists of two elements:
+\begin{inparaenum}[(1)]
+    \item \textit{repository snapshot} --- a context source with contents of all code and text files before the commit;
+    \item \textit{completion files} --- list of files to perform completion on with contents of all \texttt{.py} files added in that commit.
+\end{inparaenum}
+
+The resulting \textit{raw repositories dataset} contains 1,640 repositories, 160,801 commits, and 361,052 completion files. 
+The total number of characters in completion files is 1.7B, and in repository snapshot files --- 4.8T.
+
+To get a \textit{context string} from the repository data, we apply a \textit{context composer} to a repository snapshot. A \textit{context composer} is a repository processor that \begin{inparaenum}[(1)]
+\item sorts a subset of files (or file chunks) from the repository snapshot by relevance (based on specified criteria),
+\item retrieves the most relevant ones that fit within the context window, and 
+\item concatenates them into a single string with the most relevant file at the end.
+\end{inparaenum}
+
+For each context composer in the list provided in Appendix \ref{appendix:context-composers}, we prepare the \textit{composed dataset} from the raw repositories dataset which consists of two columns:
+\begin{inparaenum}[(1)]
+    \item \textit{completion file} --- one file from the completion files;
+    \item \textit{composed context} --- string with the result of the context composer.
+\end{inparaenum}
+
+Of the various context composers used in our experiments, we highlight the following two for clarity and conciseness.
+\begin{enumerate}
+    \item \textbf{File-level} — Produces an empty context.
+    
+    \item \textbf{Path Distance \texttt{.py}} — The context is built solely from .py files, sorted in descending order by their path distance from the completion file. For files with the same distance, a secondary sort uses the Intersection over Union (IoU) score of their matching lines.
+\end{enumerate}
+
+Note that rows from the raw repositories dataset can produce multiple rows of the composed dataset with one row for each completion file.
+
+\subsection{Training}
+For each context composer, we pretrain OpenCoder 1.5B model \citep{opencoder} on the corresponding composed dataset with a context window size of 16,384 tokens.
+
+In our \textit{training mode} for the context composer, we aim to include as many files as possible in the context string. To achieve this, we truncate both the context string and the completion file, ensuring that the context-to-completion token ratio is at least $3:1$. For more details, see Appendix \ref{appendix:training-cococo}.
+
+To extend the model context window size, we change RoPE's base frequency $\theta$ from 10,000 to 500,000 following the ABF approach \citep{RoPE-ABF}; our focus is on this method, although alternative approaches exist \citep{positional-interpolation, yarn, rope-extensions, rope-scaling-laws}.
+
+To evaluate models after training on approximately 1 billion tokens, and in accordance with our training hyperparameters (see Appendix \ref{appendix:training-hyperparams}), we save the model’s weights at the 512th optimization step, referring to this saved state as a \textit{checkpoint}.
+
+\subsection{Evaluation}
+Our evaluation setup is based on the \textit{large context} dataset, which is a part of the Project-level code completion task from the Long Code Arena dataset (LCA-large) \citep{LCA}. The task is to write the next line of code based on the file prefix and the repository snapshot, with the evaluation metric being Exact Match (percentage of correct answers). Additionally, each line has one of six categories that corresponds to various scenarios of project cross-file dependencies. We use categories \textit{infile} and \textit{inproject}, \ie a completion line that contains an API declared in the completion file or in repository snapshot files. These two categories indicate in-context learning capabilities the best out of six, since they contain more project-specific information.
+
+We evaluate each checkpoint on \textit{infile} and \textit{inproject} categories for two different context composers in the \textit{evaluation mode}: 
+\begin{inparaenum}[(1)]
+\item \textbf{FL-4K}: File-Level composer with maximum sequence length 4K tokens, and
+\item \textbf{PD-16K}: Path Distance \texttt{.py} composer with maximum sequence length 16K tokens.
+\end{inparaenum} 
+Moreover, we calculate \textbf{RCB}: repository-context boost, \ie the difference between scores for the PD-16K and FL-4K composers.

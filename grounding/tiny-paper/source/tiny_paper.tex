@@ -1,0 +1,96 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2025_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{soul}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage[table]{xcolor}
+\usepackage{paralist}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{pgfplots}
+
+\newcommand{\todo}[1]{\hl{\textbf{TODO: ``#1''}}}
+\newcommand{\fixed}[1]{\hlgreen{\textbf{FIXED: ``#1''}}}
+\newcommand{\ie}{\emph{i.e.,}\xspace}
+\newcommand{\eg}{\emph{e.g.,}\xspace}
+
+
+\title{On Pretraining \\ for Project-Level Code Completion}
+
+
+\author{Maksim Sapronov, Evgeniy Glukhov \thanks{ Use footnote for providing further information
+about author (webpage, alternative address)---\emph{not} for acknowledging
+funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+ML Research\\
+JetBrains\\
+% [ ? ] Address \\
+\texttt{\{name.last\_name\}@jetbrains.com} 
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+% \iclrfinalcopy
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+\textit{Repository-level pretraining} is commonly used to enable large language models for code to leverage codebase-wide context. This enhances their ability to generate accurate and context-aware code completions. In this work, we investigate how different repository-processing strategies affect in-context learning in OpenCoder, a 1.5B-parameter model. We extend its context window from 4,096 to 16,384 tokens by training on additional 1B tokens of curated repository-level data. Despite relying on a smaller dataset than competing models (which often use hundreds of billions of tokens), our model achieves comparable performance on the Long Code Arena benchmark. We find that various repository-processing techniques yield similarly strong results, with the primary gain coming from adapting to a new rotary positional embedding (RoPE) scaling parameter. Finally, we show that a simpler file-level training approach at the original sequence length remains highly effective, opening up repository-level code completion research to settings with more constrained data and compute resources.
+\end{abstract}
+
+\input{Repo-level Completion/sections/01-introduction}
+\input{Repo-level Completion/sections/02-experiment_design}
+\input{Repo-level Completion/sections/03-results}
+\input{Repo-level Completion/sections/04-conclusion}
+
+
+% \subsubsection*{Author Contributions}
+% If you'd like to, you may include a section for author contributions as is done
+% in many journals. This is optional and at the discretion of the authors.
+
+\subsubsection*{Acknowledgments}
+\textbf{Anonymized}
+% We appreciate the contributions of Alexander Bezzubov, Egor Bogomolov, Timofey Bryksin and Yaroslav Golubev from JetBrains, whose guidance greatly enhanced this research.
+
+\bibliography{iclr2025_conference}
+\bibliographystyle{iclr2025_conference}
+
+\newpage
+\appendix
+\input{Repo-level Completion/appendix/context_composers}
+\input{Repo-level Completion/appendix/dataset-details}
+\input{Repo-level Completion/appendix/training-details}
+\input{Repo-level Completion/appendix/evaluation-details}
+% \newpage
+
+% \newpage
+\input{Repo-level Completion/appendix/comprehensive_compilation_of_evaluation_results}
+
+\input{Repo-level Completion/appendix/performance_scaling_beyond_training_context_window}
+\input{Repo-level Completion/appendix/masked_vs_full_losses}
+
+\end{document}

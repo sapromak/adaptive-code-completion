@@ -1,0 +1,63 @@
+\section{Context Composers}
+\subsection{Complete List}
+
+All composers follow two standard preprocessing steps, filtering out empty files and normalizing all line separators to Line Feed (LF). With these shared characteristics, the full list of context composers ensures comprehensive coverage for research exploration.
+
+\label{appendix:context-composers}
+\begin{enumerate}
+    \item \textbf{File-level} — Produces an empty context.
+    
+    \item \textbf{Path Distance \texttt{.py}} — Constructs the context using only files with the \texttt{.py} extension. The selected files are sorted in descending order based on their path distance from the completion file. If multiple files share the same path distance, a secondary sorting step is applied using the Intersection over Union (IoU) metric, computed over lines shared with the completion file. The IoU metric is calculated on lines with leading and trailing whitespace characters removed, considering only those lines that are at least five characters long after the whitespace removal.
+    
+    \item \textbf{Lines IoU \texttt{.py}} — Similar to the Path Distance \texttt{.py} method but does not apply the primary sorting step based on path distance. Instead, files are directly ranked using the IoU metric.
+    
+    \item \textbf{Code Chunks} — Removes all docstrings, comments, and import statements from the context produced by Path Distance \texttt{.py}.
+    
+    \item \textbf{Half-memory \texttt{.py}} — Starts with the context produced by Path Distance \texttt{.py}. Each line is independently removed with a dropout probability of $0.5$, maintaining the overall saturation of the context window.
+    
+    \item \textbf{Declarations \texttt{.py}} — Builds upon Path Distance \texttt{.py} by filtering out all non-declarative elements, retaining only function and class declarations.
+    
+    \item \textbf{Text Chunks \texttt{.py}} — Uses Path Distance \texttt{.py} as the base method. All code is removed from the context, leaving docstrings and comments only.
+    
+    \item \textbf{Text files} — Constructs the context using files with the extensions \texttt{.json}, \texttt{.yaml}, \texttt{.yml}, \texttt{.sh}, \texttt{.md}, \texttt{.txt}, and \texttt{.rst}. The selected files are grouped in ascending order of relevance: [\texttt{.json}], [\texttt{.yaml}, \texttt{.yml}], [\texttt{.sh}], [\texttt{.md}, \texttt{.txt}, \texttt{.rst}]. Within each group, a secondary sorting step is performed in descending order based on path distance from the completion file.
+    
+    \item \textbf{Random files} — Constructs the context by randomly ordering all files from the repository snapshot.
+    
+    \item \textbf{Random \texttt{.py}} — Selects only files with the \texttt{.py} extension and orders them randomly.
+
+    \item \textbf{Mixed context\footnote{Duplication composer is disabled in evaluation mode}} — The context for each data point is constructed by randomly selecting one of the following composers: File-level, Path Distance \texttt{.py}, Half-memory \texttt{.py}, Declarations \texttt{.py}, Text files, Random files, or Duplication.
+
+\end{enumerate}
+
+Furthermore, we propose four additional context composers, which are omitted from the results discussion as they do not reflect realistic scenarios.
+\begin{enumerate}    
+    \item \textbf{Random tokens} — Constructs the context using a randomly sampled sequence of non-special tokens, each selected independently and with equal probability.
+    
+    \item \textbf{Duplication} — Constructs the context by concatenating the content of the completion file repeatedly until the maximum context window size is reached.
+    
+    \item \textbf{Leak} — Starts with the context produced by Path Distance \texttt{.py}. The completion file is randomly split into five segments at newline characters, which then disjointedly replace context lines at random positions, approximately preserving the original token count.
+
+    \item \textbf{Masked Leak} — Starts with the context produced by Path Distance \texttt{.py}. The completion file is divided into segments, each consisting of five lines with one overlapping line at the beginning and one at the end. These segments independently and disjointedly replace context lines at random positions. Additionally, each token in the context has a $0.15$ probability of being replaced with a different non-special token.
+\end{enumerate}
+
+For each composer we also consider two modifications:
+\begin{itemize}
+    \item \textit{reversed} --- we retrieve files that fit into the context window with the composer and reverse their order, so the most relevant one is in the beginning of the context string;
+    \item \textit{irrelevant} --- we reverse the order of files obtained from the composer and therefore retrieve most irrelevant files.
+\end{itemize}
+
+\subsection{Input Formatting}
+
+All composers employ a uniform strategy for input formatting. The files processed by a composer undergo a predefined formatting pattern \ref{fig:file_representation}, which uses a special token from the OpenCoder's vocabulary. Subsequently, the processed files are concatenated into a single string, referred to as the composed context.
+
+\begin{figure}[H]
+    \centering
+    \begin{tcolorbox}[colback=white, colframe=black, boxrule=0.5pt, width=0.8\linewidth, sharp corners]
+        \centering
+        \texttt{<file\_sep>\# \{file\_name\}\textbackslash n\{file\_content.rstrip()\}\textbackslash n} \\
+    \end{tcolorbox}
+    \caption{File Representation}
+    \label{fig:file_representation}
+\end{figure}
+
+A similar transformation is applied independently to the completion file.

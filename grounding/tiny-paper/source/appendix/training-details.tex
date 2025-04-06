@@ -1,0 +1,10 @@
+\section{Training Details}
+\label{appendix:training}
+
+\subsection{Hyperparameters}
+\label{appendix:training-hyperparams}
+The optimization process was conducted using the AdamW optimizer with $\beta_1=0.9$, $\beta_2 = 0.999$, and a weight decay of $0.01$. A batch size of $128$ was employed, with a micro-batch size of $1$ to accommodate hardware constraints. To ensure stable training, gradient clipping was applied with a maximum gradient Euclidean norm of $2$. The learning rate was managed using a cosine decay scheduler with a linear warm-up phase, where the maximum learning rate was set to $5 \cdot 10^{-5}$. The warm-up phase lasted for $256$ iterations, after which the learning rate followed a cosine decay schedule for $3244$ additional iterations, reaching a minimum value of $5 \cdot 10^{-8}$.
+
+\subsection{Training Mode of Context Composers}
+\label{appendix:training-cococo} %CO_ntext CO_mposers CO-nfiguration
+For training, we obtain an input sequence from each row of the composed dataset by independently tokenizing the context string and the completion file. This process ensures that the completion sequence does not exceed 4,096 tokens and that the total length of the concatenated input remains within 16,384 tokens. To enforce these constraints, we apply truncation from the left for the context and from the right for the completion. Given that most composed contexts exhibit high token saturation, we maintain a context-to-completion token ratio exceeding $3:1$.

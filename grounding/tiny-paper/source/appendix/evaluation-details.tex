@@ -1,0 +1,16 @@
+\section{Evaluation Details}
+\label{appendix:evaluation}
+
+\subsection{Evaluation Mode of Context Composers}
+\label{appendix:evaluation-cococo}
+For evaluation, we obtain an input sequence for each row of the composed dataset by tokenizing the concatenation of the context string and the completion file. We then apply truncation from the left. 
+
+Compared to the training mode (see Appendix \ref{appendix:training-cococo}), we do not fix the maximum sequence length. Instead, we treat it as a parameter that can be adjusted based on the evaluation requirements. For example, in Appendix \ref{appendix:context-scaling}, we demonstrate the dependency between checkpoint quality and maximum sequence length.
+
+We use the following four evaluation composers in our tables:
+\begin{itemize}
+    \item \textbf{FL-4K}: File-Level composer with maximum sequence length 4K tokens. We use it to estimate how hard the task is without any repository-context, and as a reference point for calculating gains.
+    \item \textbf{PD-4K}: Path Distance composer with maximum sequence length 4K tokens. We use it to estimate model's in-context learning capabilities with initial input sequence length (4K tokens).
+    \item \textbf{PD-16K}: Path Distance composer with maximum sequence length 16K tokens. We use it to estimate model's in-context learning capabilities with new input sequence length (16K tokens), and this is the main composer to compare repository-level pretraining with different context composers.
+    \item \textbf{Or-16K}: original pretraining composer in evaluation mode with maximum sequence length 16K tokens. We use it to identify the most promising composer overall. This composer applies only to our checkpoints.
+\end{itemize}
