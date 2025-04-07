@@ -1,0 +1,49 @@
+\chapter{Code Completion}
+
+% TODO: overview of the chapter
+
+% References:
+% - tiny-paper/presentation/script.md
+% - tiny-paper/presentation/slides/02.png
+% - tiny-paper/presentation/slides/03.png
+% - tiny-paper/presentation/slides/04.png
+
+% grounding/refs/md/bhoopchand2016/bhoopchand2016.md
+% grounding/refs/md/ginzberg2017/ginzberg2017.md
+% grounding/refs/md/husein2025/husein2025.md
+% grounding/refs/md/izadi2024/izadi2024.md
+% grounding/refs/md/wang2021/wang2021.md
+% grounding/refs/md/ciniselli2021/ciniselli2021.md
+% grounding/refs/md/hindle2012/hindle2012.md
+% grounding/refs/md/izadi2022/izadi2022.md
+% grounding/refs/md/lu2021/lu2021.md
+
+% grounding/refs/md/gomathy2025/gomathy2025.md
+% grounding/refs/md/weber2024/weber2024.md
+% grounding/refs/md/bakal2025/bakal2025.md
+% grounding/refs/md/takerngsaksiri2024/takerngsaksiri2024.md
+% grounding/refs/md/giagnorio2025/giagnorio2025.md
+
+\section{Task Definition}
+% Relevant papers: bhoopchand2016, ginzberg2017, husein2025, izadi2024, wang2021, ciniselli2021, hindle2012, izadi2022, lu2021
+
+Code completion, also called code suggestion or autocompletion, is a functionality within integrated development environments that enables developers to utilize an automated continuation of the code they are writing. Typically, it is invoked by a trigger model, which aims to anticipate the user's requirement for this functionality. The point of this invocation, whether it is referenced as temporal or spatial, is called a trigger point.
+
+In this work, code completion is regarded as a task rather than a feature, as this perspective highlights the task-methodology relationship and emphasizes the technical aspects over marketing considerations. In addition, the term \textit{completion} is used as a shorthand throughout the text.
+
+\section{Motivation}
+% Relevant papers: peng2023, weber2024, bakal2025, takerngsaksiri2024, giagnorio2025
+
+The task of code completion is a pivotal component of contemporary software development, offering substantial benefits that enhance both the productivity and efficiency of developers. This section elucidates the motivations for investigating this task and advancing existing solutions.
+
+By reducing the amount of typing required, code completion allows developers to focus more on the logic and structure of their code rather than the syntax. Studies have shown that AI-powered code completion tools can significantly reduce task execution times, with some reporting up to a 55.8\% reduction in controlled experiments (\cite{peng2023}). These tools also significantly impact developer productivity by reducing the cognitive load associated with coding tasks, achieved through contextually relevant suggestions that streamline the coding process (\cite{weber2024}). Furthermore, the integration of AI in code completion tools has been linked to increased developer satisfaction and efficiency, as it allows developers to complete tasks more swiftly and with greater accuracy (\cite{bakal2025}).
+
+For students and novice programmers, code completion tools serve as a valuable learning aid. They provide real-time feedback and suggestions, helping learners understand programming concepts and syntax more effectively. This educational aspect is highlighted in studies where students reported enhanced learning experiences and increased confidence in their coding abilities (\cite{takerngsaksiri2024}). Moreover, code completion tools provide accurate suggestions that help reduce typo errors and other common mistakes. This is particularly beneficial for new developers or those working with unfamiliar codebases, as it helps them adhere to coding standards and best practices.
+
+Recent advancements in deep learning have enabled the personalization of code completion tools, allowing them to adapt to specific organizational or individual coding styles. This personalization not only improves the relevance of suggestions but also enhances the overall user experience, making these tools more effective and user-friendly (\cite{giagnorio2025}).
+
+Due to the simple and atomic formulation of code completion, it possesses the important property of being fundamental to other AI-powered code assistance features. For instance, code generation can be viewed as a specific extension of code completion, and code editing is a sequence of code generations. This implies that most enhancements achieved through code completion research propagate further, adding new layers of improvements in the field. 
+
+\section{Taxonomy of Code Completion}
+
+\section{Scope of the Thesis}
