@@ -1,0 +1,1119 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Jungloid Mining: Helping to Navigate the API Jungle \u2217",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          114.0029296875,
+          71.7813720703125
+        ],
+        [
+          510.3984375,
+          71.7813720703125
+        ],
+        [
+          510.3984375,
+          90.10546875
+        ],
+        [
+          114.0029296875,
+          90.10546875
+        ]
+      ]
+    },
+    {
+      "title": "Abstract",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          76.0517578125,
+          191.6575927734375
+        ],
+        [
+          115.646484375,
+          191.6575927734375
+        ],
+        [
+          115.646484375,
+          202.060546875
+        ],
+        [
+          76.0517578125,
+          202.060546875
+        ]
+      ]
+    },
+    {
+      "title": "1. Introduction",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          324.35333251953125,
+          191.65679931640625
+        ],
+        [
+          401.625,
+          191.65679931640625
+        ],
+        [
+          401.625,
+          201.96868896484375
+        ],
+        [
+          324.35333251953125,
+          201.96868896484375
+        ]
+      ]
+    },
+    {
+      "title": "www.cs.berkeley.edu/~mandelin/prospector",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          347.7811584472656,
+          218.6624755859375
+        ],
+        [
+          545.0625,
+          218.6624755859375
+        ],
+        [
+          545.0625,
+          228.03350830078125
+        ],
+        [
+          347.7811584472656,
+          228.03350830078125
+        ]
+      ]
+    },
+    {
+      "title": "2. The Jungloid Synthesis Problem",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          323.33203125,
+          363.0443420410156
+        ],
+        [
+          484.4508056640625,
+          363.0443420410156
+        ],
+        [
+          484.4508056640625,
+          373.3562316894531
+        ],
+        [
+          323.33203125,
+          373.3562316894531
+        ]
+      ]
+    },
+    {
+      "title": "2.1 Definitions",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          323.33203125,
+          424.8331298828125
+        ],
+        [
+          384.890625,
+          424.8331298828125
+        ],
+        [
+          384.890625,
+          433.8984375
+        ],
+        [
+          323.33203125,
+          433.8984375
+        ]
+      ]
+    },
+    {
+      "title": "2.2 Programming with Jungloids",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          75.864990234375,
+          504.66796875
+        ],
+        [
+          202.7548828125,
+          504.66796875
+        ],
+        [
+          202.7548828125,
+          513.6508178710938
+        ],
+        [
+          75.864990234375,
+          513.6508178710938
+        ]
+      ]
+    },
+    {
+      "title": "3. Finding Jungloids Using Signatures",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          76.201171875,
+          129.6827392578125
+        ],
+        [
+          251.61328125,
+          129.6827392578125
+        ],
+        [
+          251.61328125,
+          139.99462890625
+        ],
+        [
+          76.201171875,
+          139.99462890625
+        ]
+      ]
+    },
+    {
+      "title": "3.1 The Signature Graph",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          75.97705078125,
+          241.69921875
+        ],
+        [
+          173.91796875,
+          241.69921875
+        ],
+        [
+          173.91796875,
+          250.28485107421875
+        ],
+        [
+          75.97705078125,
+          250.28485107421875
+        ]
+      ]
+    },
+    {
+      "title": "3.2 Ranking Jungloids",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          75.97705078125,
+          471.7641906738281
+        ],
+        [
+          163.509521484375,
+          471.7641906738281
+        ],
+        [
+          163.509521484375,
+          480.3046875
+        ],
+        [
+          75.97705078125,
+          480.3046875
+        ]
+      ]
+    },
+    {
+      "title": "4. Refining the signature graph with examples",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          76.5,
+          500.57110595703125
+        ],
+        [
+          286.875,
+          500.57110595703125
+        ],
+        [
+          286.875,
+          510.88299560546875
+        ],
+        [
+          76.5,
+          510.88299560546875
+        ]
+      ]
+    },
+    {
+      "title": "4.1 Jungloids containing downcasts",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          76.6494140625,
+          580.46484375
+        ],
+        [
+          210.97265625,
+          580.46484375
+        ],
+        [
+          210.97265625,
+          589.4568939208984
+        ],
+        [
+          76.6494140625,
+          589.4568939208984
+        ]
+      ]
+    },
+    {
+      "title": "4.2 Jungloid mining",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          76.238525390625,
+          424.6171875
+        ],
+        [
+          155.390625,
+          424.6171875
+        ],
+        [
+          155.390625,
+          433.4429626464844
+        ],
+        [
+          76.238525390625,
+          433.4429626464844
+        ]
+      ]
+    },
+    {
+      "title": "4.3 Other applications of jungloid mining",
+      "heading_level": null,
+      "page_id": 8,
+      "polygon": [
+        [
+          323.033203125,
+          412.4519958496094
+        ],
+        [
+          480.814453125,
+          412.4519958496094
+        ],
+        [
+          480.814453125,
+          421.13671875
+        ],
+        [
+          323.033203125,
+          421.13671875
+        ]
+      ]
+    },
+    {
+      "title": "4.4 Accuracy of jungloid mining",
+      "heading_level": null,
+      "page_id": 8,
+      "polygon": [
+        [
+          323.33203125,
+          630.6946105957031
+        ],
+        [
+          446.1222839355469,
+          630.6946105957031
+        ],
+        [
+          446.1222839355469,
+          639.6328125
+        ],
+        [
+          323.33203125,
+          639.6328125
+        ]
+      ]
+    },
+    {
+      "title": "5. Implementation",
+      "heading_level": null,
+      "page_id": 9,
+      "polygon": [
+        [
+          322.435546875,
+          261.03515625
+        ],
+        [
+          412.85296630859375,
+          261.03515625
+        ],
+        [
+          412.85296630859375,
+          272.25
+        ],
+        [
+          322.435546875,
+          272.25
+        ]
+      ]
+    },
+    {
+      "title": "6. Experiments",
+      "heading_level": null,
+      "page_id": 10,
+      "polygon": [
+        [
+          76.201171875,
+          67.350341796875
+        ],
+        [
+          151.8046875,
+          67.350341796875
+        ],
+        [
+          151.8046875,
+          77.97216796875
+        ],
+        [
+          76.201171875,
+          77.97216796875
+        ]
+      ]
+    },
+    {
+      "title": "7. Experimental Results",
+      "heading_level": null,
+      "page_id": 10,
+      "polygon": [
+        [
+          323.33203125,
+          351.0959777832031
+        ],
+        [
+          437.2005920410156,
+          351.0959777832031
+        ],
+        [
+          437.2005920410156,
+          361.4078674316406
+        ],
+        [
+          323.33203125,
+          361.4078674316406
+        ]
+      ]
+    },
+    {
+      "title": "8. Related Work",
+      "heading_level": null,
+      "page_id": 12,
+      "polygon": [
+        [
+          76.3505859375,
+          321.2987365722656
+        ],
+        [
+          156.5859375,
+          321.2987365722656
+        ],
+        [
+          156.5859375,
+          331.6106262207031
+        ],
+        [
+          76.3505859375,
+          331.6106262207031
+        ]
+      ]
+    },
+    {
+      "title": "9. Conclusion",
+      "heading_level": null,
+      "page_id": 12,
+      "polygon": [
+        [
+          324.3594970703125,
+          559.96875
+        ],
+        [
+          392.0625,
+          559.96875
+        ],
+        [
+          392.0625,
+          570.2886810302734
+        ],
+        [
+          324.3594970703125,
+          570.2886810302734
+        ]
+      ]
+    },
+    {
+      "title": "Acknowledgements",
+      "heading_level": null,
+      "page_id": 12,
+      "polygon": [
+        [
+          324.35906982421875,
+          639.1600036621094
+        ],
+        [
+          410.58984375,
+          639.1600036621094
+        ],
+        [
+          410.58984375,
+          649.4719085693359
+        ],
+        [
+          324.35906982421875,
+          649.4719085693359
+        ]
+      ]
+    },
+    {
+      "title": "References",
+      "heading_level": null,
+      "page_id": 13,
+      "polygon": [
+        [
+          76.3505859375,
+          67.350341796875
+        ],
+        [
+          125.5078125,
+          67.350341796875
+        ],
+        [
+          125.5078125,
+          77.68212890625
+        ],
+        [
+          76.3505859375,
+          77.68212890625
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1770
+        ],
+        [
+          "Line",
+          103
+        ],
+        [
+          "Text",
+          15
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Footnote",
+          3
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2435
+        ],
+        [
+          "Line",
+          123
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "Footnote",
+          3
+        ],
+        [
+          "TextInlineMath",
+          2
+        ],
+        [
+          "Code",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2041
+        ],
+        [
+          "Line",
+          115
+        ],
+        [
+          "Text",
+          14
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1863
+        ],
+        [
+          "Line",
+          113
+        ],
+        [
+          "Text",
+          19
+        ],
+        [
+          "ListItem",
+          7
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "Code",
+          3
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2228
+        ],
+        [
+          "Line",
+          120
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "TextInlineMath",
+          2
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1594
+        ],
+        [
+          "Line",
+          92
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Code",
+          2
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1542
+        ],
+        [
+          "Line",
+          100
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "TableCell",
+          10
+        ],
+        [
+          "Figure",
+          2
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Code",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1285
+        ],
+        [
+          "Line",
+          67
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "Figure",
+          3
+        ],
+        [
+          "Caption",
+          3
+        ],
+        [
+          "FigureGroup",
+          3
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 8,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2779
+        ],
+        [
+          "Line",
+          160
+        ],
+        [
+          "TextInlineMath",
+          8
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "Equation",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 9,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2194
+        ],
+        [
+          "Line",
+          118
+        ],
+        [
+          "Text",
+          13
+        ],
+        [
+          "Code",
+          4
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 10,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2199
+        ],
+        [
+          "Line",
+          120
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 11,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          1207
+        ],
+        [
+          "TableCell",
+          110
+        ],
+        [
+          "Line",
+          65
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 12,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          2165
+        ],
+        [
+          "Line",
+          119
+        ],
+        [
+          "Text",
+          13
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 13,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          871
+        ],
+        [
+          "Line",
+          54
+        ],
+        [
+          "ListItem",
+          19
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/mandelin2005"
+}

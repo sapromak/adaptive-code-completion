@@ -1,0 +1,678 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Automatic Method Completion",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          202.0078125,
+          105.8101806640625
+        ],
+        [
+          393.85546875,
+          105.8101806640625
+        ],
+        [
+          393.85546875,
+          120.15618896484375
+        ],
+        [
+          202.0078125,
+          120.15618896484375
+        ]
+      ]
+    },
+    {
+      "title": "Abstract",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          145.529296875,
+          229.40167236328125
+        ],
+        [
+          190.65234375,
+          229.40167236328125
+        ],
+        [
+          190.65234375,
+          241.356689453125
+        ],
+        [
+          145.529296875,
+          241.356689453125
+        ]
+      ]
+    },
+    {
+      "title": "1 Introduction",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          49.568115234375,
+          400.80206298828125
+        ],
+        [
+          133.7255859375,
+          400.80206298828125
+        ],
+        [
+          133.7255859375,
+          412.7570495605469
+        ],
+        [
+          49.568115234375,
+          412.7570495605469
+        ]
+      ]
+    },
+    {
+      "title": "Figure 1. Clone: Cloneable implementation",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          324.52734375,
+          618.75
+        ],
+        [
+          528.52880859375,
+          618.75
+        ],
+        [
+          528.52880859375,
+          630.2085418701172
+        ],
+        [
+          324.52734375,
+          630.2085418701172
+        ]
+      ]
+    },
+    {
+      "title": "3 Method Representation",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          308.689453125,
+          218.8828125
+        ],
+        [
+          447.109619140625,
+          218.8828125
+        ],
+        [
+          447.109619140625,
+          231.6859130859375
+        ],
+        [
+          308.689453125,
+          231.6859130859375
+        ]
+      ]
+    },
+    {
+      "title": "4 Detection",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          49.4560546875,
+          406.9280700683594
+        ],
+        [
+          116.51006317138672,
+          406.9280700683594
+        ],
+        [
+          116.51006317138672,
+          418.883056640625
+        ],
+        [
+          49.4560546875,
+          418.883056640625
+        ]
+      ]
+    },
+    {
+      "title": "5 Integration",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          308.86199951171875,
+          329.8820495605469
+        ],
+        [
+          384.890625,
+          329.8820495605469
+        ],
+        [
+          384.890625,
+          342.24609375
+        ],
+        [
+          308.86199951171875,
+          342.24609375
+        ]
+      ]
+    },
+    {
+      "title": "6 Selected Cases",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          308.390625,
+          604.4319152832031
+        ],
+        [
+          400.8318176269531,
+          604.4319152832031
+        ],
+        [
+          400.8318176269531,
+          616.4296875
+        ],
+        [
+          308.390625,
+          616.4296875
+        ]
+      ]
+    },
+    {
+      "title": "7 Accuracy",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          49.717529296875,
+          213.1708984375
+        ],
+        [
+          116.51006317138672,
+          213.1708984375
+        ],
+        [
+          116.51006317138672,
+          225.45703125
+        ],
+        [
+          49.717529296875,
+          225.45703125
+        ]
+      ]
+    },
+    {
+      "title": "Figure 5. Partial Method",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          111.81900787353516,
+          545.66015625
+        ],
+        [
+          225.017578125,
+          545.66015625
+        ],
+        [
+          225.017578125,
+          557.5184478759766
+        ],
+        [
+          111.81900787353516,
+          557.5184478759766
+        ]
+      ]
+    },
+    {
+      "title": "Figure 6. Method Completion Candidates",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          330.1151123046875,
+          259.875
+        ],
+        [
+          523.8656005859375,
+          259.875
+        ],
+        [
+          523.8656005859375,
+          270.77740478515625
+        ],
+        [
+          330.1151123046875,
+          270.77740478515625
+        ]
+      ]
+    },
+    {
+      "title": "Acknowledgments",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          49.642822265625,
+          339.5390625
+        ],
+        [
+          128.05294799804688,
+          339.5390625
+        ],
+        [
+          128.05294799804688,
+          351.140625
+        ],
+        [
+          49.642822265625,
+          351.140625
+        ]
+      ]
+    },
+    {
+      "title": "References",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          49.97900390625,
+          408.375
+        ],
+        [
+          106.45751953125,
+          408.375
+        ],
+        [
+          106.45751953125,
+          421.1779479980469
+        ],
+        [
+          49.97900390625,
+          421.1779479980469
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          165
+        ],
+        [
+          "Line",
+          90
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Code",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          241
+        ],
+        [
+          "Line",
+          107
+        ],
+        [
+          "Text",
+          23
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          255
+        ],
+        [
+          "Line",
+          100
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Equation",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "Footnote",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          212
+        ],
+        [
+          "Line",
+          107
+        ],
+        [
+          "TableCell",
+          13
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "ListItem",
+          7
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Code",
+          2
+        ],
+        [
+          "Table",
+          2
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          153
+        ],
+        [
+          "Line",
+          69
+        ],
+        [
+          "ListItem",
+          14
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          93
+        ],
+        [
+          "Line",
+          32
+        ],
+        [
+          "Figure",
+          2
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "Picture",
+          2
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "TableCell",
+          92
+        ],
+        [
+          "Span",
+          11
+        ],
+        [
+          "Line",
+          6
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "Form",
+          1
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          7
+        ],
+        [
+          "Line",
+          4
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Picture",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/hill2004"
+}

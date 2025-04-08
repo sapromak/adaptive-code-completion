@@ -1,0 +1,524 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Context-Sensitive Code Completion Tool for Better\nAPI Usability",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          60.5126953125,
+          89.2764892578125
+        ],
+        [
+          542.671875,
+          89.2764892578125
+        ],
+        [
+          542.671875,
+          138.49951171875
+        ],
+        [
+          60.5126953125,
+          138.49951171875
+        ]
+      ]
+    },
+    {
+      "title": "Keywords-API methods, Code Completion, Eclipse plugin",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          65.81689453125,
+          341.26873779296875
+        ],
+        [
+          280.001953125,
+          341.26873779296875
+        ],
+        [
+          280.001953125,
+          351.84747314453125
+        ],
+        [
+          65.81689453125,
+          351.84747314453125
+        ]
+      ]
+    },
+    {
+      "title": "I. INTRODUCTION",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          137.6103515625,
+          362.7421875
+        ],
+        [
+          214.1103515625,
+          362.7421875
+        ],
+        [
+          214.1103515625,
+          372.3833923339844
+        ],
+        [
+          137.6103515625,
+          372.3833923339844
+        ]
+      ]
+    },
+    {
+      "title": "II. CSCC: AUTO-COMPLETE OF METHOD CALLS",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          333.4921875,
+          596.3710327148438
+        ],
+        [
+          534.2360229492188,
+          596.3710327148438
+        ],
+        [
+          534.2360229492188,
+          605.98828125
+        ],
+        [
+          333.4921875,
+          605.98828125
+        ]
+      ]
+    },
+    {
+      "title": "A. Step 1: Formulating Method Call Context",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          57.00146484375,
+          524.5247802734375
+        ],
+        [
+          232.7788543701172,
+          524.5247802734375
+        ],
+        [
+          232.7788543701172,
+          534.05859375
+        ],
+        [
+          57.00146484375,
+          534.05859375
+        ]
+      ]
+    },
+    {
+      "title": "B. Step 2: Matching with Existing Calls Based on Context",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          314.068359375,
+          344.2565612792969
+        ],
+        [
+          542.945556640625,
+          344.2565612792969
+        ],
+        [
+          542.945556640625,
+          353.84765625
+        ],
+        [
+          314.068359375,
+          353.84765625
+        ]
+      ]
+    },
+    {
+      "title": "C. Step 3: Recommending Top Candidates",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          57.8232421875,
+          541.8086395263672
+        ],
+        [
+          225.615234375,
+          541.8086395263672
+        ],
+        [
+          225.615234375,
+          551.2731018066406
+        ],
+        [
+          57.8232421875,
+          551.2731018066406
+        ]
+      ]
+    },
+    {
+      "title": "III. CSCC ARCHITECTURE",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          119.75537109375,
+          653.6613616943359
+        ],
+        [
+          233.21615600585938,
+          653.6613616943359
+        ],
+        [
+          233.21615600585938,
+          663.1258239746094
+        ],
+        [
+          119.75537109375,
+          663.1258239746094
+        ]
+      ]
+    },
+    {
+      "title": "IV. EVALUATION",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          396.544921875,
+          281.1291809082031
+        ],
+        [
+          468.861328125,
+          281.1291809082031
+        ],
+        [
+          468.861328125,
+          290.5936584472656
+        ],
+        [
+          396.544921875,
+          290.5936584472656
+        ]
+      ]
+    },
+    {
+      "title": "A. Accuracy and Runtime Performance",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          314.068359375,
+          345.6601257324219
+        ],
+        [
+          467.666015625,
+          345.6601257324219
+        ],
+        [
+          467.666015625,
+          355.1246032714844
+        ],
+        [
+          314.068359375,
+          355.1246032714844
+        ]
+      ]
+    },
+    {
+      "title": "B. Benefits of Simhash Technique",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          314.068359375,
+          501.0951232910156
+        ],
+        [
+          445.11981201171875,
+          501.0951232910156
+        ],
+        [
+          445.11981201171875,
+          510.5596008300781
+        ],
+        [
+          314.068359375,
+          510.5596008300781
+        ]
+      ]
+    },
+    {
+      "title": "V. USER STUDY",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          143.51220703125,
+          72.264404296875
+        ],
+        [
+          211.869140625,
+          72.264404296875
+        ],
+        [
+          211.869140625,
+          81.7288818359375
+        ],
+        [
+          143.51220703125,
+          81.7288818359375
+        ]
+      ]
+    },
+    {
+      "title": "VI. RELATED WORK",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          132.978515625,
+          486.615234375
+        ],
+        [
+          220.833984375,
+          486.615234375
+        ],
+        [
+          220.833984375,
+          496.0799865722656
+        ],
+        [
+          132.978515625,
+          496.0799865722656
+        ]
+      ]
+    },
+    {
+      "title": "VII. CONCLUSION",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          395.6484375,
+          260.46533203125
+        ],
+        [
+          473.34375,
+          260.46533203125
+        ],
+        [
+          473.34375,
+          269.9298095703125
+        ],
+        [
+          395.6484375,
+          269.9298095703125
+        ]
+      ]
+    },
+    {
+      "title": "REFERENCES",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          406.705078125,
+          417.482421875
+        ],
+        [
+          460.3613586425781,
+          417.482421875
+        ],
+        [
+          460.3613586425781,
+          426.9468994140625
+        ],
+        [
+          406.705078125,
+          426.9468994140625
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          215
+        ],
+        [
+          "Line",
+          97
+        ],
+        [
+          "Text",
+          13
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "PageFooter",
+          3
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          165
+        ],
+        [
+          "Line",
+          74
+        ],
+        [
+          "TableCell",
+          25
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Form",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          229
+        ],
+        [
+          "Line",
+          100
+        ],
+        [
+          "TableCell",
+          25
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "SectionHeader",
+          5
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ],
+        [
+          "FigureGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          234
+        ],
+        [
+          "Line",
+          115
+        ],
+        [
+          "ListItem",
+          12
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/asaduzzaman2014"
+}
