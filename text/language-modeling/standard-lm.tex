@@ -1,0 +1,64 @@
+\section{Standard LM}
+
+This section provides the necessary theoretical foundation to understand general language modeling, without specifically focusing on the code completion task. It begins with the formulation and presents a probabilistic perspective on the models employed to represent language. Subsequently, it explores the transformer architecture and the training of such models. The section concludes with a discussion on the inference and sampling processes of trained models.
+
+In this section, the term \textit{language} is used to refer only to some arbitrary natural language and not to a formal one.
+
+\subsection{Definition}
+
+Consider a natural language denoted as \(\mathcal{L}\), which is a set of all possible sentences in this language. A sentence \(\bm{x}_{1:T}\) of length \(T\) is a sequence of words \((x_1, x_2, \ldots, x_T)\), where each word is an element of the vocabulary \(V\). Given that some sentences are more likely to occur than others, there exists a joint probability distribution \(P : \mathcal{L} \to [0, 1]\) over variable-length sequences from \(\mathcal{L}\). The model \(p_\theta\) with parameters \(\theta\) (also called weights) that represents this distribution is called a language model, and the task of creating such a model is referred to as language modeling.
+
+Although natural languages are infinite due to their recursive structure, they have a finite number of words, meaning \(K \triangleq |V| \in \mathbb{N}\). To demonstrate this, consider that word lengths are finite, which implies that \(\mathcal{L}\) certainly contains a word with the maximum length \(M\). Let the number of characters involved in word formation be \(N\). A very rough upper bound estimate for the number of words in \(\mathcal{L}\) can be calculated using the formula \(N^M\), which is finite because both \(N\) and \(M\) are finite.
+
+The chain rule of probability can be applied to represent \(P\) as follows:
+\begin{equation}
+    P(\bm{x}_{1:T}) = P(x_1) \cdot P(x_2 \mid x_1) \cdot P(x_3 \mid x_2, x_1) \cdots = \prod_{t=1}^{T}P(x_t \mid \bm{x}_{1:t-1})
+\end{equation} 
+This indicates that language modeling is equivalent to estimating the probability of each word in the sentence given all the preceding words (i.e., the context), where the probability distribution over each word is a \(K\)-dimensional categorical distribution.
+
+\subsection{Text Representation}
+
+The proper representation of text is critical to effective language modeling design. Treating text as a sequence of words is natural and intuitive for humans, but not the best choice for machines.
+
+\subsubsection*{Tokens}\label{sec:tokens}
+
+The first reason why words may not be the optimal choice for representing discrete units of text is the out-of-vocabulary (OOV) problem, which refers to the presence of words (or tokens) that are absent from a language model's vocabulary. This challenge arises from the inherently dynamic nature of language, which lacks fixed boundaries. As language evolves, some words become obsolete while new ones emerge. Additionally, the text corpora used for training language models often contain typographical errors and other artifacts of human language.
+
+The second reason is that the language models require statistical information about the co-occurrence of words to capture the semantics of the language. It becomes a problem with rare words whose representations in models lack a learning signal. This phenomenon can be lucidly demonstrated with Zipf's law, which states that in a given corpus, the frequency of any word is inversely proportional to its rank in the frequency table \parencite{estoup1916}. This implies that a small number of words are used very frequently, while the majority are rare. Consequently, language models trained on word-level representations may struggle to learn these infrequent words, leading to poor generalization.
+
+One can propose employing character-level text representation. Although this approach completely resolves the OOV problem, it introduces its own limitations. A small vocabulary necessitates processing longer sequences with smaller semantic representation of its units, which introduces additional computational overhead to internally combine these units to form a more integral semantic representation of text.
+
+Thus, there is a trade-off between the size of the vocabulary and the size of input sequences. Minimizing one leads to an increase in the other. A large vocabulary means that some of its units are used very rarely, and their representations lack a learning signal. A small vocabulary means the utilization of more semantically poor units and a greater computational overhead to process longer sequences.
+
+The optimal balance between character-level and word-level representations is subword chunks, generally called tokens. They offer a greater prospect of granularity in text division, which allows addressing the aforementioned trade-off on a more fine-grained level.
+
+\subsubsection*{Byte Pair Encoding for Tokenization}
+
+The OOV problem persists at the token level. A variety of methods exist to address this issue, with one of the most popular being the byte pair encoding (BPE) algorithm. Originally proposed by \citet{gage1994} as a compression algorithm, it was later adapted by \citet{sennrich2016} for word segmentation with the aim of constructing a vocabulary.
+
+The BPE process begins by initializing the vocabulary with individual characters and a special end-of-word symbol. Words are initially represented as sequences of these characters. Given some corpus of text, the algorithm iteratively identifies the most frequent pair of adjacent symbols and merges them into a new symbol. This process continues until a predefined number of merge operations is reached, resulting in a vocabulary composed of both characters and frequently occurring subword units. After the vocabulary is constructed, the same algorithm can be applied to tokenize the text.
+
+This approach allows for a compact representation of text, reducing the sequence length while maintaining the ability to represent rare and unseen words. By balancing the trade-off between vocabulary size and sequence length, BPE enables language models to efficiently handle the dynamic nature of language, capturing both common and rare linguistic patterns.
+
+\subsubsection*{Embeddings}
+
+\begin{sloppypar}
+After the text is tokenized, it is represented as a sequence of tokens \((x_1, x_2, \ldots, x_T)\), where \(x_i \in \{1, 2, \ldots, K\}\) is a corresponding integer identifier. A parameterized language model \(p_\theta\) should have the ability to process this sequence of integers. Since most effective models are based on neural networks (NNs), \(\theta\) is a set of matrices that define some non-linear transformation over the continuous vector space. Therefore, tokens need to be embedded into the input vector space \(\mathbb{R}^d\).
+\end{sloppypar}
+
+The most straightforward approach is to set \(d=K\) and use one-hot encoding, which assigns a vector \(\mathbf{x}_i \triangleq \textrm{one-hot}(x_i) \in \{0, 1\}^K\) full of zeros except for the position corresponding to the token, which is set to one. The resulting vectors capture the identity of the tokens but lack the interaction effects between them.
+
+This issue is resolved by incorporating the first layer of the NN as a trainable embedding matrix \(\mathbf{E} \in \mathbb{R}^{d' \times K}\), which maps each token to a vector \(\mathbf{Ex}_i\) in \(\mathbb{R}^{d'}\), called an embedding, by multiplying its one-hot encoding with \(\mathbf{E}\). Note that the sparse nature of one-hot representations allows this multiplication to be implemented using a lookup table by taking the \(i\)-th column of \(\mathbf{E}\).
+
+There are multiple ways to train the embedding matrix \(\mathbf{E}\). The choice of method depends on the desired properties. In the case of language modeling, the primary requirement is the alignment of the embeddings with the rest of the model weights. Therefore, the embeddings are frequently initialized and trained jointly with the rest of the model parameters.
+
+The trained embeddings capture the semantics of the tokens. This means that tokens occurring in similar contexts tend to have similar embeddings. This phenomenon is known as the distributional hypothesis \parencite{harris1954}. The most common measure of similarity between two embeddings is their dot product or its normalized version, cosine similarity: % TODO: add a figure with king, queen; note it in the text
+\begin{equation}
+    \cos(\mathbf{x}, \mathbf{y}) \triangleq \frac{\mathbf{x}^\top \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
+\end{equation}  
+
+As the dot product suffers from the curse of dimensionality, the number of dimensions \(d'\) required to capture all semantic patterns is exponentially smaller than the vocabulary size \(K\). This is achieved by the fact that two dissimilar vectors do not necessarily have to be orthogonal, as their dot product is already near zero.
+
+\subsection{Transformer Models}
+
+

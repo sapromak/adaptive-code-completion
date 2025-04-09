@@ -24,8 +24,7 @@ Due to the simple and atomic formulation of code completion, it possesses the im
 
 In summary, code completion stands as a foundational and multifaceted tool within modern software development. Its benefits extend beyond mere convenience, offering measurable improvements in efficiency, learning, and code quality. As advancements in AI continue to refine its capabilities, code completion not only streamlines day-to-day programming tasks but also acts as a cornerstone for broader innovations in AI-assisted software engineering.
 
-\section{Evolution of Methods}
-\label{sec:evolution-of-code-completion}
+\section{Evolution of Methods}\label{sec:evolution-of-code-completion}
 % Relevant papers: mandelin2005, hill2004, han2009, hindle2012, raychev2014, asaduzzaman2014, proksch2015, nguyen2015, bielik2016, ginzberg2017, karampatsis2019, liu2020, alon2020, svyatkovskiy2020, kim2021
 
 \begin{sloppypar}
@@ -44,7 +43,7 @@ Building on this foundation, more sophisticated probabilistic models were develo
 
 Context-sensitivity became increasingly important as code completion systems matured. \citet{asaduzzaman2014} developed CSCC, which leveraged previous code examples to recommend method calls by considering the surrounding code context. This approach demonstrated how incorporating more contextual information affects the relevance of completion suggestions.
 
-The rise of deep learning brought another paradigm shift to code completion. recurrent neural networks (RNNs), particularly long short-term memory (LSTM) networks, were applied to model the sequential nature of code. \citet{ginzberg2017} explored both standard LSTMs and attention-augmented networks for token-level code completion, establishing new capabilities in code prediction tasks.
+The rise of deep learning brought another paradigm shift to code completion. Recurrent neural networks (RNNs), particularly long short-term memory (LSTM) networks, were applied to model the sequential nature of code. \citet{ginzberg2017} explored both standard LSTMs and attention-augmented networks for token-level code completion, establishing new capabilities in code prediction tasks.
 
 Recent years have witnessed the adoption of even more powerful neural architectures. \citet{karampatsis2019} tackled the out-of-vocabulary problem in code completion using subword units with neural language models. \citet{liu2020} leveraged multi-task learning and pre-trained language models for code completion, while also incorporating type information to assist in identifier prediction.
 
