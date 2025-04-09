@@ -72,11 +72,54 @@
 %\usepackage{minted}
 \usepackage{csquotes}
 
+% Add this to define \citet command using biblatex functionality with clickable author names
+\DeclareCiteCommand{\citet}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \bibhyperref{%
+     \printnames{labelname}%
+     \setunit{\printdelim{nameyeardelim}}%
+     \printtext[parens]{\usebibmacro{cite:labeldate+extradate}}%
+   }}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% Add this configuration to make the entire citation a hyperlink
+\ExecuteBibliographyOptions{hyperref=true}
+\DeclareFieldFormat{citehyperref}{%
+  \bibhyperref{#1}}
+\DeclareFieldFormat{textcitehyperref}{%
+  \bibhyperref{#1}}
+\DeclareFieldFormat{citesetup}{%
+  \bibhyperref{#1}}
+\DeclareFieldFormat{parencite}{%
+  \bibhyperref{\mkbibparens{#1}}}
+
+% For name+year citations
+\letbibmacro{cite:labelyear+extrayear}{cite:labeldate+extradate}
+\renewbibmacro*{cite}{%
+  \printtext[citehyperref]{%
+    \printnames{labelname}%
+    \setunit{\printdelim{nameyeardelim}}%
+    \usebibmacro{cite:labeldate+extradate}}}
+
+\renewbibmacro*{textcite}{%
+  \printtext[textcitehyperref]{%
+    \printnames{labelname}%
+    \setunit{\printdelim{nameyeardelim}}%
+    \usebibmacro{cite:labeldate+extradate}}}
+
+\DeclareCiteCommand{\citeyear}
+    {}
+    {\bibhyperref{\printdate}}
+    {\multicitedelim}
+    {}
+
 %%%%%%%%%%%%%%%%%%%%%%
 % DEMO CONTENTS SETTINGS END
 %%%%%%%%%%%%%%%%%%%%%%
 
-\begin{document} 
+\begin{document}
 \frontmatter\frontmatterinit
 
 \thispagestyle{empty}\maketitle\thispagestyle{empty}\cleardoublepage
