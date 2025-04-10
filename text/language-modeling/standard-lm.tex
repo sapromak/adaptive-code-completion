@@ -8,10 +8,10 @@ In this section, the term \textit{language} is used to refer only to some arbitr
 
 Consider a natural language denoted as \(\mathcal{L}\), which is a set of all possible sentences in this language. A sentence \(\bm{x}_{1:T}\) of length \(T\) is a sequence of words \((x_1, x_2, \ldots, x_T)\), where each word is an element of the vocabulary \(V\). Given that some sentences are more likely to occur than others, there exists a joint probability distribution \(P : \mathcal{L} \to [0, 1]\) over variable-length sequences from \(\mathcal{L}\). The model \(p_\theta\) with parameters \(\theta\) (also called weights) that represents this distribution is called a language model, and the task of creating such a model is referred to as language modeling.
 
-Although natural languages are infinite due to their recursive structure, they have a finite number of words, meaning \(K \triangleq |V| \in \mathbb{N}\). To demonstrate this, consider that word lengths are finite, which implies that \(\mathcal{L}\) certainly contains a word with the maximum length \(M\). Let the number of characters involved in word formation be \(N\). A very rough upper bound estimate for the number of words in \(\mathcal{L}\) can be calculated using the formula \(N^M\), which is finite because both \(N\) and \(M\) are finite.
+Although natural languages are infinite due to their recursive structure, they have a finite number of words, meaning \(K = |V| \in \mathbb{N}\). To demonstrate this, consider that word lengths are finite, which implies that \(\mathcal{L}\) certainly contains a word with the maximum length \(M\). Let the number of characters involved in word formation be \(N\). A very rough upper bound estimate for the number of words in \(\mathcal{L}\) can be calculated using the formula \(N^M\), which is finite because both \(N\) and \(M\) are finite.
 
 The chain rule of probability can be applied to represent \(P\) as follows:
-\begin{equation}
+\begin{equation}\label{eq:probability-chain-rule}
     P(\bm{x}_{1:T}) = P(x_1) \cdot P(x_2 \mid x_1) \cdot P(x_3 \mid x_2, x_1) \cdots = \prod_{t=1}^{T}P(x_t \mid \bm{x}_{1:t-1})
 \end{equation} 
 This indicates that language modeling is equivalent to estimating the probability of each word in the sentence given all the preceding words (i.e., the context), where the probability distribution over each word is a \(K\)-dimensional categorical distribution.
@@ -40,13 +40,13 @@ The BPE process begins by initializing the vocabulary with individual characters
 
 This approach allows for a compact representation of text, reducing the sequence length while maintaining the ability to represent rare and unseen words. By balancing the trade-off between vocabulary size and sequence length, BPE enables language models to efficiently handle the dynamic nature of language, capturing both common and rare linguistic patterns.
 
-\subsubsection*{Embeddings}
+\subsubsection*{Embeddings}\label{sec:embeddings}
 
 \begin{sloppypar}
 After the text is tokenized, it is represented as a sequence of tokens \((x_1, x_2, \ldots, x_T)\), where \(x_i \in \{1, 2, \ldots, K\}\) is a corresponding integer identifier. A parameterized language model \(p_\theta\) should have the ability to process this sequence of integers. Since most effective models are based on neural networks (NNs), \(\theta\) is a set of matrices that define some non-linear transformation over the continuous vector space. Therefore, tokens need to be embedded into the input vector space \(\mathbb{R}^d\).
 \end{sloppypar}
 
-The most straightforward approach is to set \(d=K\) and use one-hot encoding, which assigns a vector \(\mathbf{x}_i \triangleq \textrm{one-hot}(x_i) \in \{0, 1\}^K\) full of zeros except for the position corresponding to the token, which is set to one. The resulting vectors capture the identity of the tokens but lack the interaction effects between them.
+The most straightforward approach is to set \(d=K\) and use one-hot encoding, which assigns a vector \(\mathbf{x}_i = \textrm{one-hot}(x_i) \in \{0, 1\}^K\) full of zeros except for the position corresponding to the token, which is set to one. The resulting vectors capture the identity of the tokens but lack the interaction effects between them.
 
 This issue is resolved by incorporating the first layer of the NN as a trainable embedding matrix \(\mathbf{E} \in \mathbb{R}^{d' \times K}\), which maps each token to a vector \(\mathbf{Ex}_i\) in \(\mathbb{R}^{d'}\), called an embedding, by multiplying its one-hot encoding with \(\mathbf{E}\). Note that the sparse nature of one-hot representations allows this multiplication to be implemented using a lookup table by taking the \(i\)-th column of \(\mathbf{E}\).
 
@@ -54,11 +54,68 @@ There are multiple ways to train the embedding matrix \(\mathbf{E}\). The choice
 
 The trained embeddings capture the semantics of the tokens. This means that tokens occurring in similar contexts tend to have similar embeddings. This phenomenon is known as the distributional hypothesis \parencite{harris1954}. The most common measure of similarity between two embeddings is their dot product or its normalized version, cosine similarity: % TODO: add a figure with king, queen; note it in the text
 \begin{equation}
-    \cos(\mathbf{x}, \mathbf{y}) \triangleq \frac{\mathbf{x}^\top \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
+    \cos(\mathbf{x}, \mathbf{y}) = \frac{\mathbf{x}^\top \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|}.
 \end{equation}  
 
 As the dot product suffers from the curse of dimensionality, the number of dimensions \(d'\) required to capture all semantic patterns is exponentially smaller than the vocabulary size \(K\). This is achieved by the fact that two dissimilar vectors do not necessarily have to be orthogonal, as their dot product is already near zero.
 
 \subsection{Transformer Models}
 
+The most widely used architecture for language modeling is the Transformer model proposed by \citet{vaswani2017}. It is based on the attention mechanism, with its roots introduced by \citet{bahdanau2014}. Since then, a vast number of various architectural modifications have appeared. However, the core idea remains the same.
 
+In the primary source paper, the authors proposed two parts of the architecture: the encoder and the decoder. Both of them, or their combination, are used depending on the specific task. In the case of language modeling (including code modeling), the decoder-only variant has gained widespread adoption. This part of the text describes only this type of Transformer.
+
+\subsubsection*{Overview of the Forward Pass}
+
+Consider the sequence of context tokens \(\bm{x}_{1:t-1} = (x_1, x_2, \ldots, x_{t-1})\) from equation~\ref{eq:probability-chain-rule}. To model the probability \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) of the next token \(x_t\), the decoder-only Transformer first embeds the context tokens into vectors \((\mathbf{Ex}_1, \mathbf{Ex}_2, \ldots, \mathbf{Ex}_{t-1})\) and then passes them through the stack of decoder layers to obtain the contextually enriched embeddings \((\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_{t-1})\), which are called hidden states. It then takes the last hidden state and multiplies it by the weights matrix to get the logits \(\mathbf{z}_t = \mathbf{Wh}_{t-1}\). The \(\mathbf{W}\) is often called the language modeling head. The softmax function is then used to get the parameters of the categorical distribution over the vocabulary:
+\begin{equation}
+    \mathbf{p}_t = \mathrm{softmax}(\mathbf{z}_t) = \frac{\exp(\mathbf{z}_t / \tau)}{\sum_{k=1}^{K} \exp(z_{t,k} / \tau)},
+\end{equation}
+where the exponent in the numerator and division are element-wise functions, and \(\tau\) is a temperature parameter.  % TODO: add forward reference to sampling for the temperature
+
+The resulting vector of estimated probabilities \(\mathbf{p}_t\) can be used in multiple ways. First, to fulfill the original task of language modeling, the element corresponding to the next token \(x_t\) can be extracted from \(\mathbf{p}_t\) and serve as \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) in equation~\ref{eq:probability-chain-rule}. Second, one can sample from the categorical distribution defined by \(\mathbf{p}_t\) to get the next token and thus generate a new sequence from the model, which means that the language model can be used as a generative model. Both settings are commonly used. The first one is employed for the training process, while the second one is used for inference.
+
+Before delving into the specifics of the decoder layer, two important points should be noted. First is that the initial token lacks context. Consequently, a special beginning of sequence (BOS) token is utilized to provide context and serve as an embedding for \(p_\theta(x_1)\). Second, for simplicity, the bias term is omitted in all the weight application formulas, as its inclusion is optional and contingent upon the engineer's design choices.
+
+\subsubsection*{Decoder Layer}
+% TODO: regeneration is required from this point
+
+Let's denote the input embeddings as \((\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_{T})\), where \(\mathbf{x}_i \in \mathbb{R}^{d_{\mathrm{model}}}\) for each \(i \in \{1, 2, \ldots, T\}\), and let \(\mathbf{X} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) represent their concatenated form. The decoder layer then applies the following operations:
+\begin{align}
+    \mathbf{X}^{(1)} &= \mathbf{X} + \mathrm{MultiHead}(\mathrm{Norm}(\mathbf{X})), \\
+    \mathbf{X}^{(2)} &= \mathbf{X}^{(1)} + \mathrm{MLP}(\mathrm{Norm}(\mathbf{X}^{(1)})),
+\end{align}
+where \(\mathbf{X}^{(2)} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) is the output of the layer, and \(\mathrm{Norm}\), \(\mathrm{MultiHead}\), \(\mathrm{MLP}\) are sub-layers discussed below.
+
+These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2019};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}.
+
+\subsubsection*{Normalization}
+
+The normalization layer stabilizes the training process by normalizing the input embeddings independently for each token. Various types of normalization layers exist. While the original architecture used layer normalization \parencite{ba2016}, root mean square layer normalization \parencite{zhang2019} has also been widely adopted.
+
+\subsubsection*{Attention}
+
+Consider two additional architectural parameters \(d_k\) and \(d_v = d_{\mathrm{model}}\). The attention layer is described using three weight matrices: \(\mathbf{W}_Q, \mathbf{W}_K \in \mathbb{R}^{d_k \times d_{\mathrm{model}}}\) and \(\mathbf{W}_V \in \mathbb{R}^{d_v \times d_{\mathrm{model}}}\). The output of the layer is calculated as follows:
+\begin{equation}
+    \mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathrm{softmax}\left(\frac{\left[\mathbf{QK}^\top\right]_{\mathrm{mask}}}{\sqrt{d_k}}\right)\mathbf{V},
+\end{equation}
+where \(\{\mathbf{Q}, \mathbf{K}, \mathbf{V}\} = \mathbf{XW}_{\{Q, K, V\}}^\top\). The softmax is applied row-wise, and \([\ \cdot \ ]_{\mathrm{mask}}\) is a causal masking operation that sets all elements above the main diagonal to \(-\infty\), preventing data leakage from future tokens.
+
+Attention functions as a layer that enables tokens to communicate with each other. Each token performs a query \(\mathbf{q}_i\) to all preceding tokens and itself \(\mathbf{k}_{j \le i}\). The corresponding attention weight of the query-key match \(\mathbf{q}_{i}^\top\mathbf{k}_{j}\) is normalized by the softmax and used as a soft dictionary lookup to retrieve the partial component of the value vector \(\mathbf{v}_j\). The convex combination of all such value vectors \(\mathbf{v}_{j \le i}\) becomes the output of the attention layer.
+
+\subsubsection*{Multi-Head Attention}
+
+Multi-head attention is a modification of the basic attention mechanism. Instead of applying the attention mechanism once, the embedding processing is divided into multiple heads that perform attention in parallel. Given the number of heads \(h\) and an additional output projection weight matrix \(\mathbf{W}_O \in \mathbb{R}^{hd_v \times d_{\mathrm{model}}}\), the output of the layer is calculated as:
+\begin{align}
+    \mathrm{MultiHead}(\mathbf{X}) &= \\ \mathrm{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \mathrm{Concat}(\mathrm{head}_1, \ldots, \mathrm{head}_h) \mathbf{W}_O \\
+    \text{where}~\mathrm{head_i} &= \mathrm{Attention}(\mathbf{Q}_i, \mathbf{K}_i, \mathbf{V}_i),
+\end{align}
+where \(\mathbf{Q}_i, \mathbf{K}_i, \mathbf{V}_i\) are obtained by applying an independent set of weight matrices \(\mathbf{W}_Q^{(i)}, \mathbf{W}_K^{(i)}, \mathbf{W}_V^{(i)}\) to the input embeddings \(\mathbf{X}\), and \(\mathbf{Q}, \mathbf{K}, \mathbf{V}\) are their concatenated versions.
+
+In this version of the attention, \(d_v\) is not necessarily equal to \(d_{\mathrm{model}}\).
+
+\subsubsection*{Multi-Layer Perceptron}
+
+A multi-layer perceptron (MLP) is a simple feed-forward neural network with two linear transformations and a non-linear activation function. It is applied to each token independently.
+
+Originally, the rectified linear unit (ReLU) was used as the activation function. However, other alternatives have empirically been shown to perform better. Two of these are the Gaussian error linear unit (GELU) and the sigmoid linear unit (SiLU) from \citet{hendrycks2023}. Another is the swish gated linear unit (SwiGLU) introduced in \citet{shazeer2020}.
