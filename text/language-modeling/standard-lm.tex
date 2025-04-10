@@ -78,7 +78,6 @@ The resulting vector of estimated probabilities \(\mathbf{p}_t\) can be used in 
 Before delving into the specifics of the decoder layer, two important points should be noted. First is that the initial token lacks context. Consequently, a special beginning of sequence (BOS) token is utilized to provide context and serve as an embedding for \(p_\theta(x_1)\). Second, for simplicity, the bias term is omitted in all the weight application formulas, as its inclusion is optional and contingent upon the engineer's design choices.
 
 \subsubsection*{Decoder Layer}
-% TODO: regeneration is required from this point
 
 Let's denote the input embeddings as \((\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_{T})\), where \(\mathbf{x}_i \in \mathbb{R}^{d_{\mathrm{model}}}\) for each \(i \in \{1, 2, \ldots, T\}\), and let \(\mathbf{X} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) represent their concatenated form. The decoder layer then applies the following operations:
 \begin{align}
@@ -96,10 +95,10 @@ The normalization layer stabilizes the training process by normalizing the input
 \subsubsection*{Attention}
 
 Consider two additional architectural parameters \(d_k\) and \(d_v = d_{\mathrm{model}}\). The attention layer is described using three weight matrices: \(\mathbf{W}_Q, \mathbf{W}_K \in \mathbb{R}^{d_k \times d_{\mathrm{model}}}\) and \(\mathbf{W}_V \in \mathbb{R}^{d_v \times d_{\mathrm{model}}}\). The output of the layer is calculated as follows:
-\begin{equation}
+\begin{equation}\label{eq:attention}
     \mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathrm{softmax}\left(\frac{\left[\mathbf{QK}^\top\right]_{\mathrm{mask}}}{\sqrt{d_k}}\right)\mathbf{V},
 \end{equation}
-where \(\{\mathbf{Q}, \mathbf{K}, \mathbf{V}\} = \mathbf{XW}_{\{Q, K, V\}}^\top\). The softmax is applied row-wise, and \([\ \cdot \ ]_{\mathrm{mask}}\) is a causal masking operation that sets all elements above the main diagonal to \(-\infty\), preventing data leakage from future tokens.
+where \(\mathbf{V} = \mathbf{XW}_V^{\top}\) and \(\{\mathbf{Q}, \mathbf{K}\} = \mathrm{RoPE}(\mathbf{XW}_{\{Q, K\}}^\top)\) with \(\mathrm{RoPE}\) denoting the rotary position embedding discussed in Section~\ref{sec:rotary-position-embedding}. The softmax is applied row-wise, and \([\ \cdot \ ]_{\mathrm{mask}}\) is a causal masking operation that sets all elements above the main diagonal to \(-\infty\), thereby preventing data leakage from future tokens.
 
 Attention functions as a layer that enables tokens to communicate with each other. Each token performs a query \(\mathbf{q}_i\) to all preceding tokens and itself \(\mathbf{k}_{j \le i}\). The corresponding attention weight of the query-key match \(\mathbf{q}_{i}^\top\mathbf{k}_{j}\) is normalized by the softmax and used as a soft dictionary lookup to retrieve the partial component of the value vector \(\mathbf{v}_j\). The convex combination of all such value vectors \(\mathbf{v}_{j \le i}\) becomes the output of the attention layer.
 
@@ -119,3 +118,43 @@ In this version of the attention, \(d_v\) is not necessarily equal to \(d_{\math
 A multi-layer perceptron (MLP) is a simple feed-forward neural network with two linear transformations and a non-linear activation function. It is applied to each token independently.
 
 Originally, the rectified linear unit (ReLU) was used as the activation function. However, other alternatives have empirically been shown to perform better. Two of these are the Gaussian error linear unit (GELU) and the sigmoid linear unit (SiLU) from \citet{hendrycks2023}. Another is the swish gated linear unit (SwiGLU) introduced in \citet{shazeer2020}.
+
+\subsubsection*{Dropout}
+
+Dropout is a widely adopted regularization technique that enhances the generalization of the model \parencite{srivastava2014}. During the training process, it randomly masks some of the activations of the preceding layer with a probability \(p_{\mathrm{dropout}}\) and scales the remaining activations by a factor of \(1 / p_{\mathrm{dropout}}\) to maintain the output statistics of the layer.
+
+This method is frequently applied in transformers across all layers, including the dropout of the attention scores calculated before the application of the softmax function.
+
+\subsection{Rotary Position Embedding}\label{sec:rotary-position-embedding}
+
+Rotary Position Embedding (RoPE) is a significant architectural enhancement that warrants its own section. It is a modification built upon the vanilla Transformer to incorporate the positional information of tokens and address issues present in the originally proposed analogous approach. RoPE was introduced by \citet{su2021} and quickly gained widespread adoption.
+
+For each embedding \(\mathbf{x}_m\) at position \(m\) in the sequence, RoPE proposes a rotation of its query and key vectors:
+\begin{equation}
+	\{\mathbf{q}_m, \mathbf{k}_m\} = \mathrm{RoPE}(\mathbf{W}_{\{Q, K\}}\mathbf{x}_m, m) = \mathbf{R}^d_{\Theta, m}\mathbf{W}_{\{Q, K\}}\mathbf{x}_m 
+\end{equation}
+using an orthogonal rotary matrix  
+\begin{equation}    
+	\mathbf{R}^d_{\Theta,m} = 
+	\scalebox{0.8}{\(
+	\begin{pmatrix}
+		\cos{m\theta_1}& -\sin{m\theta_1}&0&0&\cdots&0&0\\
+		\sin{m\theta_1}&\cos{m\theta_1}&0&0&\cdots&0&0 \\
+		0&0&\cos{m\theta_2}& -\sin{m\theta_2}&\cdots&0&0\\
+		0&0&\sin{m\theta_2}&\cos{m\theta_2}&\cdots&0&0 \\
+		\vdots&\vdots&\vdots&\vdots&\ddots&\vdots&\vdots\\
+		0&0&0&0&\cdots&\cos{m\theta_{d/2}}& -\sin{m\theta_{d/2}}\\
+		0&0&0&0&\cdots&\sin{m\theta_{d/2}}&\cos{m\theta_{d/2}}
+	\end{pmatrix}
+	\)},
+\end{equation}
+where \(d = d_k\) and \(\Theta = \{\theta_i=\theta_{\mathrm{base}}^{-2(i-1)/d}, i \in \{1, 2, \ldots, d/2\}\}\) is a predefined set of frequencies derived from the base frequency hyperparameter \(\theta_{\mathrm{base}}\).
+
+Note two important details regarding the application of RoPE. First, it requires \(d\) to be even. Second, it is applied across all heads in multi-head attention without repeating the rotation frequency \(h\) times, inherently adding more functional bias to heads working on higher frequencies \parencite{barbero2024}.
+
+When multiplying query and key matrices in equation~\ref{eq:attention}, the two embeddings \(\mathbf{x}_m\) and \(\mathbf{x}_n\) derive the attention score decay based on the relative distance \(m-n\) between them:
+\begin{equation}
+	\mathbf{q}_m^{\top}\mathbf{k}_n
+	=(\mathbf{R}^d_{\Theta, m}\mathbf{W}_Q\mathbf{x}_m)^\top(\mathbf{R}^d_{\Theta, n}\mathbf{W}_K\mathbf{x}_n) =\mathbf{x}_m^\top\mathbf{W}_Q\mathbf{R}^d_{\Theta, n-m}\mathbf{W}_K\mathbf{x}_n,
+\end{equation}
+which allows the model to capture the positional information of the tokens.
