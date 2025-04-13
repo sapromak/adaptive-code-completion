@@ -1,0 +1,119 @@
+\chapter{Completion-Centric LM}
+
+% TODO: description
+
+\section{Training Stages}
+
+The training of modern Code LLMs begins with acquiring a model checkpoint that possesses a robust understanding of code. This can be achieved through two distinct types of training stages. One type involves taking a general-purpose pre-trained LLM and fine-tuning it on a file-level code dataset. This approach is utilized by models such as Code Llama \parencite{rozière2023} and Qwen2.5-Coder \parencite{hui2024}. The other type involves training a model from scratch using a mixture of code and code-related natural language data. This pre-training approach is adopted by models like DeepSeek-Coder \parencite{guo2024} and OpenCoder \parencite{huang2024}. Both types necessitate vast amounts of data, typically ranging from 2 trillion (2T) to 18 trillion (18T) tokens with context length of 4,096 (4K). 
+
+Once a strong model with a limited context size is trained, it often undergoes repository-level pre-training (sometimes referred to as long-context fine-tuning). The objective of this stage is to extend the context window, thereby enabling the model to comprehend a broader scope within a given repository. Unlike the initial training stage, repository-level pre-training requires significantly fewer tokens. However, it necessitates the application of context extrapolation methods and the utilization of longer input sequences. This phase typically involves between 8 billion (8B) and 300 billion (300B) training tokens, with the context window extended with 16K or 32K tokens.
+
+% TODO: forward reference to the tiny paper results
+
+Each input sequence in repository-level pre-training consists of two components: the composed context and the completion file. Various methods exist for obtaining the former. In this thesis, the function responsible for this task is referred to as the context composer, or simply composer. This process involves retrieving and preprocessing a subset of files, which are then assembled to form a repository context.
+
+Models trained using only the aforementioned stages are referred to as base models. To enhance their utility for various tasks, an additional instruction tuning phase is often conducted. However, the capabilities gained from this stage are not essential for the code completion task and are not discussed further in this thesis. Throughout this work, all mentioned models are assumed to be their base versions.
+
+\section{Gradient Masking}
+
+The learning signal for the model is derived from both the composed context and the completion file sources. The alignment of their distributions is contingent upon the specific choice of the composer. When learning the completion of all tokens, a mismatch in these distributions can introduce undesirable bias into the model.
+
+For instance, learning to complete README files may be irrelevant if the model's primary objective is to excel solely in code completion. However, incorporating various file formats into the context is justified if they hold relevance to the completion task (e.g., including documentation).
+
+This issue can be mitigated through the application of gradient masking. By setting the individual losses of non-completion tokens to zero, these tokens can be excluded from the gradient computation during training.
+
+% TODO: forward reference to the practical discussion on this subject
+
+\section{Fill-in-the-Middle}\label{sec:fill-in-the-middle}
+
+Due to the autoregressive nature of decoder-only Transformers, they are unable to utilize future tokens in their context. Consequently, to account for both the prefix and suffix of the completion file, the fill-in-the-middle approach was proposed by \citet{bavarian2022}, with its origins in the works of \citet{donahue2020}, \citet{aghajanyan2022}, and \citet{fried2022}. This capability is particularly advantageous for the completion task, as code is frequently written in a non-sequential and chaotic order.
+
+The primary concept of FIM involves randomly dividing a portion of training sequences into three segments: prefix, middle, and suffix. These segments are then concatenated using special tokens to form a new sequence order: prefix, suffix, and middle. Incorporating such augmented data into the pre-training process, introduces a new capability to the model, albeit with a marginal performance degradation (\cite{allal2023};~\cite{rozière2023}).
+
+% TODO: BPE-dropout, starting generation from the middle of the token?
+
+\section{Evaluation}
+
+% TODO: metric x benchmark table?
+% TODO: modes of evaluation: teacher forcing
+
+\subsection{Metrics}
+
+% TODO: Keep in mind: effect of the number of preceding tokens -> not a uniform measure across the context
+
+\subsubsection*{Exact Match}
+
+The exact match (EM) metric is a fundamental and widely used measure for evaluating code completion. It is defined as the ratio of correctly completed code lines to the total number of lines. This metric is particularly valued for its direct alignment with the objectives of code completion evaluation.
+
+However, the exact match metric operates at a line-level granularity, which means it only indicates whether a line is completed correctly or not. This binary nature of the metric does not offer insights into the degree of deviation from the correct completion in cases where the completion is incorrect. To mitigate this limitation, the exact match metric is often used in conjunction with the more granular measures.
+
+\subsubsection*{Edit Similarity}
+
+The generation of functionally correct code completions is valuable, yet the effort required to edit and adapt these generated lines is equally significant. Edit similarity (ES) quantifies this effort by measuring the number of single-character edits (insertions, deletions, or substitutions) needed to transform the generated code into a reference \parencite{svyatkovskiy2020}. Mathematically, ES for two strings is expressed as:
+\begin{equation}
+    \text{\textsc{ES}}(\bm{x}, \bm{y}) = 1 - \frac{\mathrm{lev}(\bm{x}, \bm{y})}{\max\{|\bm{x}|, |\bm{y}|\}},
+\end{equation}
+where \(\mathrm{lev}(\bm{x}, \bm{y})\) represents the Levenshtein distance between the generated code \(\bm{x}\) and the reference sample \(\bm{y}\), and \(|\cdot|\) denotes the length of the string.
+
+This metric is crucial for evaluating code completion scenarios, as it provides a measure of the effort developers must exert to correct errors in the generated code. Moreover, it has been shown that edit similarity moderately correlates with the generation of functionally correct code \parencite{dibia2022}.
+
+\subsubsection*{Cross-Entropy \& Perplexity}
+
+As mentioned earlier, cross-entropy is employed as a loss function in the training process of language models. More specifically, it represents the average log-likelihood of the individual ground truth tokens. It can also be interpreted as the average number of nats required to encode the model's predictions per token compared to the true distribution.
+
+Perplexity (PPL) is the exponentiated form of cross-entropy, providing a more intuitive interpretation as the average number of choices among which the model is uncertain. For this reason, perplexity is often referred to as the weighted average branching factor of a language \parencite{murphy2022}.
+
+Both metrics are frequently used as proxies for assessing model quality. They are valuable for monitoring because these measures are consistently computed during training, being either derived from the loss function (PPL) or representing the loss itself (CE). However, they are too abstract to serve as primary metrics for specific tasks. Additionally, these measures are heavily influenced by vocabulary size and tokenization methods, which makes them unsuitable for comparing different models.
+
+\subsubsection*{Top-\(k\) Accuracy}
+
+Top-\(k\) accuracy is a metric that quantifies the frequency with which the model's top-\(k\) predictions align with the actual ground truth completion. Within the scope of this thesis, top-\(k\) accuracy is considered as a token-level metric to provide a more granular evaluation of the model's performance.
+
+\subsubsection*{Pass@k}
+
+\begin{sloppypar}
+All aforementioned metrics are syntax-based, meaning they evaluate the model's performance based on the syntactic match between the generated and reference completions. However, in real-world scenarios, there exists a wide variety of correct completions that may not be present in the dataset used for evaluation. The model might predict a completion that fulfills the user's functional requirements, even if the metric evaluates it as incorrect.
+\end{sloppypar}
+
+To address this issue, an unbiased estimation of the probability that at least one generated solution out of \(k\) passes all unit tests was proposed by \citet{chen2021}. This metric, known as pass@k, is calculated using the following expectation:
+\begin{equation}
+    \text{pass@k} = \underset{\mathrm{Problems}}{\mathbb{E}}\left[1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}\right],
+\end{equation}
+where \(n \ge k\) is the number of samples generated by the model, and \(c \le n\) is the number of those samples that passed all unit tests. This metric reflects the probability of finding a correct solution within \(k\) attempts, which mirrors the iterative approach developers often take when exploring multiple solutions.
+
+To apply this metric to single-line code completion, it is assumed that all other lines, except the target one, are present and functionally correct. This assumption does not hold for many use cases, such as when a user writes a function on the fly. Therefore, pass@k offers an optimistic assessment of completion capabilities, as the evaluation set contains one corrupted line per problem. This metric is more realistic for tasks with greater completion granularity or for code generation tasks.
+
+% TODO: in practical part: motivate why this metric is not used 
+
+\subsubsection*{Other Metrics}  % TODO: better name
+
+% TODO: BLEU
+% TODO: BLEU4
+% TODO: CodeBLEU
+% TODO: ChrF
+% TODO: ROUGE, ROUGE-N, ROUGE-L, ...
+% TODO: METEOR
+% TODO: BERTScore
+% TODO: Ruby
+% TODO: Jaccard Similarity
+
+
+
+\subsection{Evaluation Modes}
+
+\subsection{Benchmarks}
+
+% TODO: RepoBench
+% TODO: Long Code Completion: https://arxiv.org/abs/2306.14893
+% TODO: LCA
+% TODO: Codev-Bench
+% TODO: CrossCodeEval
+% TODO: CrossCodeLongEval
+% TODO: RepoEval
+% TODO: RepoMasterEval
+% TODO: EvoCodeBench
+% TODO: CoderEval
+% TODO: CodeXGLUE
+% TODO: BigCodeBench
+% TODO: R2C2-Bench
+% TODO: M2RC-EVAL

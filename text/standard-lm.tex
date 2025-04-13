@@ -1,10 +1,12 @@
-\section{Standard LM}
+\chapter{Standard LM}
+
+% TODO: insert the LM abbreviation somewhere before this chapter
 
 This section provides the necessary theoretical foundation to understand general language modeling, without specifically focusing on the code completion task. It begins with the formulation and presents a probabilistic perspective on the models employed to represent language. Subsequently, it explores the transformer architecture and the training of such models. The section concludes with a discussion on the inference and sampling processes of trained models.
 
 In this section, the term \textit{language} is used to refer only to some arbitrary natural language and not to a formal one.
 
-\subsection{Definition}
+\section{Definition}
 
 Consider a natural language denoted as \(\mathcal{L}\), which is a set of all possible sentences in this language. A sentence \(\bm{x}_{1:T}\) of length \(T\) is a sequence of words \((x_1, x_2, \ldots, x_T)\), where each word is an element of the vocabulary \(V\). Given that some sentences are more likely to occur than others, there exists a joint probability distribution \(P : \mathcal{L} \to [0, 1]\) over variable-length sequences from \(\mathcal{L}\). The model \(p_\theta\) with parameters \(\theta\) (also called weights) that represents this distribution is called a language model, and the task of creating such a model is referred to as language modeling.
 
@@ -16,11 +18,13 @@ The chain rule of probability can be applied to represent \(P\) as follows:
 \end{equation} 
 This indicates that language modeling is equivalent to estimating the probability of each word in the sentence given all the preceding words (i.e., the context), where the probability distribution over each word is a \(K\)-dimensional categorical distribution.
 
-\subsection{Text Representation}
+This indicates that language modeling is equivalent to estimating the probability of each word in the sentence given all the preceding words (i.e., the context), where the probability distribution over each word is a \(K\)-dimensional categorical distribution. This sequential prediction process, where each word depends only on the prior subsequence, is called autoregressive (AR) language modeling.
+
+\section{Text Representation}
 
 The proper representation of text is critical to effective language modeling design. Treating text as a sequence of words is natural and intuitive for humans, but not the best choice for machines.
 
-\subsubsection*{Tokens}\label{sec:tokens}
+\subsection{Tokens}\label{sec:tokens}
 
 The first reason why words may not be the optimal choice for representing discrete units of text is the out-of-vocabulary (OOV) problem, which refers to the presence of words (or tokens) that are absent from a language model's vocabulary. This challenge arises from the inherently dynamic nature of language, which lacks fixed boundaries. As language evolves, some words become obsolete while new ones emerge. Additionally, the text corpora used for training language models often contain typographical errors and other artifacts of human language.
 
@@ -32,7 +36,7 @@ Thus, there is a trade-off between the size of the vocabulary and the size of in
 
 The optimal balance between character-level and word-level representations is subword chunks, generally called tokens. They offer a greater prospect of granularity in text division, which allows addressing the aforementioned trade-off on a more fine-grained level.
 
-\subsubsection*{Byte Pair Encoding for Tokenization}
+\subsection{Byte Pair Encoding for Tokenization}
 
 The OOV problem persists at the token level. A variety of methods exist to address this issue, with one of the most popular being the byte pair encoding (BPE) algorithm. Originally proposed by \citet{gage1994} as a compression algorithm, it was later adapted by \citet{sennrich2016} for word segmentation with the aim of constructing a vocabulary.
 
@@ -40,7 +44,7 @@ The BPE process begins by initializing the vocabulary with individual characters
 
 This approach allows for a compact representation of text, reducing the sequence length while maintaining the ability to represent rare and unseen words. By balancing the trade-off between vocabulary size and sequence length, BPE enables language models to efficiently handle the dynamic nature of language, capturing both common and rare linguistic patterns.
 
-\subsubsection*{Embeddings}\label{sec:embeddings}
+\subsection{Embeddings}\label{sec:embeddings}
 
 \begin{sloppypar}
 After the text is tokenized, it is represented as a sequence of tokens \((x_1, x_2, \ldots, x_T)\), where \(x_i \in \{1, 2, \ldots, K\}\) is a corresponding integer identifier. A parameterized language model \(p_\theta\) should have the ability to process this sequence of integers. Since most effective models are based on neural networks (NNs), \(\theta\) is a set of matrices that define some non-linear transformation over the continuous vector space. Therefore, tokens need to be embedded into the input vector space \(\mathbb{R}^d\).
@@ -59,13 +63,13 @@ The trained embeddings capture the semantics of the tokens. This means that toke
 
 As the dot product suffers from the curse of dimensionality, the number of dimensions \(d'\) required to capture all semantic patterns is exponentially smaller than the vocabulary size \(K\). This is achieved by the fact that two dissimilar vectors do not necessarily have to be orthogonal, as their dot product is already near zero.
 
-\subsection{Transformer Models}
+\section{Transformer Models}
 
 The most widely used architecture for language modeling is the Transformer model proposed by \citet{vaswani2017}. It is based on the attention mechanism, with its roots introduced by \citet{bahdanau2014}. Since then, a vast number of various architectural modifications have appeared. However, the core idea remains the same.
 
 In the primary source paper, the authors proposed two parts of the architecture: the encoder and the decoder. Both of them, or their combination, are used depending on the specific task. In the case of language modeling (including code modeling), the decoder-only variant has gained widespread adoption. This part of the text describes only this type of Transformer.
 
-\subsubsection*{Overview of the Forward Pass}
+\subsection{Overview of the Forward Pass}
 
 Consider the sequence of context tokens \(\bm{x}_{1:t-1} = (x_1, x_2, \ldots, x_{t-1})\) from equation~\ref{eq:probability-chain-rule}. To model the probability \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) of the next token \(x_t\), the decoder-only Transformer first embeds the context tokens into vectors \((\mathbf{Ex}_1, \mathbf{Ex}_2, \ldots, \mathbf{Ex}_{t-1})\) and then passes them through the stack of decoder layers to obtain the contextually enriched embeddings \((\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_{t-1})\), which are called hidden states. It then takes the last hidden state and multiplies it by the weights matrix to get the logits \(\mathbf{z}_t = \mathbf{Wh}_{t-1}\). The \(\mathbf{W}\) is often called the language modeling head. The softmax function is then used to get the parameters of the categorical distribution over the vocabulary:
 \begin{equation}\label{eq:softmax}
@@ -77,7 +81,7 @@ The resulting vector of estimated probabilities \(\mathbf{p}_t\) can be used in 
 
 Before delving into the specifics of the decoder layer, two important points should be noted. First is that the initial token lacks context. Consequently, a special beginning of sequence (BOS) token is utilized to provide context and serve as an embedding for \(p_\theta(x_1)\). Second, for simplicity, the bias term is omitted in all the weight application formulas, as its inclusion is optional and contingent upon the engineer's design choices.
 
-\subsubsection*{Decoder Layer}
+\subsection{Decoder Layer}
 
 Let's denote the input embeddings as \((\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_{T})\), where \(\mathbf{x}_i \in \mathbb{R}^{d_{\mathrm{model}}}\) for each \(i \in \{1, 2, \ldots, T\}\), and let \(\mathbf{X} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) represent their concatenated form. The decoder layer then applies the following operations:
 \begin{align}
@@ -88,11 +92,11 @@ where \(\mathbf{X}^{(2)} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) is the o
 
 These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2019};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}.
 
-\subsubsection*{Normalization}
+\subsection{Normalization}
 
 The normalization layer stabilizes the training process by normalizing the input embeddings independently for each token. Various types of normalization layers exist. While the original architecture used layer normalization \parencite{ba2016}, root mean square layer normalization \parencite{zhang2019} has also been widely adopted.
 
-\subsubsection*{Attention}
+\subsection{Attention}
 
 Consider two additional architectural parameters \(d_k\) and \(d_v = d_{\mathrm{model}}\). The attention layer is described using three weight matrices: \(\mathbf{W}_Q, \mathbf{W}_K \in \mathbb{R}^{d_k \times d_{\mathrm{model}}}\) and \(\mathbf{W}_V \in \mathbb{R}^{d_v \times d_{\mathrm{model}}}\). The output of the layer is calculated as follows:
 \begin{equation}\label{eq:attention}
@@ -102,7 +106,7 @@ where \(\mathbf{V} = \mathbf{XW}_V^{\top}\) and \(\{\mathbf{Q}, \mathbf{K}\} = \
 
 Attention functions as a layer that enables tokens to communicate with each other. Each token performs a query \(\mathbf{q}_i\) to all preceding tokens and itself \(\mathbf{k}_{j \le i}\). The corresponding attention weight of the query-key match \(\mathbf{q}_{i}^\top\mathbf{k}_{j}\) is normalized by the softmax and used as a soft dictionary lookup to retrieve the partial component of the value vector \(\mathbf{v}_j\). The convex combination of all such value vectors \(\mathbf{v}_{j \le i}\) becomes the output of the attention layer.
 
-\subsubsection*{Multi-Head Attention}
+\subsection{Multi-Head Attention}
 
 Multi-head attention is a modification of the basic attention mechanism. Instead of applying the attention mechanism once, the embedding processing is divided into multiple heads that perform attention in parallel. Given the number of heads \(h\) and an additional output projection weight matrix \(\mathbf{W}_O \in \mathbb{R}^{hd_v \times d_{\mathrm{model}}}\), the output of the layer is calculated as:
 \begin{align}
@@ -113,19 +117,21 @@ where \(\mathbf{Q}_i, \mathbf{K}_i, \mathbf{V}_i\) are obtained by applying an i
 
 In this version of the attention, \(d_v\) is not necessarily equal to \(d_{\mathrm{model}}\).
 
-\subsubsection*{Multi-Layer Perceptron}
+\subsection{Multi-Layer Perceptron}
 
 A multi-layer perceptron (MLP) is a simple feed-forward neural network with two linear transformations and a non-linear activation function. It is applied to each token independently.
 
 Originally, the rectified linear unit (ReLU) was used as the activation function. However, other alternatives have empirically been shown to perform better. Two of these are the Gaussian error linear unit (GELU) and the sigmoid linear unit (SiLU) from \citet{hendrycks2023}. Another is the swish gated linear unit (SwiGLU) introduced in \citet{shazeer2020}.
 
-\subsubsection*{Dropout}
+\subsection{Dropout}
 
 Dropout is a widely adopted regularization technique that enhances the generalization of the model \parencite{srivastava2014}. During the training process, it randomly masks some of the activations of the preceding layer with a probability \(p_{\mathrm{dropout}}\) and scales the remaining activations by a factor of \(1 / p_{\mathrm{dropout}}\) to maintain the output statistics of the layer.
 
 This method is frequently applied in transformers across all layers, including the dropout of the attention scores calculated before the application of the softmax function.
 
 \subsection{Rotary Position Embedding}\label{sec:rotary-position-embedding}
+
+% TODO: fix - "warrants its own section"
 
 Rotary Position Embedding (RoPE) is a significant architectural enhancement that warrants its own section. It is a modification built upon the vanilla Transformer to incorporate the positional information of tokens and address issues present in the originally proposed analogous approach. RoPE was introduced by \citet{su2021} and quickly gained widespread adoption.
 
@@ -159,11 +165,11 @@ When multiplying query and key matrices in equation~\ref{eq:attention}, the two 
 \end{equation}
 which allows the model to capture the positional information of the tokens.
 
-\subsection{Training}
+\section{Training}
 
 % TODO: add some text so it's not so empty
 
-\subsubsection*{Maximum Likelihood Estimation}
+\subsection{Maximum Likelihood Estimation}
 
 Training the language model \(p_\theta\) involves aligning the distribution it represents with the true data distribution. However, the later is unknown, and only a finite set \(\mathcal{D} = \{\bm{x}^{(1)}, \bm{x}^{(2)}, \ldots, \bm{x}^{(n)}\}\) of instances sampled from it is available. The training objective \(\mathcal{L}_{\mathcal{D}}\), known as the likelihood function, is expressed as the probability of these samples being generated by the model. Assuming that samples are independent and identically distributed, \(\mathcal{L}_{\mathcal{D}}\) can be decomposed into the product of individual probabilities:
 \begin{equation}
@@ -181,15 +187,23 @@ To take one step further, a minus sign can be added to focus on minimization ins
 \begin{equation}
 	L(\theta) = -\ell_{\mathcal{D}}(\theta) = -\sum_{i=1}^{n} \sum_{t=1}^{T_i} \log p_{\theta}(x^{(i)}_t \mid \bm{x}^{(i)}_{1:t-1}) \rightarrow \min.
 \end{equation}
-This objective corresponds to the cross-entropy loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from equation~\ref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
+This objective corresponds to the cross-entropy (CE) loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from equation~\ref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
 
-\subsubsection*{Gradient-Based Optimization}
+\subsection{Gradient-Based Optimization}
 
 Various optimization algorithms have been developed to train neural networks. The most effective ones are based on first-order methods, which iteratively adjust the parameters by subtracting the stochastic gradient of the loss function with respect to the parameters. The degree of this adjustment is controlled by multiplicative factor of the gradients called learning rate. Gradients are calculated using a subsample of the training set, known as a mini-batch (or simply batch), with the application of automatic differentiation.
 
 In the field of language modeling, the adaptive moment estimation (Adam) \parencite{kingma2014}, a modification of stochastic gradient descent (SGD), and its version supporting weight decay \parencite{loshchilov2017} are the most popular algorithms. Adam maintains two moving average statistics, called the first and second moments, for each parameter, which correct the application of the gradient and accelerate convergence.
 
-\subsubsection*{Learning Rate Scheduling}
+\subsection{Batch-Related Terminology}
+
+Due to the operational nature of graphics processing units (GPUs), multiple sequences must be organized to have the same length to be processed in parallel. This is achieved by either padding shorter sequences with special tokens or truncating longer ones. The model's scope of visibility is termed the context window, and its size is referred to as the context length.
+
+In some cases, sequences are randomly shuffled, concatenated, and split to form batches without the need for padding or truncation. This technique is known as batch packing.
+
+When hardware constraints limit batch size, gradient accumulation is utilized. Instead of using the entire batch for a single optimization step, it is divided into micro-batches, which are processed sequentially. The parameters are updated only after all the micro-batches have been processed.
+
+\subsection{Learning Rate Scheduling}
 
 Due to the design of Adam, a few iterations at the beginning of training are required to gather sufficient gradient statistics for better moment estimation. This requirement becomes even more critical in the context of the instability associated with Transformers. During this initial phase, using the full learning rate is inadvisable, as it may lead to unstable updates. To mitigate this issue while utilizing all available data, a warm-up period is introduced in the training process. Throughout this period, the learning rate is gradually increased, often linearly, from zero to the desired value over a predefined number of iterations.
 
@@ -197,21 +211,21 @@ After training with high learning rates, the model benefits from smaller paramet
 
 To summarize, the learning rate, rather than being a constant hyperparameter, has evolved into a function of the iteration index, thereby opening a new dimension for controlling the training process.
 
-\subsection{Inference}
+\section{Inference}
 
 % TODO: add some text so it's not so empty
 
-\subsubsection*{Sampling}\label{sec:sampling}
+\subsection{Sampling}\label{sec:sampling}
 
 As previously mentioned, a language model represents a probability distribution over the vocabulary given the preceding context. The iterative process of sampling from this distribution and incorporating these new tokens into the model's context is referred to as generation.
 
-Tokens are selected based on their associated probabilities \(\mathbf{p}_t\) from the softmax output, as described in equation~\ref{eq:softmax}. The temperature parameter modulates the sharpness of this distribution. There are two extreme cases: First, as \(\tau \to +\infty\), the distribution becomes uniform, with all tokens having an equal probability of being selected. Second, as \(\tau \to 0^+\), the selection becomes deterministic, choosing the most probable token. This is known as greedy decoding and corresponds to the greedy search algorithm in a graph of all possible sequences, where the language model functions as a heuristic.
+Tokens are selected based on their associated probabilities \(\mathbf{p}_t\) from the softmax output, as described in equation~\ref{eq:softmax}. The temperature parameter modulates the sharpness of this distribution. There are two limiting cases: First, as \(\tau \to +\infty\), the distribution becomes uniform, with all tokens having an equal probability of being selected. Second, as \(\tau \to 0^+\), the selection becomes deterministic, choosing the most probable token. This is known as greedy decoding and corresponds to the greedy search algorithm in a graph of all possible sequences, where the language model functions as a heuristic.
 
 To further enhance the quality of the generated text, the top-\(k\) sampling strategy is often employed. It restricts the vocabulary to the top-\(k\) most probable tokens, which helps prevent the model from outputting irrelevant tokens.
 
 A similar concept is applied in the nucleus sampling strategy, also known as top-\(p\) sampling \parencite{holtzman2019}. It restricts the vocabulary to the smallest set of tokens whose cumulative probability exceeds a threshold parameter \(p\).
 
-\subsubsection*{Stopping Criteria}
+\subsection{Stopping Criteria}
 
 There are several methods to terminate the generation process.
 
@@ -219,3 +233,4 @@ Firstly, the model can signal the completion of the output sequence by generatin
 
 Secondly, algorithmic stopping criteria can be employed. For example, the generation process can be halted when a maximum length threshold is exceeded. Another pertinent example, particularly in the context of code completion, is to cease generation when the model outputs a token containing a newline character.
 
+% TODO: beam search?
