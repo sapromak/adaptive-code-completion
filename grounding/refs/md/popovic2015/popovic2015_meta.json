@@ -1,0 +1,443 @@
+{
+  "table_of_contents": [
+    {
+      "title": "CHRF: character n-gram F-score for automatic MT evaluation",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          107.5302734375,
+          70.7418212890625
+        ],
+        [
+          490.65234375,
+          70.7418212890625
+        ],
+        [
+          490.65234375,
+          85.3885498046875
+        ],
+        [
+          107.5302734375,
+          85.3885498046875
+        ]
+      ]
+    },
+    {
+      "title": "Abstract",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          158.021484375,
+          206.39215087890625
+        ],
+        [
+          204.29296875,
+          206.39215087890625
+        ],
+        [
+          204.29296875,
+          218.34735107421875
+        ],
+        [
+          158.021484375,
+          218.34735107421875
+        ]
+      ]
+    },
+    {
+      "title": "1 Introduction",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          71.7353515625,
+          487.69122314453125
+        ],
+        [
+          155.984375,
+          487.69122314453125
+        ],
+        [
+          155.984375,
+          499.9375
+        ],
+        [
+          71.7353515625,
+          499.9375
+        ]
+      ]
+    },
+    {
+      "title": "2 CHRF score",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          307.2770690917969,
+          453.4794921875
+        ],
+        [
+          387.05078125,
+          453.4794921875
+        ],
+        [
+          387.05078125,
+          465.67950439453125
+        ],
+        [
+          307.2770690917969,
+          465.67950439453125
+        ]
+      ]
+    },
+    {
+      "title": "3 Experiments on WMT12, WMT13 and\nWMT14 test data",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          71.4443359375,
+          63.8797607421875
+        ],
+        [
+          283.8857421875,
+          63.8797607421875
+        ],
+        [
+          283.8857421875,
+          90.5623779296875
+        ],
+        [
+          71.4443359375,
+          90.5623779296875
+        ]
+      ]
+    },
+    {
+      "title": "3.1 Experiments",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          71.262451171875,
+          98.6204833984375
+        ],
+        [
+          157.73046875,
+          98.6204833984375
+        ],
+        [
+          157.73046875,
+          111.52972412109375
+        ],
+        [
+          71.262451171875,
+          111.52972412109375
+        ]
+      ]
+    },
+    {
+      "title": "3.2 Correlations with human rankings",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          71.4443359375,
+          583.3974609375
+        ],
+        [
+          259.4404296875,
+          583.3974609375
+        ],
+        [
+          259.4404296875,
+          596.0108489990234
+        ],
+        [
+          71.4443359375,
+          596.0108489990234
+        ]
+      ]
+    },
+    {
+      "title": "System-level correlations",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          71.626220703125,
+          601.076171875
+        ],
+        [
+          188.869140625,
+          601.076171875
+        ],
+        [
+          188.869140625,
+          613.7228546142578
+        ],
+        [
+          71.626220703125,
+          613.7228546142578
+        ]
+      ]
+    },
+    {
+      "title": "Segment-level correlations",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          306.439453125,
+          328.083984375
+        ],
+        [
+          432.740234375,
+          328.083984375
+        ],
+        [
+          432.740234375,
+          340.8291015625
+        ],
+        [
+          306.439453125,
+          340.8291015625
+        ]
+      ]
+    },
+    {
+      "title": "4 Conclusions",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          306.439453125,
+          650.0009765625
+        ],
+        [
+          390.251953125,
+          650.0009765625
+        ],
+        [
+          390.251953125,
+          664.3087005615234
+        ],
+        [
+          306.439453125,
+          664.3087005615234
+        ]
+      ]
+    },
+    {
+      "title": "Acknowledgments",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          71.58984375,
+          209.677734375
+        ],
+        [
+          167.4794921875,
+          209.677734375
+        ],
+        [
+          167.4794921875,
+          222.6734619140625
+        ],
+        [
+          71.58984375,
+          222.6734619140625
+        ]
+      ]
+    },
+    {
+      "title": "References",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          71.4443359375,
+          443.6123046875
+        ],
+        [
+          128.1923828125,
+          443.6123046875
+        ],
+        [
+          128.1923828125,
+          456.7675476074219
+        ],
+        [
+          71.4443359375,
+          456.7675476074219
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          303
+        ],
+        [
+          "Line",
+          85
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "ListItem",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          403
+        ],
+        [
+          "Line",
+          98
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "SectionHeader",
+          6
+        ],
+        [
+          "TableCell",
+          6
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          384
+        ],
+        [
+          "TableCell",
+          142
+        ],
+        [
+          "Line",
+          30
+        ],
+        [
+          "Table",
+          3
+        ],
+        [
+          "Caption",
+          3
+        ],
+        [
+          "TableGroup",
+          3
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          225
+        ],
+        [
+          "Line",
+          92
+        ],
+        [
+          "ListItem",
+          10
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/popovic2015"
+}

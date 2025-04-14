@@ -85,19 +85,21 @@ To apply this metric to single-line code completion, it is assumed that all othe
 
 % TODO: in practical part: motivate why this metric is not used 
 
-\subsubsection*{Other Metrics}  % TODO: better name
+\subsubsection*{Further Metrics}
 
-% TODO: BLEU
-% TODO: BLEU4
-% TODO: CodeBLEU
-% TODO: ChrF
-% TODO: ROUGE, ROUGE-N, ROUGE-L, ...
-% TODO: METEOR
-% TODO: BERTScore
-% TODO: Ruby
-% TODO: Jaccard Similarity
+Several metrics for evaluating generated code have been migrated from machine translation and summarization fields, yet they often face limitations due to their unnatural application to code \parencite{evtikhiev2022}. This has prompted the research community to develop code-specific adaptations. However, identifying an optimal metric for code-oriented tasks remains an open challenge.
 
+\begin{sloppypar}
+\paragraph{\(N\)-gram Based Metrics:} The bilingual evaluation understudy (BLEU) \parencite{papineni2002} is a precision-oriented metric that measures the proportion of \(n\)-grams in the candidate text that also appear in the reference snippet. BLEU4 is a specific instance of BLEU that considers \(n\)-grams up to a length of 4. This configuration is widely adopted because it balances the evaluation of both individual words and longer phrases. The recall-oriented understudy for gisting evaluation (ROUGE) \parencite{lin2004} is a family of recall-based metrics originally developed for evaluating automatic summarization. ROUGE-N calculates \(n\)-gram recall between a candidate and a reference, while ROUGE-L uses the longest common subsequence to capture word order without requiring consecutive matches.
+\end{sloppypar}
 
+\begin{sloppypar}
+\paragraph{Character-Level Metric:} The ChrF metric \parencite{popovic2015} is an \(F\)-measure that evaluates character \(n\)-grams instead of word ones. It incorporates a \(\beta\) parameter to adjust the emphasis between precision and recall. ChrF represents an advancement over previously mentioned metrics by balancing precision and recall in a single measure. The character-level approach offers several advantages: it eliminates tokenization dependencies, implicitly captures morpho-syntactic information, and requires no additional linguistic tools.
+\end{sloppypar}
+
+\paragraph{Semantic-Enhanced Metrics:} Metric for evaluation of translation with explicit ordering (METEOR) \parencite{banarjee2005} improves upon simple \(n\)-gram matching by adding support for stemming, synonymy, and paraphrasing, along with a penalty for disordered \(n\)-grams. BERTScore \parencite{zhang2019} leverages contextual embeddings from BERT (Bidirectional Encoder Representations from Transformers) to compute similarity between tokens in candidate and reference texts, enabling robust matching of paraphrases and semantic equivalents.
+
+\paragraph{Code-Specific Metrics:} RUBY \parencite{tran2019} was specifically designed for code evaluation, integrating lexical, syntactic, and semantic representations of source code to better capture functional equivalence. It uses an ensemble approach that leverages the most reliable available representation: program dependence graphs, abstract syntax trees, and surface text. CodeBLEU \parencite{ren2020} extends BLEU by adding weighted \(n\)-gram matching for programming language keywords, an abstract syntax tree match component to capture structural information, and a data-flow match to evaluate semantic correctness.
 
 \subsection{Evaluation Modes}
 

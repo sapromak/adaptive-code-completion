@@ -1,0 +1,1116 @@
+{
+  "table_of_contents": [
+    {
+      "title": "arXiv:1906.04903v1 [cs.SE] 12 Jun 2019",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          18.34000015258789,
+          214.2421875
+        ],
+        [
+          36.3076171875,
+          214.2421875
+        ],
+        [
+          36.3076171875,
+          560.35546875
+        ],
+        [
+          18.34000015258789,
+          560.35546875
+        ]
+      ]
+    },
+    {
+      "title": "Does BLEU Score Work for Code Migration?",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          74.2587890625,
+          60.0477294921875
+        ],
+        [
+          534.90234375,
+          60.0477294921875
+        ],
+        [
+          534.90234375,
+          84.25634765625
+        ],
+        [
+          74.2587890625,
+          84.25634765625
+        ]
+      ]
+    },
+    {
+      "title": "I. INTRODUCTION",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          134.84619140625,
+          480.6766357421875
+        ],
+        [
+          213.36688232421875,
+          480.6766357421875
+        ],
+        [
+          213.36688232421875,
+          490.6392517089844
+        ],
+        [
+          134.84619140625,
+          490.6392517089844
+        ]
+      ]
+    },
+    {
+      "title": "II. BACKGROUND",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          397.142578125,
+          270.31640625
+        ],
+        [
+          475.8296203613281,
+          270.31640625
+        ],
+        [
+          475.8296203613281,
+          280.7881164550781
+        ],
+        [
+          397.142578125,
+          280.7881164550781
+        ]
+      ]
+    },
+    {
+      "title": "A. Statistical Machine Translation",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          309.5859375,
+          286.1025695800781
+        ],
+        [
+          454.21875,
+          286.1025695800781
+        ],
+        [
+          454.21875,
+          296.065185546875
+        ],
+        [
+          309.5859375,
+          296.065185546875
+        ]
+      ]
+    },
+    {
+      "title": "B. SMT-based Code Migration",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          310.78125,
+          545.2225799560547
+        ],
+        [
+          438.6796875,
+          545.2225799560547
+        ],
+        [
+          438.6796875,
+          555.1851806640625
+        ],
+        [
+          310.78125,
+          555.1851806640625
+        ]
+      ]
+    },
+    {
+      "title": "C. BLEU Metric",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          48.596923828125,
+          256.0655517578125
+        ],
+        [
+          118.02970123291016,
+          256.0655517578125
+        ],
+        [
+          118.02970123291016,
+          266.02813720703125
+        ],
+        [
+          48.596923828125,
+          266.02813720703125
+        ]
+      ]
+    },
+    {
+      "title": "BLEU = BP.e\n1\nn\n(logP1+...+logPn)",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          111.68701171875,
+          382.5838623046875
+        ],
+        [
+          237.26953125,
+          382.5838623046875
+        ],
+        [
+          237.26953125,
+          403.6845703125
+        ],
+        [
+          111.68701171875,
+          403.6845703125
+        ]
+      ]
+    },
+    {
+      "title": "III. HYPOTHESIS AND METHODOLOGY",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          87.18310546875,
+          688.9324645996094
+        ],
+        [
+          258.0164794921875,
+          688.9324645996094
+        ],
+        [
+          258.0164794921875,
+          698.8950653076172
+        ],
+        [
+          87.18310546875,
+          698.8950653076172
+        ]
+      ]
+    },
+    {
+      "title": "A. Counter-Examples and Model Selections",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          310.78125,
+          365.1785583496094
+        ],
+        [
+          491.87109375,
+          365.1785583496094
+        ],
+        [
+          491.87109375,
+          375.14117431640625
+        ],
+        [
+          310.78125,
+          375.14117431640625
+        ]
+      ]
+    },
+    {
+      "title": "B. Data Collection",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          310.78125,
+          460.9415283203125
+        ],
+        [
+          390.4583435058594,
+          460.9415283203125
+        ],
+        [
+          390.4583435058594,
+          470.9041442871094
+        ],
+        [
+          310.78125,
+          470.9041442871094
+        ]
+      ]
+    },
+    {
+      "title": "C. Semantic Accuracy",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          48.33544921875,
+          58.340576171875
+        ],
+        [
+          140.55514526367188,
+          58.340576171875
+        ],
+        [
+          140.55514526367188,
+          68.40087890625
+        ],
+        [
+          48.33544921875,
+          68.40087890625
+        ]
+      ]
+    },
+    {
+      "title": "IV. EMPIRICAL RESULTS ON BLEU SCORES",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          338.572265625,
+          542.5094757080078
+        ],
+        [
+          532.2762451171875,
+          542.5094757080078
+        ],
+        [
+          532.2762451171875,
+          552.4720764160156
+        ],
+        [
+          338.572265625,
+          552.4720764160156
+        ]
+      ]
+    },
+    {
+      "title": "A. Correlation between BLEU Scores and Semantic Scores",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          311.9730224609375,
+          557.4685668945312
+        ],
+        [
+          554.5423583984375,
+          557.4685668945312
+        ],
+        [
+          554.5423583984375,
+          567.4311676025391
+        ],
+        [
+          311.9730224609375,
+          567.4311676025391
+        ]
+      ]
+    },
+    {
+      "title": "B. The Use of BLEU in Comparing SMT Migration Models",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          311.37890625,
+          665.0425643920898
+        ],
+        [
+          558.2109375,
+          665.0425643920898
+        ],
+        [
+          558.2109375,
+          675.2109375
+        ],
+        [
+          311.37890625,
+          675.2109375
+        ]
+      ]
+    },
+    {
+      "title": "V. ALTERNATIVE METRICS",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          116.27299499511719,
+          508.80645751953125
+        ],
+        [
+          232.7087860107422,
+          508.80645751953125
+        ],
+        [
+          232.7087860107422,
+          518.7690734863281
+        ],
+        [
+          116.27299499511719,
+          518.7690734863281
+        ]
+      ]
+    },
+    {
+      "title": "A. Code Similarity Metrics",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          310.78125,
+          196.392578125
+        ],
+        [
+          423.275146484375,
+          196.392578125
+        ],
+        [
+          423.275146484375,
+          206.35516357421875
+        ],
+        [
+          310.78125,
+          206.35516357421875
+        ]
+      ]
+    },
+    {
+      "title": "B. Experimental Results on Alternative Metrics",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          47.8125,
+          134.78753662109375
+        ],
+        [
+          243.59835815429688,
+          134.78753662109375
+        ],
+        [
+          243.59835815429688,
+          144.7501220703125
+        ],
+        [
+          47.8125,
+          144.7501220703125
+        ]
+      ]
+    },
+    {
+      "title": "VI. RUBY-AN EFFECTIVE METRIC FOR CODE MIGRATION",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          48.48486328125,
+          469.2444763183594
+        ],
+        [
+          298.1402893066406,
+          469.2444763183594
+        ],
+        [
+          298.1402893066406,
+          479.53125
+        ],
+        [
+          48.48486328125,
+          479.53125
+        ]
+      ]
+    },
+    {
+      "title": "A. Design",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          48.18603515625,
+          485.0275573730469
+        ],
+        [
+          92.0390625,
+          485.0275573730469
+        ],
+        [
+          92.0390625,
+          495.38671875
+        ],
+        [
+          48.18603515625,
+          495.38671875
+        ]
+      ]
+    },
+    {
+      "title": "B. Empirical Results for RUBY",
+      "heading_level": null,
+      "page_id": 7,
+      "polygon": [
+        [
+          311.37890625,
+          282.7275695800781
+        ],
+        [
+          445.5009765625,
+          282.7275695800781
+        ],
+        [
+          445.5009765625,
+          292.74908447265625
+        ],
+        [
+          311.37890625,
+          292.74908447265625
+        ]
+      ]
+    },
+    {
+      "title": "C. Further Study",
+      "heading_level": null,
+      "page_id": 8,
+      "polygon": [
+        [
+          47.88720703125,
+          483.6175537109375
+        ],
+        [
+          119.6934585571289,
+          483.6175537109375
+        ],
+        [
+          119.6934585571289,
+          493.5801696777344
+        ],
+        [
+          47.88720703125,
+          493.5801696777344
+        ]
+      ]
+    },
+    {
+      "title": "D. Threats to Validity",
+      "heading_level": null,
+      "page_id": 8,
+      "polygon": [
+        [
+          310.78125,
+          628.6195678710938
+        ],
+        [
+          402.22265625,
+          628.6195678710938
+        ],
+        [
+          402.22265625,
+          638.5821685791016
+        ],
+        [
+          310.78125,
+          638.5821685791016
+        ]
+      ]
+    },
+    {
+      "title": "VII. RELATED WORK",
+      "heading_level": null,
+      "page_id": 9,
+      "polygon": [
+        [
+          125.6572265625,
+          425.2474670410156
+        ],
+        [
+          221.439208984375,
+          425.2474670410156
+        ],
+        [
+          221.439208984375,
+          435.2100830078125
+        ],
+        [
+          125.6572265625,
+          435.2100830078125
+        ]
+      ]
+    },
+    {
+      "title": "VIII. CONCLUSION",
+      "heading_level": null,
+      "page_id": 9,
+      "polygon": [
+        [
+          395.3909912109375,
+          423.7794494628906
+        ],
+        [
+          480.515625,
+          423.7794494628906
+        ],
+        [
+          480.515625,
+          433.7420654296875
+        ],
+        [
+          395.3909912109375,
+          433.7420654296875
+        ]
+      ]
+    },
+    {
+      "title": "ACKNOWLEDGMENT",
+      "heading_level": null,
+      "page_id": 9,
+      "polygon": [
+        [
+          393.85546875,
+          672.7454605102539
+        ],
+        [
+          481.11328125,
+          672.7454605102539
+        ],
+        [
+          481.11328125,
+          682.7080612182617
+        ],
+        [
+          393.85546875,
+          682.7080612182617
+        ]
+      ]
+    },
+    {
+      "title": "REFERENCES",
+      "heading_level": null,
+      "page_id": 10,
+      "polygon": [
+        [
+          146.2763671875,
+          58.39947509765625
+        ],
+        [
+          203.0537109375,
+          58.39947509765625
+        ],
+        [
+          203.0537109375,
+          68.362060546875
+        ],
+        [
+          146.2763671875,
+          68.362060546875
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          260
+        ],
+        [
+          "Line",
+          104
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "SectionHeader",
+          3
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          385
+        ],
+        [
+          "Line",
+          110
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "ListItem",
+          3
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          456
+        ],
+        [
+          "Line",
+          122
+        ],
+        [
+          "Text",
+          13
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "TextInlineMath",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          452
+        ],
+        [
+          "Line",
+          111
+        ],
+        [
+          "TableCell",
+          88
+        ],
+        [
+          "Text",
+          6
+        ],
+        [
+          "Reference",
+          2
+        ],
+        [
+          "Figure",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          296
+        ],
+        [
+          "Line",
+          110
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "ListItem",
+          5
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "ListGroup",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          323
+        ],
+        [
+          "Line",
+          91
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "Figure",
+          3
+        ],
+        [
+          "Caption",
+          3
+        ],
+        [
+          "FigureGroup",
+          3
+        ],
+        [
+          "Reference",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          578
+        ],
+        [
+          "Line",
+          111
+        ],
+        [
+          "Text",
+          13
+        ],
+        [
+          "Equation",
+          3
+        ],
+        [
+          "TextInlineMath",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          394
+        ],
+        [
+          "Line",
+          111
+        ],
+        [
+          "TableCell",
+          16
+        ],
+        [
+          "Text",
+          12
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "Reference",
+          2
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "Equation",
+          1
+        ],
+        [
+          "TableGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 8,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          420
+        ],
+        [
+          "Line",
+          107
+        ],
+        [
+          "TableCell",
+          24
+        ],
+        [
+          "Text",
+          11
+        ],
+        [
+          "Caption",
+          2
+        ],
+        [
+          "Table",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "Reference",
+          2
+        ],
+        [
+          "TableGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 9,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          452
+        ],
+        [
+          "Line",
+          117
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Code",
+          1
+        ],
+        [
+          "Caption",
+          1
+        ],
+        [
+          "Reference",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 10,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          503
+        ],
+        [
+          "Line",
+          147
+        ],
+        [
+          "ListItem",
+          50
+        ],
+        [
+          "Reference",
+          49
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 11,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          73
+        ],
+        [
+          "Line",
+          23
+        ],
+        [
+          "ListItem",
+          6
+        ],
+        [
+          "Reference",
+          6
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "Text",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/tran2019"
+}
