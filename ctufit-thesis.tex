@@ -73,6 +73,7 @@
 \usepackage{csquotes}
 \usepackage{bm}
 \usepackage{commath}
+\usepackage{fontspec}
 
 % Add this to define \citet command using biblatex functionality with clickable author names
 \DeclareCiteCommand{\citet}
@@ -116,6 +117,10 @@
     {\bibhyperref{\printdate}}
     {\multicitedelim}
     {}
+
+\newfontface\lserif{Liberation Serif}
+
+\newcommand{\Csh}{C{\lserif\#}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 % DEMO CONTENTS SETTINGS END
