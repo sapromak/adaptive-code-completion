@@ -38,7 +38,7 @@ The optimal balance between character-level and word-level representations is su
 
 \subsection{Byte Pair Encoding for Tokenization}
 
-The OOV problem persists at the token level. A variety of methods exist to address this issue, with one of the most popular being the byte pair encoding (BPE) algorithm. Originally proposed by \citet{gage1994} as a compression algorithm, it was later adapted by \citet{sennrich2016} for word segmentation with the aim of constructing a vocabulary.
+The OOV problem persists at the token level. A variety of methods exist to address this issue, with one of the most popular being the byte pair encoding (BPE) algorithm. Originally proposed by \citet{gage1994} as a compression algorithm, it was later adapted by \citet{sennrich2015} for word segmentation with the aim of constructing a vocabulary.
 
 The BPE process begins by initializing the vocabulary with individual characters and a special end-of-word symbol. Words are initially represented as sequences of these characters. Given some corpus of text, the algorithm iteratively identifies the most frequent pair of adjacent symbols and merges them into a new symbol. This process continues until a predefined number of merge operations is reached, resulting in a vocabulary composed of both characters and frequently occurring subword units. After the vocabulary is constructed, the same algorithm can be applied to tokenize the text.
 
@@ -90,7 +90,7 @@ Let's denote the input embeddings as \((\mathbf{x}_1, \mathbf{x}_2, \ldots, \mat
 \end{align}
 where \(\mathbf{X}^{(2)} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) is the output of the layer, and \(\mathrm{Norm}\), \(\mathrm{MultiHead}\), \(\mathrm{MLP}\) are sub-layers discussed below.
 
-These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2019};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}.
+These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2018};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}.
 
 \subsection{Normalization}
 
@@ -121,7 +121,7 @@ In this version of the attention, \(d_v\) is not necessarily equal to \(d_{\math
 
 A multi-layer perceptron (MLP) is a simple feed-forward neural network with two linear transformations and a non-linear activation function. It is applied to each token independently.
 
-Originally, the rectified linear unit (ReLU) was used as the activation function. However, other alternatives have empirically been shown to perform better. Two of these are the Gaussian error linear unit (GELU) and the sigmoid linear unit (SiLU) from \citet{hendrycks2023}. Another is the swish gated linear unit (SwiGLU) introduced in \citet{shazeer2020}.
+Originally, the rectified linear unit (ReLU) was used as the activation function. However, other alternatives have empirically been shown to perform better. Two of these are the Gaussian error linear unit (GELU) and the sigmoid linear unit (SiLU) from \citet{hendrycks2016}. Another is the swish gated linear unit (SwiGLU) introduced in \citet{shazeer2020}.
 
 \subsection{Dropout}
 
