@@ -28,7 +28,7 @@ In summary, code completion stands as a foundational and multifaceted tool withi
 % Relevant papers: mandelin2005, hill2004, han2009, hindle2012, raychev2014, asaduzzaman2014, proksch2015, nguyen2015, bielik2016, ginzberg2017, karampatsis2019, liu2020, alon2019, svyatkovskiy2020, kim2021
 
 \begin{sloppypar}
-Approaches to code completion have evolved considerably over the past few decades, progressing from simple deterministic methods to sophisticated learning-based systems. This section highlights key developments in the history of code completion. The Related Work section of the~\cite{ciniselli2021} was mainly used to compile this valuable information.
+Approaches to code completion have evolved considerably over the past few decades, progressing from simple deterministic methods to sophisticated learning-based systems. This section highlights key developments in the history of code completion. The Related Work section of the~\citet{ciniselli2021} was mainly used to compile this valuable information.
 \end{sloppypar}
 
 In the early years, code completion methods primarily relied on rule-based approaches and static type information. These systems typically presented the user with a list of type-compatible methods or variables, often sorted alphabetically~\parencite{mandelin2005}. While straightforward to implement, these methods lacked contextual awareness and often produced lengthy suggestion lists that were cumbersome to navigate.
@@ -37,13 +37,13 @@ A significant advancement came with clone-based completion methods, where code f
 
 The next major evolution occurred when researchers began applying statistical methods to code completion. \citet{han2009} introduced a novel approach that expanded abbreviated inputs into complete code tokens using Hidden Markov Models trained on example code. This represented an early step toward probabilistic code completion. \citet{hindle2012} demonstrated that software exhibits natural patterns that can be captured by statistical language models, laying the groundwork for treating code completion as a language modeling problem.
 
-\begin{sloppypar}
 Building on this foundation, more sophisticated probabilistic models were developed. \citet{raychev2014} applied statistical language models specifically for code completion tasks, while \citet{bielik2016} introduced probabilistic higher order grammar (PHOG), which parameterized grammar production rules on a context obtained from executing functions learned from data. Bayesian networks were also explored by \citet{proksch2015}, who used additional context information beyond just the static type to generate completion suggestions.
-\end{sloppypar}
 
 Context-sensitivity became increasingly important as code completion systems matured. \citet{asaduzzaman2014} developed CSCC, which leveraged previous code examples to recommend method calls by considering the surrounding code context. This approach demonstrated how incorporating more contextual information affects the relevance of completion suggestions.
 
+\begin{sloppypar}
 The rise of deep learning brought another paradigm shift to code completion. Recurrent neural networks (RNNs), particularly long short-term memory (LSTM) networks, were applied to model the sequential nature of code. \citet{ginzberg2017} explored both standard LSTMs and attention-augmented networks for token-level code completion, establishing new capabilities in code prediction tasks.
+\end{sloppypar}
 
 Recent years have witnessed the adoption of even more powerful neural architectures. \citet{karampatsis2019} tackled the out-of-vocabulary problem in code completion using subword units with neural language models. \citet{liu2020} leveraged multi-task learning and pre-trained language models for code completion, while also incorporating type information to assist in identifier prediction.
 
