@@ -1,6 +1,6 @@
-\chapter{Completion-Centric LM}
+\chapter{Completion-Centric LM}\label{chap:completion-centric-lm}
 
-% TODO: description
+\todo{Description of the chapter.}
 
 \section{Training Stages}
 
@@ -59,7 +59,7 @@ where \(\mathrm{lev}(\bm{x}, \bm{y})\) represents the Levenshtein distance betwe
 
 This metric is crucial for evaluating code completion scenarios, as it provides a measure of the effort developers must exert to correct errors in the generated code. Moreover, it has been shown that edit similarity moderately correlates with the generation of functionally correct code \parencite{dibia2022}.
 
-\subsubsection*{Cross-Entropy \& Perplexity}
+\subsubsection*{Cross-Entropy and Perplexity}
 
 As mentioned earlier, cross-entropy is employed as a loss function in the training process of language models. More specifically, it represents the average log-likelihood of the individual ground truth tokens. It can also be interpreted as the average number of nats required to encode the model's predictions per token compared to the true distribution.
 

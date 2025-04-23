@@ -74,6 +74,8 @@
 \usepackage{commath}
 \usepackage{fontspec}
 \usepackage{etoolbox}
+\usepackage{soul}
+\usepackage{nameref}
 
 \ExecuteBibliographyOptions{maxcitenames=1,mincitenames=1}
 
@@ -127,6 +129,7 @@
 \newfontface\lserif{Liberation Serif}
 
 \newcommand{\Csh}{C{\lserif\#}}
+\newcommand{\todo}[1]{\hl{\textbf{TODO: ``#1''}}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 % DEMO CONTENTS SETTINGS END
@@ -175,6 +178,8 @@
 \thectufitlistingscommand
 \endgroup
 
+\todo{Supporting visualizations will be added after the main text is complete.}
+
 % TODO: fill in the abbreviations (here is an irrelevant example)
 \chapter{\thectufitabbreviationlabel}
 
@@ -191,15 +196,16 @@ Will & Be Done at the Very End\\
 
 \include{text/objectives}
 \include{text/introduction}
-\part{Conceptual Framework}  % other options are Theoretical Background, Theoretical Part, Foundational Concepts
+\part{Conceptual Framework}\label{part:conceptual-framework}  % other options are Theoretical Background, Theoretical Part, Foundational Concepts
 \include{text/code-completion}
 \include{text/standard-lm}
 \include{text/completion-centric-lm}
 \include{text/in-context-learning}
 \include{text/long-context}
-\part{Applied Research}  % other options are Experimental Analysis, Research Part, Experimental Validation
+\part{Applied Research}\label{part:applied-research}  % other options are Experimental Analysis, Research Part, Experimental Validation
 \include{text/technical-foundation}
 \include{text/research-investigation}
+\include{text/conclusion}
 
 \appendix\appendixinit
 
