@@ -1,6 +1,0 @@
-\section{Masked Loss and Full Loss Results}
-\label{appendix:masked-vs-full}
-
-Some context composers create out-of-distribution sequences (\eg Declarations \texttt{.py}). We avoid distribution shift by masking the loss, \ie use only gradients from completion file tokens for training. In case of any composer that includes unprocessed code files in the context, we lose tokens for training. However, the results for each composer in Table \ref{tab:masked-vs-full-loss} are comparable for masked loss and full loss pretraining, with the only exception being the Duplication composer.
-
-\input{Repo-level Completion/figures/masked_vs_full_losses}

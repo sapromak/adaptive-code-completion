@@ -188,6 +188,7 @@ To take one step further, a minus sign can be added to focus on minimization ins
 This objective corresponds to the cross-entropy (CE) loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from equation~\ref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
 
 \subsection{Gradient-Based Optimization}
+% TODO: add gradient scaling and clipping somewhere
 
 Various optimization algorithms have been developed to train neural networks. The most effective ones are based on first-order methods, which iteratively adjust the parameters by subtracting the stochastic gradient of the loss function with respect to the parameters. The degree of this adjustment is controlled by multiplicative factor of the gradients called learning rate. Gradients are calculated using a subsample of the training set, known as a mini-batch (or simply batch), with the application of automatic differentiation.
 

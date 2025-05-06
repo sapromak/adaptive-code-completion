@@ -1,4 +1,0 @@
-\section{Training Dataset}
-\subsection{Filtering}
-\label{appendix:data-filtering}
-To avoid training on test data, we exclude repositories used in the Long Code Arena's Project-level code completion task. In addition, to ensure data relevance and quality, we apply the following filtering criteria. First, all commits made prior to $2010$ are excluded. Second, completion files with lengths outside the closed interval $[800,25000]$ characters are removed. Third, to eliminate redundancy, a simple deduplication strategy is employed on completion files based on the file name and the name of the repository to which they belong. Finally, up to $1000$ of the most recently updated unique completion files are selected from each repository. The remaining repository snapshot is retained without additional processing.

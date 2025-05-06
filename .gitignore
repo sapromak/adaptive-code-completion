@@ -1,5 +1,7 @@
 .idea
 .vscode
+.cursor
+grounding
 *.aux
 *.bbl
 *.bcf
@@ -19,5 +21,4 @@ _minted-ctufit-thesis/
 *.synctex.gz
 *.timestamp
 *.toc
-ctufit-thesis.pdf
 pdfa.xmpi
