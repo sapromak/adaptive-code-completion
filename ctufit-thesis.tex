@@ -66,6 +66,7 @@
 \usepackage{lipsum,tikz}
 \usepackage[style=authoryear,backend=biber,uniquename=false,uniquelist=false,sorting=nyt]{biblatex}
 \addbibresource{text/bib-database.bib}
+\usepackage{array}
 \usepackage{xurl}
 \usepackage{listings} % typesetting of sources
 \usepackage{minted}
@@ -77,6 +78,19 @@
 \usepackage{soul}
 \usepackage{nameref}
 \usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{makecell}
+\usepackage{paralist}
+\usepackage{tcolorbox}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{pgfplots}
+% \usepackage[table]{xcolor}
 
 \ExecuteBibliographyOptions{maxcitenames=1,mincitenames=1}
 
@@ -203,7 +217,34 @@ Will & Be Done at the Very End\\
 \include{text/completion-centric-lm}
 \include{text/in-context-learning}
 \include{text/long-context}
-\part{Applied Research}\label{part:applied-research}  % other options are Experimental Analysis, Research Part, Experimental Validation
+
+\makeatletter
+\def\@part[#1]#2{%
+  \ifnum \c@secnumdepth >-2\relax
+    \refstepcounter{part}
+    \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}
+  \else
+    \addcontentsline{toc}{part}{#1}
+  \fi
+  \markboth{}{}%
+  {\centering
+    \interlinepenalty \@M
+    \normalfont
+    \ifnum \c@secnumdepth >-2\relax
+      \huge\bfseries \partname\nobreakspace\thepart
+      \par
+      \vskip 20\p@
+    \fi
+    \Huge \bfseries #2\par
+    \vskip 0.5cm
+    \normalsize\normalfont\textit{The investigation of the final research question, \hyperref[rq:rq-b2]{RQ.B2}, in this thesis was previously published by \citet{sapronov2025} in the ``Tiny Papers'' track at the Deep Learning for Code (DL4C) workshop during the International Conference on Learning Representations (ICLR) 2025. This thesis should be regarded as an extended version of that paper, authored by the same individual, and does not constitute plagiarism of either their own or others' work. All differences are highlighted and justified below.}\par}
+  \@endpart}
+\makeatother
+
+\part{Applied Research}\label{part:applied-research} % other options are Experimental Analysis, Research Part, Experimental Validation
+\addtocontents{toc}{\protect\vspace{-\baselineskip}}
+
+% TODO: tiny paper disclaimer
 \include{text/technical-foundation}
 \include{text/research-investigation}
 \include{text/conclusion}
