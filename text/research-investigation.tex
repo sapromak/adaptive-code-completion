@@ -1,8 +1,5 @@
 \chapter{Research Investigation}\label{chap:research-investigation}  % other option are Experimental Results, Research Exploration, Research Assessment
 
-% TODO: use term "inlier" when discussing the gradient masking impact
-% TODO: highlight that we extrapolate the results of inlier gradient masking to outlier
-
 In this chapter we describe the research aspect of the thesis.  % TODO: add description 
 
 \section{Research Questions}
@@ -20,7 +17,7 @@ To investigate the nature of in-context learning capabilities of Code LLMs, we c
 
 \section{Experimental Design}
 
-In this section we describe the unified experimental design for all the four research questions while the specific details are deferred to the subsequent sections dedicated to each research question separately. % TODO
+In this section, we describe the unified experimental design for all four research questions, including the data, training, and evaluation components. Specific details are deferred to the subsequent sections dedicated to each research question separately.
 
 \subsection{Training Data}
 % TODO: draw the diagram
@@ -43,15 +40,23 @@ It is important to note that the pre-composition of both the training and valida
 
 We utilize DeepSeek-Coder-Base 1.3B \parencite{guo2024} to address \hyperref[rq:rq-a1]{RQ.A1} and \hyperref[rq:rq-a2]{RQ.A2}, as it served as a robust foundation for code completion research at the inception of this work. It supports a context window size of 16K tokens, allowing us to leverage a substantial portion of the repository data. For experiments concerning \hyperref[rq:rq-b1]{RQ.B1} and \hyperref[rq:rq-b2]{RQ.B2}, we employ OpenCoder-1.5B-Base \parencite{huang2024}, the only modern Code LLM released without undergoing a repository-level pre-training stage. This model supports a maximum context window size of 4K tokens, providing an opportunity to explore context extension fine-tuning.
 
-Two baseline composers are selected from the aforementioned list: File-Level (FL) and Path Distance (PD). For \hyperref[rq:rq-a2]{RQ.A2}, \hyperref[rq:rq-b1]{RQ.B1}, and \hyperref[rq:rq-b2]{RQ.B2}, we denote the composer used to obtain a model checkpoint as the original composer (Or).
-
 An input sequence is derived from each row of the composed dataset by independently tokenizing the context string and the completion file. This process ensures that the completion sequence does not exceed 4,096 tokens and that the total length of the concatenated input remains within 16,384 tokens. To enforce these constraints, we apply truncation from the left for the context and from the right for the completion. Given that most composed contexts exhibit high token saturation, we maintain a context-to-completion token ratio exceeding \(3 : 1\). \parencite{sapronov2025} This approach is employed for all setups with a 16K context length. The file-level training applies the same approach but omits the context string, resulting in a maximum context length of 4K tokens. We also note that no data packing techniques are applied.
 
-We use consistent hyperparameters across all experiments, as they have been established as optimal for both models. Specifically, the optimization process is conducted using the AdamW optimizer with \(\beta_1 = 0.9\), \(\beta_2 = 0.999\), and a weight decay of \(0.01\). A batch size of \(128\) is employed, with a micro-batch size of \(1\) to accommodate hardware constraints. To ensure stable training, gradient clipping is applied with a maximum gradient Euclidean norm of \(2\). The learning rate is managed using a cosine decay scheduler with a linear warm-up phase, where the maximum learning rate is set to \(5 \times 10^{-5}\). The warm-up phase lasts for \(256\) iterations, after which the learning rate follows a cosine decay schedule for \(3244\) additional iterations, reaching a minimum value of \(5 \times 10^{-8}\). \parencite{sapronov2025} Model checkpointing and validation loops are applied every \(128\) optimization steps.
+We use consistent hyperparameters across all experiments, as they have been established as optimal for both models. Specifically, the optimization process is conducted using the AdamW optimizer with \(\beta_1 = 0.9\), \(\beta_2 = 0.999\), and a weight decay of \(0.01\). A batch size of \(128\) is employed, with a micro-batch size of \(1\) to accommodate hardware constraints. To ensure stable training, gradient clipping is applied with a maximum gradient Euclidean norm of \(2\). The learning rate is managed using a cosine decay scheduler with a linear warm-up phase, where the maximum learning rate is set to \(5 \times 10^{-5}\). The warm-up phase lasts for \(256\) iterations, after which the learning rate follows a cosine decay schedule for \(3244\) additional iterations, reaching a minimum value of \(5 \times 10^{-8}\). \parencite{sapronov2025}
+
+Model checkpointing and validation loops are applied every \(128\) optimization steps. We monitor the metrics for both the original composed validation dataset split and the Path Distance baseline composer with a length truncation of 16K tokens. This approach enables us to track both the in-distribution and out-of-distribution dynamics of model capabilities throughout the training.
 
 Early stopping is applied after \(512\) iterations. This, in combination with the context window size, results in the utilization of approximately 73 million training tokens for fine-tuning on the File-Level and 1 billion tokens for all other composers. The order of the data points is deterministically shuffled in the same manner for all runs.
 
 \subsection{Evaluation}\label{sec:evaluation}
+
+The Project-Level Code Completion task from the Long Code Arena benchmark \parencite{bogomolov2024}, detailed in Section~\ref{sec:benchmarks}, is selected to establish an evaluation setup. We focus on the \textit{large-context set}, emphasizing two primary line types: \textit{inproject} and \textit{infile}. The exact match metric is employed to evaluate the models' performance on these line types separately. The completion lines are obtained from the model using a greedy decoding sampling strategy.
+
+Two baseline composers are selected from the aforementioned list: File-Level (FL) and Path Distance (PD). For \hyperref[rq:rq-a2]{RQ.A2}, \hyperref[rq:rq-b1]{RQ.B1}, and \hyperref[rq:rq-b2]{RQ.B2}, we denote the composer used to obtain a model checkpoint as the original composer (Or).
+
+In contrast to the training phase, we utilize only file prefixes instead of integral completion files to derive the context for evaluation. This approach involves invoking composers for each target line independently, thereby generating multiple distinct context strings for the same completion file. Duplication and Leak composers are exceptions to this rule due to their requirement for the full completion file content. These composers are outlined separately in the following sections.
+
+Differences in metric values compared to \citet{sapronov2025} are evident. This is because this thesis employs a separate evaluation script, independent of the company's proprietary one, allowing us to publish all code under the permissive MIT license. Two factors contribute to these differences. First, we use teacher forcing, which combines effectively with the EM metric and enables a greater number of evaluation runs at a reduced cost. Second, the EM version used here does not remove whitespace prior to calculation. These factors result in a stricter metric assessment of the model's performance. Since all modifications are applied uniformly and all numbers are reported under the same setup, the metric values' bias is consistent and does not affect the conclusions drawn from the experiments.
 
 \section{Composition Impact on Inference}\label{sec:composition-impact-on-inference}
 
@@ -61,7 +66,12 @@ Early stopping is applied after \(512\) iterations. This, in combination with th
 
 \section{Influence of Composition on Context Extension}\label{sec:influence-of-composition-on-context-extension}
 
-
+\section{Supplementary Results}
+% TODO: gradient masking
+% TODO: use term "inlier" when discussing the gradient masking impact
+% TODO: highlight that we extrapolate the results of inlier gradient masking to outlier
+% TODO: beyond context window
+% TODO: comparison with SOTA models
 
 \section{Limitations and Future Work}
 % scale different directions, ...
