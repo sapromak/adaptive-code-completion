@@ -60,9 +60,6 @@ Differences in metric values compared to \citet{sapronov2025} are evident. This 
 
 \section{Composition Impact on Inference}\label{sec:composition-impact-on-inference}
 
-% TODO: refer to some work that  demonstrates the performance boost on  the irrelevant context
-% TODO: something wrong with file-level. BOS token is missing. But can it cause such a big difference?
-
 To measure the impact of context composition strategies on the quality of code completion during Code LLM inference, we evaluate the DeepSeek-Coder-Base 1.3B model \parencite{guo2024} using all previously listed composers. The results are presented in Table~\ref{tab:dseek-inference}.
 
 \begin{table}[htbp]
@@ -74,10 +71,11 @@ To measure the impact of context composition strategies on the quality of code c
 A noticeable difference is observed, allowing us to infer that the context provided to the model during inference has a significant impact on its performance. Some detailed findings are as follows:
 
 \begin{enumerate}
-\item The Random Tokens composer drastically outperforms the File-Level composer, despite both incorporating the same null amount of contextual information.
-\item The Lines IoU approach proposes the most effective relevance function for retrieval-augmented generation among the presented methods, demonstrating that the model can achieve the same level of \textit{inproject} performance as \textit{infile} given sufficient context.
+\item The Lines IoU approach proposes the most effective relevance function for retrieval-augmented generation among the presented methods, demonstrating that the model can achieve the same level of \textit{inproject} performance as \textit{infile}, given the context of sufficient quality.
 \item The examination of Declarations indicates that function and class declarations alone do not provide a strong foundation for in-context learning capabilities; the functional code within their bodies is more important.
-\item A comparison between Random \texttt{.py} and Text Files suggests that configuration and documentation files are less important for the model than code examples in the context. The same observation applies to code comments and documentation strings produced by Text Chunks.
+\item A comparison between Random \texttt{.py} and Text Files suggests that configuration and documentation files are less important for the model than randomly selected code examples in the context. The same observation applies to code comments and documentation strings produced by Text Chunks.
+\item Even randomly selected files enhance the code completion capabilities of the model.
+\item Random Tokens degrade performance only slightly compared to the File-Level composer, indicating that the model is highly, though not completely, robust to the presence of noisy context.
 \item The model is capable of effectively copying (Duplication) and extracting (Leak) ground truth lines from the context without requiring any additional training.
 \end{enumerate}
 
