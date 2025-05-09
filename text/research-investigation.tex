@@ -38,7 +38,7 @@ It is important to note that the pre-composition of both the training and valida
 
 \subsection{Training}
 
-We utilize DeepSeek-Coder-Base 1.3B \parencite{guo2024} to address \hyperref[rq:rq-a1]{RQ.A1} and \hyperref[rq:rq-a2]{RQ.A2}, as it served as a robust foundation for code completion research at the inception of this work. It supports a context window size of 16K tokens, allowing us to leverage a substantial portion of the repository data. For experiments concerning \hyperref[rq:rq-b1]{RQ.B1} and \hyperref[rq:rq-b2]{RQ.B2}, we employ OpenCoder-1.5B-Base \parencite{huang2024}, the only modern Code LLM released without undergoing a repository-level pre-training stage. This model supports a maximum context window size of 4K tokens, providing an opportunity to explore context extension fine-tuning.
+We utilize DeepSeek-Coder-Base 1.3B \parencite{guo2024} to address \hyperref[rq:rq-a1]{RQ.A1} and \hyperref[rq:rq-a2]{RQ.A2}, as it served as a robust foundation for code completion research at the inception of this work. It supports a context window size of 16K tokens, allowing us to leverage a substantial portion of the repository data. For experiments concerning \hyperref[rq:rq-b1]{RQ.B1} and \hyperref[rq:rq-b2]{RQ.B2}, we employ OpenCoder-1.5B-Base \parencite{huang2024}, the only modern Code LLM released without undergoing a repository-level pre-training stage. This model supports a maximum context window size of 4K tokens, providing an opportunity to explore context extension fine-tuning. For this purpose, we adjust the base frequency of RoPE from \(\theta_{\mathrm{base}} = 10{,}000\) to \(\theta_{\mathrm{base}} = 500{,}000\), as it was concurrently proposed by \citet{rozière2023} and \citet{xiong2023}. % TODO: add it to the conceptual framework
 
 An input sequence is derived from each row of the composed dataset by independently tokenizing the context string and the completion file. This process ensures that the completion sequence does not exceed 4,096 tokens and that the total length of the concatenated input remains within 16,384 tokens. To enforce these constraints, we apply truncation from the left for the context and from the right for the completion. Given that most composed contexts exhibit high token saturation, we maintain a context-to-completion token ratio exceeding \(3 : 1\). \parencite{sapronov2025} This approach is employed for all setups with a 16K context length. The file-level training applies the same approach but omits the context string, resulting in a maximum context length of 4K tokens. We also note that no data packing techniques are applied.
 
@@ -65,12 +65,13 @@ To measure the impact of context composition strategies on the quality of code c
 \begin{table}[htbp]
     \centering
     \includegraphics{tables/rq_a1.pdf}
-    \caption{Exact Match scores of the DeepSeek-Coder-Base 1.3B benchmarked on the LCA}\label{tab:dseek-inference}
+    \caption{Exact Match scores of DeepSeek-Coder-Base 1.3B benchmarked on the LCA}\label{tab:dseek-inference}
 \end{table}
 
 A noticeable difference is observed, allowing us to infer that the context provided to the model during inference has a significant impact on its performance. Some detailed findings are as follows:
 
 \begin{enumerate}
+\item In-context learning enables the model to leverage any form of meaningful context to improve \textit{infile} completion, indicating that API declarations are not the sole source of metric improvements and that project-level information provides auxiliary grounding for generation.
 \item The Lines IoU approach proposes the most effective relevance function for retrieval-augmented generation among the presented methods, demonstrating that the model can achieve the same level of \textit{inproject} performance as \textit{infile}, given the context of sufficient quality.
 \item The examination of Declarations indicates that function and class declarations alone do not provide a strong foundation for in-context learning capabilities; the functional code within their bodies is more important.
 \item A comparison between Random \texttt{.py} and Text Files suggests that configuration and documentation files are less important for the model than randomly selected code examples in the context. The same observation applies to code comments and documentation strings produced by Text Chunks.
@@ -97,14 +98,63 @@ Additionally, we explored different setups to address the issue of the model's r
 
 \section{Effect of Context Extension}\label{sec:effect-of-context-extension}
 
+We assess the impact of repository-level pre-training on the previously obtained in-context learning capabilities of the model using the composition strategies accessible to OpenCoder-1.5B-Base, which has an original context size limitation of 4K tokens. The summarized results are presented in Table~\ref{tab:ocoder-in-context-retention}. For the extended version, which includes the effects observed with \textit{reversed} and \textit{irrelevant} order modifications, refer to Table~\ref{tab:ocoder-extension-extended}. % TODO: Consider referring to the appendix instead?
+
+\begin{table}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{tables/rq_b1.pdf}
+    \caption{Exact Match scores of OpenCoder-1.5B-Base under different evaluation setups. The original model's performance is denoted by No Extension. The other rows represent the checkpoints obtained with the respective composers. Context extension is performed with 4K-token sequences for the File-Level and 16K-token sequences for all other composers. The column notations are consistent with the previous table.}\label{tab:ocoder-in-context-retention}
+\end{table}
+
+Three main observations can be drawn from the table to address \hyperref[rq:rq-b1]{RQ.B1}:
+
+\begin{enumerate}
+\item ABF without additional fine-tuning significantly impairs the ICL capabilities.
+\item The context extension procedure effectively restores model performance after RoPE frequency scaling. Even the File-Level composer, which utilizes input sequences up to 4K tokens, enables the model to adapt to the new \(\theta_{\mathrm{base}}\) value and maintain the same performance level as the original model.
+\item Data leakage of ground truth lines impedes the recovery of the model's ICL capabilities. This effect is particularly pronounced for the Duplication composer.
+\end{enumerate}
+
 \section{Influence of Composition on Context Extension}\label{sec:influence-of-composition-on-context-extension}
+
+In this section, we address the final research question \hyperref[rq:rq-b2]{RQ.B2} by evaluating the checkpoints obtained after context extension fine-tuning, using various composers to construct the training context. Our conclusions are drawn from Table~\ref{tab:ocoder-extension}, which is a subset of the comprehensive Table~\ref{tab:ocoder-extension-extended}.
+
+\begin{table}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{tables/rq_b2.pdf}
+    \caption{Exact Match scores collected from the long-context evaluation of composer choices employed during the repository-level pre-training stage. All clarifying remarks are consistent with the previous table. Blank cells indicate the absence of a repository-level pre-training stage in OpenCoder's development pipeline.}\label{tab:ocoder-extension}
+\end{table}
+
+To summarize the outcomes of our study, we present the following observations:
+
+\begin{enumerate}
+\item As expected, the original model is unable to utilize the 16K context window. The raw base frequency adjustment provides only a negligible improvement and necessitates an additional optimization phase.
+\item The context composition strategy employed during the repository-level pre-training stage has only a marginal impact on the final model quality. This finding suggests that adaptation to the RoPE adjustment is the primary driver of long-context improvements.
+\item It is possible to significantly reduce computational requirements while still achieving competitive results at the repository-level pre-training stage. For instance, file-level training remains highly effective, even without any repository context and with a context window size limited to 4k tokens.
+\end{enumerate}
+
+The practical contribution of this research is the identification of a low-resource approach for context extension fine-tuning, utilizing the File-Level composer with a total of 73M training tokens. We further demonstrate the utility of this setup by comparing it with DeepSeek-Coder-Base 1.3B, which used 8.4B tokens during repository-level pre-training, and Qwen2.5-Coder-1.5B~\parencite{hui2024}, which used 300B tokens during the same stage. Figure~\ref{fig:model-comparison} visualizes this comparison and ... .  % TODO: beyond context window figure
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/model-comparison.pdf}
+    \caption{Comparison of our two main checkpoints with other existing Code LLMs of the same weight class. The PD-16K setup is used to produce the metric assessment.}\label{fig:model-comparison}
+\end{figure}
+
+\todo{Beyond context window and interpretation of the figures}
 
 \section{Supplementary Results}
 % TODO: gradient masking
 % TODO: use term "inlier" when discussing the gradient masking impact
 % TODO: highlight that we extrapolate the results of inlier gradient masking to outlier
-% TODO: beyond context window
-% TODO: comparison with SOTA models
+% TODO: composer quality analysis:
+% api_gain := infile_fl16k
+% auxiliary_grounding_gain := infile_or16k - api_gain
+% inproject_fl16k + auxiliary_grounding_gain + x * api_gain = inproject_or16k
+% x = (inproject_or16k - inproject_fl16k - auxiliary_grounding_gain) / api_gain
+% retrieval_quality := x
+% retrieval_quality = (inproject_or16k - inproject_fl16k - infile_or16k + infile_fl16k) / infile_fl16k
+% iou_quality = 18.6 %
+% path_distance_quality = 11.6 %
 
 \section{Limitations and Future Work}
 % scale different directions, ...
