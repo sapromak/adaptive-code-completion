@@ -64,7 +64,7 @@ To measure the impact of context composition strategies on the quality of code c
 
 \begin{table}[htbp]
     \centering
-    \includegraphics{tables/rq_a1.pdf}
+    \includegraphics{tables/rq-a1.pdf}
     \caption{Exact Match scores of DeepSeek-Coder-Base 1.3B benchmarked on the LCA}\label{tab:dseek-inference}
 \end{table}
 
@@ -86,7 +86,7 @@ To estimate the impact of the context composition strategy employed during model
 
 \begin{table}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{tables/rq_a2.pdf}
+    \includegraphics[width=\textwidth]{tables/rq-a2.pdf}
     \caption{Exact Match scores of DeepSeek-Coder-Base 1.3B fine-tuned with different context composition strategies. The rows indicate the composer used to obtain the model checkpoint. The columns represent different evaluation setups: PD for Path Distance, FL for File-Level, and Or for the composer used during fine-tuning. All sequences are truncated to 16K tokens. The blank cells refer to the Table~\ref{tab:dseek-inference}.}\label{tab:dseek-fine-tuning}
 \end{table}
 
@@ -102,7 +102,7 @@ We assess the impact of repository-level pre-training on the previously obtained
 
 \begin{table}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{tables/rq_b1.pdf}
+    \includegraphics[width=\textwidth]{tables/rq-b1.pdf}
     \caption{Exact Match scores of OpenCoder-1.5B-Base under different evaluation setups. The original model's performance is denoted by No Extension. The other rows represent the checkpoints obtained with the respective composers. Context extension is performed with 4K-token sequences for the File-Level and 16K-token sequences for all other composers. The column notations are consistent with the previous table.}\label{tab:ocoder-in-context-retention}
 \end{table}
 
@@ -120,19 +120,20 @@ In this section, we address the final research question \hyperref[rq:rq-b2]{RQ.B
 
 \begin{table}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{tables/rq_b2.pdf}
+    \includegraphics[width=\textwidth]{tables/rq-b2.pdf}
     \caption{Exact Match scores collected from the long-context evaluation of composer choices employed during the repository-level pre-training stage. All clarifying remarks are consistent with the previous table. Blank cells indicate the absence of a repository-level pre-training stage in OpenCoder's development pipeline.}\label{tab:ocoder-extension}
 \end{table}
 
 To summarize the outcomes of our study, we present the following observations:
 
 \begin{enumerate}
-\item As expected, the original model is unable to utilize the 16K context window. The raw base frequency adjustment provides only a negligible improvement and necessitates an additional optimization phase.
+\item As expected, the original model is unable to utilize the 16K context window. The preliminary base frequency adjustment provides only a negligible improvement and necessitates an additional optimization phase.
 \item The context composition strategy employed during the repository-level pre-training stage has only a marginal impact on the final model quality. This finding suggests that adaptation to the RoPE adjustment is the primary driver of long-context improvements.
 \item It is possible to significantly reduce computational requirements while still achieving competitive results at the repository-level pre-training stage. For instance, file-level training remains highly effective, even without any repository context and with a context window size limited to 4k tokens.
+\item The Duplication composer proves its uncompetitiveness even when compared to the entirely irrelevant context obtained from Random Tokens. This suggests that the data must present at least some degree of challenge to the model in order to foster the development of additional capabilities.
 \end{enumerate}
 
-The practical contribution of this research is the identification of a low-resource approach for context extension fine-tuning, utilizing the File-Level composer with a total of 73M training tokens. We further demonstrate the utility of this setup by comparing it with DeepSeek-Coder-Base 1.3B, which used 8.4B tokens during repository-level pre-training, and Qwen2.5-Coder-1.5B~\parencite{hui2024}, which used 300B tokens during the same stage. Figure~\ref{fig:model-comparison} visualizes this comparison and ... .  % TODO: beyond context window figure
+The practical contribution of this research is the identification of a low-resource approach to repository-level pre-training. Context extension fine-tuning can be restricted to the Path Distance composer, requiring only 1B training tokens, while the File-Level presents an even more resource-efficient alternative, necessitating just 73M training tokens. We further demonstrate the utility of this setup by comparing it with DeepSeek-Coder-Base 1.3B, which used 8.4B tokens for repository-level pre-training, and Qwen2.5-Coder-1.5B~\parencite{hui2024}, which employed 300B tokens during the same stage. Figure~\ref{fig:model-comparison} visualizes this comparison, and Figure~\ref{fig:beyond-training-window-inproject} illustrates the performance scaling beyond the training context window for all four models.
 
 \begin{figure}[ht]
     \centering
@@ -140,7 +141,15 @@ The practical contribution of this research is the identification of a low-resou
     \caption{Comparison of our two main checkpoints with other existing Code LLMs of the same weight class. The PD-16K setup is used to produce the metric assessment.}\label{fig:model-comparison}
 \end{figure}
 
-\todo{Beyond context window and interpretation of the figures}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/beyond-training-window-inproject.pdf}
+    \caption{Evaluation of the performance 
+    scaling beyond the context extension 
+    window. The \textit{inproject} line type from the LCA benchmark is selected for visualization; the corresponding Figure~\ref{fig:beyond-training-window-infile} presents results for the \textit{infile} category. ``1K'' refers to 1024 tokens. The \raisebox{-0.3ex}{\FiveStarOpen} markers denote the context length used during repository-level pre-training stage.}\label{fig:beyond-training-window-inproject}
+\end{figure}
+
+\todo{Interpretation of the figures}
 
 \section{Supplementary Results}
 % TODO: gradient masking
