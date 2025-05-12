@@ -163,7 +163,7 @@ To examine the impact of including all losses in the optimization process for th
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/gradient-masking.pdf}
-    \caption{Histogram of the Exact Match differences between paired runs on inlier composers, with the Duplication composer excluded. Negative values indicate cases where gradient masking reduces model performance. The sample mean is \(-0.35\) EM points on a scale from -100 to 100.}\label{fig:gradient-masking}
+    \caption{Histogram of the Exact Match differences between paired runs on inlier composers, with the Duplication composer excluded. Negative values indicate cases where gradient masking reduces model performance. The sample mean is \(-0.35\) EM points on a scale from \(-100\) to \(100\).}\label{fig:gradient-masking}
 \end{figure}
 
 Another observation is that disabling gradient masking eliminates the detrimental properties of the Duplication composer. We attribute this to the model being required to perform well on the first instance of the completion file presented in the context, which does not have access to the ground truth lines to copy from.
