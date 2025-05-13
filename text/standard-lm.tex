@@ -165,7 +165,7 @@ which allows the model to capture the positional information of the tokens.
 
 \section{Training}
 
-% TODO: add some text so it's not so empty
+To elaborate on the process of convergence from a randomly initialized model to one with desirable properties, this section provides an overview of the training process by deriving the direct objective and describing the optimization algorithm, along with associated batch-related terminology and learning rate scheduling.
 
 \subsection{Maximum Likelihood Estimation}
 
@@ -188,11 +188,16 @@ To take one step further, a minus sign can be added to focus on minimization ins
 This objective corresponds to the cross-entropy (CE) loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from equation~\ref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
 
 \subsection{Gradient-Based Optimization}
-% TODO: add gradient scaling and clipping somewhere
 
 Various optimization algorithms have been developed to train neural networks. The most effective ones are based on first-order methods, which iteratively adjust the parameters by subtracting the stochastic gradient of the loss function with respect to the parameters. The degree of this adjustment is controlled by multiplicative factor of the gradients called learning rate. Gradients are calculated using a subsample of the training set, known as a mini-batch (or simply batch), with the application of automatic differentiation.
 
 In the field of language modeling, the adaptive moment estimation (Adam) \parencite{kingma2014}, a modification of stochastic gradient descent (SGD), and its version supporting weight decay \parencite{loshchilov2017} are the most popular algorithms. Adam maintains two moving average statistics, called the first and second moments, for each parameter, which correct the application of the gradient and accelerate convergence.
+
+Training is sometimes conducted using a half-precision floating-point format to increase computational speed. However, this approach introduces the risk of underflow for small gradient values. To mitigate this issue, \textit{gradient scaling} is employed. This technique multiplies the loss value by a constant factor, allowing the gradients to maintain appropriate magnitudes during backpropagation. When the optimization step is performed, the gradients are rescaled by the same factor to restore the original learning rate setting. The scaling factor is often determined automatically. \parencite{nvidia2024}
+
+\begin{sloppypar}
+Another common modification applied to gradients is \textit{clipping}, which projects the gradient vector onto the surface of a hypersphere with a radius equal to a predefined value if its norm exceeds this threshold. This process prevents gradients from exploding in regions with sharp loss landscapes and stabilizes the training process. \parencite{pascanu2013}
+\end{sloppypar}
 
 \subsection{Batch-Related Terminology}
 
@@ -212,7 +217,7 @@ To summarize, the learning rate, rather than being a constant hyperparameter, ha
 
 \section{Inference}\label{sec:inference}
 
-% TODO: add some text so it's not so empty
+This section introduces the fundamental concepts related to the inference process of language models, specifically sampling and stopping criteria.
 
 \subsection{Sampling}\label{sec:sampling}
 
@@ -231,5 +236,3 @@ There are several methods to terminate the generation process.
 Firstly, the model can signal the completion of the output sequence by generating an end of sequence (EOS) token. This requires the EOS token to be included in the vocabulary, and the model must be trained to produce it. This is accomplished by appending the EOS token to the end training sequences.
 
 Secondly, algorithmic stopping criteria can be employed. For example, the generation process can be halted when a maximum length threshold is exceeded. Another pertinent example, particularly in the context of code completion, is to cease generation when the model outputs a token containing a newline character.
-
-% TODO: beam search?

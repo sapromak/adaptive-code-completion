@@ -1,14 +1,12 @@
 \chapter{Completion-Centric LM}\label{chap:completion-centric-lm}
 
-\todo{Description of the chapter.}
+This chapter builds upon the topic of standard language modeling by delving into the specifics of the code completion task. It provides a description of the training stages of Code LLMs, gradient masking, FIM, and the evaluation of code completion models.  
 
 \section{Training Stages}\label{sec:training-stages}
 
 The training of modern Code LLMs begins with acquiring a model checkpoint that possesses a robust understanding of code. This can be achieved through two distinct types of training stages. One type involves taking a general-purpose pre-trained LLM and fine-tuning it on a file-level code dataset. This approach is utilized by models such as Code Llama \parencite{rozière2023} and Qwen2.5-Coder \parencite{hui2024}. The other type involves training a model from scratch using a mixture of code and code-related natural language data. This pre-training approach is adopted by models like DeepSeek-Coder \parencite{guo2024} and OpenCoder \parencite{huang2024}. Both types necessitate vast amounts of data, typically ranging from 2 trillion (2T) to 18 trillion (18T) tokens with context length of 4,096 (4K). 
 
 Once a strong model with a limited context size is trained, it often undergoes repository-level pre-training (sometimes referred to as long-context fine-tuning). The objective of this stage is to extend the context window, thereby enabling the model to comprehend a broader scope within a given repository. Unlike the initial training stage, repository-level pre-training requires significantly fewer tokens. However, it necessitates the application of context extrapolation methods and the utilization of longer input sequences. This phase typically involves between 8 billion (8B) and 300 billion (300B) training tokens, with the context window extended with 16K or 32K tokens.
-
-% TODO: forward reference to the tiny paper results
 
 Each input sequence in repository-level pre-training consists of two components: the composed context and the completion file. Various methods exist for obtaining the former. In this thesis, the function responsible for this task is referred to as the context composer, or simply composer. This process involves retrieving and preprocessing a subset of files, which are then assembled to form a repository context.
 
@@ -20,28 +18,21 @@ The learning signal for the model is derived from both the composed context and 
 
 For instance, learning to complete README files may be irrelevant if the model's primary objective is to excel solely in code completion. However, incorporating various file formats into the context is justified if they hold relevance to the completion task (e.g., including documentation).
 
-This issue can be mitigated through the application of gradient masking. By setting the individual losses of non-completion tokens to zero, these tokens can be excluded from the gradient computation during training.
-
-% TODO: forward reference to the practical discussion on this subject
+This issue can be mitigated through the application of gradient masking. By setting the individual losses of non-completion tokens to zero, these tokens can be excluded from the gradient computation during training. The impact of this method is examined in Section~\ref{sec:gradient-masking}.
 
 \section{Fill-in-the-Middle}\label{sec:fill-in-the-middle}
 
-% TODO: use term infilling
-
 Due to the autoregressive nature of decoder-only Transformers, they are unable to utilize future tokens in their context. Consequently, to account for both the prefix and suffix of the completion file, the fill-in-the-middle approach was proposed by \citet{bavarian2022}, with its origins in the works of \citet{donahue2020}, \citet{aghajanyan2022}, and \citet{fried2022}. This capability is particularly advantageous for the completion task, as code is frequently written in a non-sequential and chaotic order.
 
-The primary concept of FIM involves randomly dividing a portion of training sequences into three segments: prefix, middle, and suffix. These segments are then concatenated using special tokens to form a new sequence order: prefix, suffix, and middle. Incorporating such augmented data into the pre-training process, introduces a new capability to the model, albeit with a marginal performance degradation (\cite{allal2023};~\cite{rozière2023}).
-
-% TODO: BPE-dropout, starting generation from the middle of the token?
+The primary concept of FIM involves randomly dividing a portion of training sequences into three segments: prefix, middle, and suffix. These segments are then concatenated using special tokens to form a new sequence order: prefix, suffix, and middle. Incorporating such augmented data into the pre-training process, introduces a new infilling capability to the model, albeit with a marginal performance degradation (\cite{allal2023};~\cite{rozière2023}).
 
 \section{Evaluation}
 
-% TODO: metric x benchmark table?
+The assessment of code completion models requires a multifaceted approach that captures both syntactic and functional aspects of generated code. This section surveys the principal methodologies for evaluating model outputs, highlighting the diversity of metrics and their relevance to practical development scenarios.
 
 \subsection{Metrics}
 
-% TODO: Keep in mind: effect of the number of preceding tokens -> not a uniform measure across the context
-% TODO: recall of API calls and needle in a haystack
+A variety of metrics have been developed to quantify the performance of code completion systems. These measures reflect different perspectives on correctness, similarity, and usability, ranging from exact syntactic matches to more nuanced assessments of edit effort and semantic equivalence. The following overview presents the most prominent of them.
 
 \subsubsection*{Exact Match}
 
@@ -84,8 +75,6 @@ To address this issue, an unbiased estimation of the probability that at least o
 where \(n \ge k\) is the number of samples generated by the model, and \(c \le n\) is the number of those samples that passed all unit tests. This metric reflects the probability of finding a correct solution within \(k\) attempts, which mirrors the iterative approach developers often take when exploring multiple solutions.
 
 To apply this metric to single-line code completion, it is assumed that all other lines, except the target one, are present and functionally correct. This assumption does not hold for many use cases, such as when a user writes a function on the fly. Therefore, pass@k offers an optimistic assessment of completion capabilities, as the evaluation set contains one corrupted line per problem. In addition to this, \citet{liu2024} introduced a comprehensive list of further limitations in their Appendix A.4 section. In summary, pass@k is more realistic for tasks with greater completion granularity or for code generation assessment.
-
-% TODO: in practical part: motivate why this metric is not used 
 
 \subsubsection*{Further Metrics}
 

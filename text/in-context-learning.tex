@@ -29,7 +29,7 @@ The original attention architecture of Transformer models exhibits quadratic com
 
 Not only the number of demonstrations but also their relevance to the task has been proven to be a crucial factor in ICL performance \parencite{liu2021}. Given a limited upper bound on the context length of the prompt, the task of finding the most relevant grounding information has become an important component of the respective research.
 
-Closely related to this idea is the retrieval-augmented generation (RAG) framework, which introduces a separate retrieval step in the prompt engineering procedure \parencite{lewis2020}. The objective of this mechanism is to provide the model with access to a non-parametric chunk of information related to the task at hand. The provided context can be either a factual knowledge supplement or the demonstrations required by the ICL setting.
+Closely related to this idea is the retrieval-augmented generation (RAG) framework, which introduces a separate retrieval step in the prompt engineering procedure \parencite{lewis2020}. The objective+ of this mechanism is to provide the model with access to a non-parametric chunk of information related to the task at hand. The provided context can be either a factual knowledge supplement or the demonstrations required by the ICL setting.
 
 \begin{sloppypar}
 RAG addresses the problem of overfitting and updates the outdated parameter-based memory of the model with a more relevant, query-conditioned context.
