@@ -69,13 +69,13 @@ In the primary source paper, the authors proposed two parts of the architecture:
 
 \subsection{Overview of the Forward Pass}
 
-Consider the sequence of context tokens \(\bm{x}_{1:t-1} = (x_1, x_2, \ldots, x_{t-1})\) from equation~\ref{eq:probability-chain-rule}. To model the probability \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) of the next token \(x_t\), the decoder-only Transformer first embeds the context tokens into vectors \((\mathbf{Ex}_1, \mathbf{Ex}_2, \ldots, \mathbf{Ex}_{t-1})\) and then passes them through the stack of decoder layers to obtain the contextually enriched embeddings \((\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_{t-1})\), which are called hidden states. It then takes the last hidden state and multiplies it by the weights matrix to get the logits \(\mathbf{z}_t = \mathbf{Wh}_{t-1}\). The \(\mathbf{W}\) is often called the language modeling head. The softmax function is then used to get the parameters of the categorical distribution over the vocabulary:
+Consider the sequence of context tokens \(\bm{x}_{1:t-1} = (x_1, x_2, \ldots, x_{t-1})\) from \equationref{eq:probability-chain-rule}. To model the probability \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) of the next token \(x_t\), the decoder-only Transformer first embeds the context tokens into vectors \((\mathbf{Ex}_1, \mathbf{Ex}_2, \ldots, \mathbf{Ex}_{t-1})\) and then passes them through the stack of decoder layers to obtain the contextually enriched embeddings \((\mathbf{h}_1, \mathbf{h}_2, \ldots, \mathbf{h}_{t-1})\), which are called hidden states. It then takes the last hidden state and multiplies it by the weights matrix to get the logits \(\mathbf{z}_t = \mathbf{Wh}_{t-1}\). The \(\mathbf{W}\) is often called the language modeling head. The softmax function is then used to get the parameters of the categorical distribution over the vocabulary:
 \begin{equation}\label{eq:softmax}
     \mathbf{p}_t = \mathrm{softmax}(\mathbf{z}_t) = \frac{\exp(\mathbf{z}_t / \tau)}{\sum_{k=1}^{K} \exp(z_{t,k} / \tau)},
 \end{equation}
-where the exponent in the numerator and division are element-wise functions, and \(\tau\) is a temperature parameter discussed in Section~\ref{sec:sampling}.
+where the exponent in the numerator and division are element-wise functions, and \(\tau\) is a temperature parameter discussed in \sectionref{sec:sampling}.
 
-The resulting vector of estimated probabilities \(\mathbf{p}_t\) can be used in multiple ways. First, to fulfill the original task of language modeling, the element corresponding to the next token \(x_t\) can be extracted from \(\mathbf{p}_t\) and serve as \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) in equation~\ref{eq:probability-chain-rule}. Second, one can sample from the categorical distribution defined by \(\mathbf{p}_t\) to get the next token and thus generate a new sequence from the model, which means that the language model can be used as a generative model. Both settings are commonly used. The first one is employed for the training process, while the second one is used for inference.
+The resulting vector of estimated probabilities \(\mathbf{p}_t\) can be used in multiple ways. First, to fulfill the original task of language modeling, the element corresponding to the next token \(x_t\) can be extracted from \(\mathbf{p}_t\) and serve as \(p_{\theta}(x_t \mid \bm{x}_{1:t-1})\) in \equationref{eq:probability-chain-rule}. Second, one can sample from the categorical distribution defined by \(\mathbf{p}_t\) to get the next token and thus generate a new sequence from the model, which means that the language model can be used as a generative model. Both settings are commonly used. The first one is employed for the training process, while the second one is used for inference.
 
 Before delving into the specifics of the decoder layer, two important points should be noted. First is that the initial token lacks context. Consequently, a special beginning of sequence (BOS) token is utilized to provide context and serve as an embedding for \(p_\theta(x_1)\). Second, for simplicity, the bias term is omitted in all the weight application formulas, as its inclusion is optional and contingent upon the engineer's design choices.
 
@@ -88,7 +88,14 @@ Let's denote the input embeddings as \((\mathbf{x}_1, \mathbf{x}_2, \ldots, \mat
 \end{align}
 where \(\mathbf{X}^{(2)} \in \mathbb{R}^{T \times d_{\mathrm{model}}}\) is the output of the layer, and \(\mathrm{Norm}\), \(\mathrm{MultiHead}\), \(\mathrm{MLP}\) are sub-layers discussed below.
 
-These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2018};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}.
+These formulas differ from the original architecture described in \citet{vaswani2017} as they employ pre-normalization (\cite{baevski2018};~\cite{child2019};~\cite{wang2019}). This modification enhances the stability of the training process by ensuring that the residual embedding stream is modified only through addition, which helps maintain well-behaved gradients at initialization \parencite{xiong2020}. To illustrate this concept in comparison to the original post-normalization structure, \figureref{fig:post-vs-pre-norm} is provided.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/post-vs-pre-norm.pdf}
+    \caption{Comparison of post-normalization and pre-normalization architectures in Transformer models}\label{fig:post-vs-pre-norm}
+    \hfill\textit{Source: \citet{ding2021}}
+\end{figure}
 
 \subsection{Normalization}
 
@@ -100,9 +107,16 @@ Consider two additional architectural parameters \(d_k\) and \(d_v = d_{\mathrm{
 \begin{equation}\label{eq:attention}
     \mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathrm{softmax}\left(\frac{\left[\mathbf{QK}^\top\right]_{\mathrm{mask}}}{\sqrt{d_k}}\right)\mathbf{V},
 \end{equation}
-where \(\mathbf{V} = \mathbf{XW}_V^{\top}\) and \(\{\mathbf{Q}, \mathbf{K}\} = \mathrm{RoPE}(\mathbf{XW}_{\{Q, K\}}^\top)\) with \(\mathrm{RoPE}\) denoting the rotary position embedding discussed in Section~\ref{sec:rotary-position-embedding}. The softmax is applied row-wise, and \([\ \cdot \ ]_{\mathrm{mask}}\) is a causal masking operation that sets all elements above the main diagonal to \(-\infty\), thereby preventing data leakage from future tokens.
+where \(\mathbf{V} = \mathbf{XW}_V^{\top}\) and \(\{\mathbf{Q}, \mathbf{K}\} = \mathrm{RoPE}(\mathbf{XW}_{\{Q, K\}}^\top)\) with \(\mathrm{RoPE}\) denoting the rotary position embedding discussed in \sectionref{sec:rotary-position-embedding}. The softmax is applied row-wise, and \([\ \cdot \ ]_{\mathrm{mask}}\) is a causal masking operation that sets all elements above the main diagonal to \(-\infty\), thereby preventing data leakage from future tokens.
 
-Attention functions as a layer that enables tokens to communicate with each other. Each token performs a query \(\mathbf{q}_i\) to all preceding tokens and itself \(\mathbf{k}_{j \le i}\). The corresponding attention weight of the query-key match \(\mathbf{q}_{i}^\top\mathbf{k}_{j}\) is normalized by the softmax and used as a soft dictionary lookup to retrieve the partial component of the value vector \(\mathbf{v}_j\). The convex combination of all such value vectors \(\mathbf{v}_{j \le i}\) becomes the output of the attention layer.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/attention.pdf}
+    \caption{Attention mechanism at the single token level}\label{fig:attention}
+    \hfill\textit{Source: \citet{zhang2023b}}
+\end{figure}
+
+Attention functions as a layer that enables tokens to communicate with each other. Each token performs a query \(\mathbf{q}_i\) to all preceding tokens and itself \(\mathbf{k}_{j \le i}\). The corresponding attention weight of the query-key match \(\mathbf{q}_{i}^\top\mathbf{k}_{j}\) is normalized by the softmax and used as a soft dictionary lookup to retrieve the partial component of the value vector \(\mathbf{v}_j\). The convex combination of all such value vectors \(\mathbf{v}_{j \le i}\) becomes the output of the attention layer. This operational flow for a single query is illustrated in \figureref{fig:attention}.
 
 \subsection{Multi-Head Attention}
 
@@ -123,15 +137,20 @@ Originally, the rectified linear unit (ReLU) was used as the activation function
 
 \subsection{Dropout}
 
-Dropout is a widely adopted regularization technique that enhances the generalization of the model \parencite{srivastava2014}. During the training process, it randomly masks some of the activations of the preceding layer with a probability \(p_{\mathrm{dropout}}\) and scales the remaining activations by a factor of \(1 / p_{\mathrm{dropout}}\) to maintain the output statistics of the layer.
+Dropout is a widely adopted regularization technique that enhances the generalization of the model \parencite{srivastava2014}. During the training process, it randomly masks some of the activations of the preceding layer with a probability \(p_{\mathrm{dropout}}\) and scales the remaining activations by a factor of \(1 / p_{\mathrm{dropout}}\) to maintain the output statistics of the layer. This process is conceptually illustrated in~\figureref{fig:dropout}.
 
-This method is frequently applied in transformers across all layers, including the dropout of the attention scores calculated before the application of the softmax function.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/dropout.pdf}
+    \caption{An application of dropout to a multi-layer perceptron}\label{fig:dropout}
+    \hfill\textit{Source: \citet{labach2019}}
+\end{figure}
+
+This method is frequently applied in transformers across all layers, including the dropout of the attention scores calculated before the application of the softmax function. (\cite{vaswani2017};~\cite{zehui2019})
 
 \subsection{Rotary Position Embedding}\label{sec:rotary-position-embedding}
 
-% TODO: fix - "warrants its own section"
-
-Rotary Position Embedding (RoPE) is a significant architectural enhancement that warrants its own section. It is a modification built upon the vanilla Transformer to incorporate the positional information of tokens and address issues present in the originally proposed analogous approach. RoPE was introduced by \citet{su2021} and quickly gained widespread adoption.
+Rotary Position Embedding (RoPE) is a modification built upon the vanilla Transformer to incorporate the positional information of tokens and address issues present in the originally proposed analogous approach. RoPE was introduced by \citet{su2021} and quickly gained widespread adoption.
 
 For each embedding \(\mathbf{x}_m\) at position \(m\) in the sequence, RoPE proposes a rotation of its query and key vectors:
 \begin{equation}
@@ -152,11 +171,18 @@ using an orthogonal rotary matrix
 	\end{pmatrix}
 	\)},
 \end{equation}
-where \(d = d_k\) and \(\Theta = \{\theta_i=\theta_{\mathrm{base}}^{-2(i-1)/d}, i \in \{1, 2, \ldots, d/2\}\}\) is a predefined set of frequencies derived from the base frequency hyperparameter \(\theta_{\mathrm{base}}\).
+where \(d = d_k\) and \(\Theta = \{\theta_i=\theta_{\mathrm{base}}^{-2(i-1)/d}, i \in \{1, 2, \ldots, d/2\}\}\) is a predefined set of frequencies derived from the base frequency hyperparameter \(\theta_{\mathrm{base}}\). RoPE can be interpreted as a rotation of two-dimensional scalar chunks of the query and key vectors, determined by both the token's position within the sequence and the chunk's position within the vector, as illustrated in \figureref{fig:rope}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/rope.pdf}
+    \caption{Illustration of the effect of RoPE on the query and key vectors}\label{fig:rope}
+    \hfill\textit{Source: \citet{su2021}}
+\end{figure}
 
 Note two important details regarding the application of RoPE. First, it requires \(d\) to be even. Second, it is applied across all heads in multi-head attention without repeating the rotation frequency \(h\) times, inherently adding more functional bias to heads working on higher frequencies \parencite{barbero2024}.
 
-When multiplying query and key matrices in equation~\ref{eq:attention}, the two embeddings \(\mathbf{x}_m\) and \(\mathbf{x}_n\) derive the attention score decay based on the relative distance \(m-n\) between them:
+When multiplying query and key matrices in \equationref{eq:attention}, the two embeddings \(\mathbf{x}_m\) and \(\mathbf{x}_n\) derive the attention score decay based on the relative distance \(m-n\) between them:
 \begin{equation}
 	\mathbf{q}_m^{\top}\mathbf{k}_n
 	=(\mathbf{R}^d_{\Theta, m}\mathbf{W}_Q\mathbf{x}_m)^\top(\mathbf{R}^d_{\Theta, n}\mathbf{W}_K\mathbf{x}_n) =\mathbf{x}_m^\top\mathbf{W}_Q\mathbf{R}^d_{\Theta, n-m}\mathbf{W}_K\mathbf{x}_n,
@@ -181,11 +207,11 @@ Due to several reasons, including underflow issues, the log-likelihood function 
 \end{equation}
 Optimizing both functions is equivalent, as the logarithm is a monotonically increasing function.
 
-To take one step further, a minus sign can be added to focus on minimization instead of maximization, thereby formulating the negative log-likelihood loss function. Additionally, equation~\ref{eq:probability-chain-rule} can be used to express the loss function as a sum of the log-likelihoods of the individual tokens:
+To take one step further, a minus sign can be added to focus on minimization instead of maximization, thereby formulating the negative log-likelihood loss function. Additionally, \equationref{eq:probability-chain-rule} can be used to express the loss function as a sum of the log-likelihoods of the individual tokens:
 \begin{equation}
 	L(\theta) = -\ell_{\mathcal{D}}(\theta) = -\sum_{i=1}^{n} \sum_{t=1}^{T_i} \log p_{\theta}(x^{(i)}_t \mid \bm{x}^{(i)}_{1:t-1}) \rightarrow \min.
 \end{equation}
-This objective corresponds to the cross-entropy (CE) loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from equation~\ref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
+This objective corresponds to the cross-entropy (CE) loss, which is often represented using the dot product of \(\mathbf{p}^{(i)}_t\) from \equationref{eq:softmax} and the one-hot encoding of the target token \(x^{(i)}_t\).
 
 \subsection{Gradient-Based Optimization}
 
@@ -223,7 +249,13 @@ This section introduces the fundamental concepts related to the inference proces
 
 As previously mentioned, a language model represents a probability distribution over the vocabulary given the preceding context. The iterative process of sampling from this distribution and incorporating these new tokens into the model's context is referred to as generation.
 
-Tokens are selected based on their associated probabilities \(\mathbf{p}_t\) from the softmax output, as described in equation~\ref{eq:softmax}. The temperature parameter modulates the sharpness of this distribution. There are two limiting cases: First, as \(\tau \to +\infty\), the distribution becomes uniform, with all tokens having an equal probability of being selected. Second, as \(\tau \to 0^+\), the selection becomes deterministic, choosing the most probable token. This is known as greedy decoding and corresponds to the greedy search algorithm in a graph of all possible sequences, where the language model functions as a heuristic.
+Tokens are selected based on their associated probabilities \(\mathbf{p}_t\) from the softmax output, as described in \equationref{eq:softmax}. The temperature parameter modulates the sharpness of this distribution. There are two limiting cases, which are demonstrated in \figureref{fig:softmax-temperature}: First, as \(\tau \to +\infty\), the distribution becomes uniform, with all tokens having an equal probability of being selected. Second, as \(\tau \to 0^+\), the selection becomes deterministic, choosing the most probable token. This is known as greedy decoding and corresponds to the greedy search algorithm in a graph of all possible sequences, where the language model functions as a heuristic.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/softmax-temperature.pdf}
+    \caption{Impact of the temperature parameter on the softmax output}\label{fig:softmax-temperature}
+\end{figure}
 
 To further enhance the quality of the generated text, the top-\(k\) sampling strategy is often employed. It restricts the vocabulary to the top-\(k\) most probable tokens, which helps prevent the model from outputting irrelevant tokens.
 

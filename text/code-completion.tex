@@ -56,7 +56,7 @@ The evolution of code completion methods reflects a general trend toward more co
 \section{Taxonomy of Code Completion}
 % Relevant papers: bhoopchand2016, ginzberg2017, husein2025, izadi2024, wang2021, ciniselli2021, hindle2012, izadi2022, lu2021
 
-The concept of code completion lacks a strict definition within the field, as its interpretation has evolved with the various approaches employed to address it over time (see Section~\ref{sec:evolution-of-code-completion} for more details). This section provides a comprehensive overview of the diverse characteristics of code completion and highlights the specific focus of this thesis.
+The concept of code completion lacks a strict definition within the field, as its interpretation has evolved with the various approaches employed to address it over time (see \sectionref{sec:evolution-of-code-completion} for more details). This section provides a comprehensive overview of the diverse characteristics of code completion and highlights the specific focus of this thesis.
 
 To grasp the meaning of the subsequent text, it is crucial to understand the term \textit{token}, which refers to any subsequence of characters with a finite length.  % TODO: add a forward reference
 
@@ -76,7 +76,7 @@ Repository-level completion has been selected as the focus of this thesis becaus
 
 The completion scenario can be categorized based on the directionality of the prediction relative to the trigger point. The left-to-right scenario involves generating code predictions using only the context preceding the trigger point, which is typical in traditional code completion systems. This approach is effective for straightforward code continuations but may lack the ability to consider the broader context. Conversely, the left-and-right scenario, also known as bidirectional completion, leverages both the preceding and succeeding context around the trigger point. This method allows for more informed predictions by considering the entire file, thus enhancing the accuracy and relevance of the suggestions.
 
-Modern models for code completion employ the fill-in-the-middle (FIM) approach to gain suffix awareness capability. Although this thesis describes this method in Section~\ref{sec:fill-in-the-middle}, it does not expand on it and instead focuses on the more fundamental left-to-right scenario. This choice is driven by the practical part of this work and its design constraints, which are motivated in Section~\ref{sec:training}.
+Modern models for code completion employ the fill-in-the-middle (FIM) approach to gain suffix awareness capability. Although this thesis describes this method in \sectionref{sec:fill-in-the-middle}, it does not expand on it and instead focuses on the more fundamental left-to-right scenario. This choice is driven by the practical part of this work and its design constraints, which are motivated in \sectionref{sec:training}.
 
 \subsubsection*{Line Start Availability}
 

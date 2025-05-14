@@ -76,8 +76,6 @@
 \usepackage{commath}
 \usepackage{fontspec}
 \usepackage{etoolbox}
-\usepackage{nameref}
-\usepackage{hyperref}
 \usepackage{soul}
 \usepackage{xspace}
 \usepackage{graphicx}
@@ -92,6 +90,8 @@
 \usepackage{adjustbox}
 \usepackage{pgfplots}
 \usepackage{bbding}
+\usepackage{nameref}
+\usepackage{hyperref}
 
 \ExecuteBibliographyOptions{maxcitenames=1,mincitenames=1}
 
@@ -146,6 +146,12 @@
 
 \newcommand{\Csh}{C{\lserif\#}}
 \newcommand{\todo}[1]{\hl{\textbf{TODO: ``#1''}}}
+\newcommand{\chapterref}[1]{\hyperref[#1]{Chapter~\ref*{#1}}}
+\newcommand{\sectionref}[1]{\hyperref[#1]{Section~\ref*{#1}}}
+\newcommand{\figureref}[1]{\hyperref[#1]{Figure~\ref*{#1}}}
+\newcommand{\tableref}[1]{\hyperref[#1]{Table~\ref*{#1}}}
+\newcommand{\equationref}[1]{\hyperref[#1]{Equation~\ref*{#1}}}
+\newcommand{\appendixref}[1]{\hyperref[#1]{Appendix~\ref*{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 % DEMO CONTENTS SETTINGS END
@@ -164,7 +170,7 @@
 % list of other contents END
 %%%%%%%%%%%%%%%%%%%%%%
 
-% TODO: fill in the acknowledgment page; mention JetBrains, 
+% TODO: fill in the acknowledgment page; mention JetBrains
 \begin{acknowledgmentpage}
 	Thank you \(\dots\)
 \end{acknowledgmentpage}
@@ -179,8 +185,6 @@
 \end{declarationpage}
 
 \printabstractpage
-
-% TODO: decide whether to include the summary
 
 \tableofcontents
 %%%%%%%%%%%%%%%%%%%%%%
@@ -243,8 +247,6 @@ Will & Be Done at the Very End\\
 
 \part{Applied Research}\label{part:applied-research} % other options are Experimental Analysis, Research Part, Experimental Validation
 \addtocontents{toc}{\protect\vspace{-\baselineskip}}
-
-% TODO: tiny paper disclaimer
 \include{text/technical-foundation}
 \include{text/research-investigation}
 \include{text/conclusion}

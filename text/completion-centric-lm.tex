@@ -18,7 +18,7 @@ The learning signal for the model is derived from both the composed context and 
 
 For instance, learning to complete README files may be irrelevant if the model's primary objective is to excel solely in code completion. However, incorporating various file formats into the context is justified if they hold relevance to the completion task (e.g., including documentation).
 
-This issue can be mitigated through the application of gradient masking. By setting the individual losses of non-completion tokens to zero, these tokens can be excluded from the gradient computation during training. The impact of this method is examined in Section~\ref{sec:gradient-masking}.
+This issue can be mitigated through the application of gradient masking. By setting the individual losses of non-completion tokens to zero, these tokens can be excluded from the gradient computation during training. The impact of this method is examined in \sectionref{sec:gradient-masking}.
 
 \section{Fill-in-the-Middle}\label{sec:fill-in-the-middle}
 
@@ -94,7 +94,7 @@ Several metrics for evaluating generated code have been migrated from machine tr
 
 \subsection{Evaluation Modes}
 
-Besides the chosen inference strategy, types of which were discussed in Section~\ref{sec:inference}, there are multiple setups for evaluating the repository-level completion capabilities of the Code LLM.
+Besides the chosen inference strategy, types of which were discussed in \sectionref{sec:inference}, there are multiple setups for evaluating the repository-level completion capabilities of the Code LLM.
 
 During training, language models typically employ a technique known as teacher forcing. In this method, each subsequent token prediction is conditioned on the ground truth tokens from the preceding sequence. This approach takes advantage of the parallelizable nature of Transformers, facilitating efficient training. Conversely, during evaluation, the model can be conditioned on its own previously generated tokens, offering a more realistic assessment of its capabilities. Despite this, teacher forcing remains prevalent during training for the purpose of collecting metrics and monitoring progress, as it does not require additional forward passes. It is crucial to recognize that teacher forcing can render some metrics meaningless, as they may assume conditioning on the model's output distribution. For example, edit similarity necessitates the generation of a full line solely by the model without external guidance, as it compares entire lines rather than individual tokens. The same statement does not hold for exact match, where a single incorrectly generated token results in the entire line being deemed incorrect.
 
@@ -110,7 +110,7 @@ CodeXGLUE, introduced by \citet{lu2021}, represents one of the first comprehensi
 
 Addressing this limitation, \citet{ding2022} proposed CoCoMIC, which pioneered the joint modeling of in-file and cross-file context for code completion. CoCoMIC's key innovation was the introduction of a cross-file context finder (CCFINDER) that locates and retrieves relevant cross-file context. This approach significantly improved completion accuracy, particularly for API usage scenarios, highlighting the importance of repository-level understanding in code completion tasks.
 
-Building upon these cross-file context concepts, \citet{zhang2023} introduced RepoEval, a benchmark constructed from high-quality real-world repositories. Unlike its predecessors, RepoEval explicitly focused on three levels of code completion granularity: line, API invocation, and function body completion scenarios. The benchmark also employs unit tests present in the repositories for evaluating function body completions. RepoEval's design brought the evaluation closer to real-world development practices.
+Building upon these cross-file context concepts, \citet{zhang2023a} introduced RepoEval, a benchmark constructed from high-quality real-world repositories. Unlike its predecessors, RepoEval explicitly focused on three levels of code completion granularity: line, API invocation, and function body completion scenarios. The benchmark also employs unit tests present in the repositories for evaluating function body completions. RepoEval's design brought the evaluation closer to real-world development practices.
 
 RepoBench, proposed by \citet{liu2023}, address RepoEval's limitation of limited repository coverage by significantly expanding the evaluation dataset. It further enhanced the evaluation framework by decomposing the repository-level code completion process into three interconnected tasks: RepoBench-R (retrieval), RepoBench-C (code completion with both 2K and 8K context lengths), and RepoBench-P (end-to-end pipeline). This modular approach enabled more targeted evaluations of each component while maintaining their interdependence in a complete system. RepoBench also expanded language coverage to include both Python and Java, representing a step toward multilingual evaluation. In addition, RepoBench demonstrated that incorporating cross-file contexts significantly improves code completion performance, even with randomly selected contexts.
 

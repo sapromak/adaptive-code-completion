@@ -29,7 +29,7 @@ The multiple filtering criteria are applied to obtain the dataset with greater r
 
 The resulting corpus comprises 1,640 repositories, 160,801 commits, and 361,052 completion files. The completion files contain a total of 1.7 billion characters, while the repository snapshot files contain 4.8 trillion characters.
 
-A subset of 2560 samples is randomly selected to form the validation set. During this process, we ensure that the repositories included in the training and validation sets do not overlap, and that no more than five different completion files are sourced from the same repository. After sampling for validation, the remaining data is sufficient to cover more than 250,000 unique completion files. We then apply the pre-composition procedure using the context composers listed in Section~\ref{sec:context-composers-list}. This allows us to perform this operation only once and reuse the smaller produced datasets for several experiments. Moreover, instead of saving the entire context string, which can reach the length of the total number of characters used in the repository, we apply a 16K-token cut-off, ensuring that the resulting datasets range from 4 to 17 GB in Parquet format. A demonstration of the first five data points of each dataset is provided in the accompanying thesis repository.
+A subset of 2560 samples is randomly selected to form the validation set. During this process, we ensure that the repositories included in the training and validation sets do not overlap, and that no more than five different completion files are sourced from the same repository. After sampling for validation, the remaining data is sufficient to cover more than 250,000 unique completion files. We then apply the pre-composition procedure using the context composers listed in \sectionref{sec:context-composers-list}. This allows us to perform this operation only once and reuse the smaller produced datasets for several experiments. Moreover, instead of saving the entire context string, which can reach the length of the total number of characters used in the repository, we apply a 16K-token cut-off, ensuring that the resulting datasets range from 4 to 17 GB in Parquet format. A demonstration of the first five data points of each dataset is provided in the accompanying thesis repository.
 
 It is important to note that the pre-composition of both the training and validation sets is based on the entire completion file. This approach is motivated by the inefficiency of selecting target lines to possess file prefixes during the training and validation processes. For better clarity, one can consider training on a single line from each completion file; this results in the degradation of the gradient approximation proportional to the number of completion lines, or an increase in the number of forward and backward passes to the same degree.
 
@@ -47,7 +47,7 @@ Early stopping is applied after \(512\) iterations. This, in combination with th
 
 \subsection{Evaluation}\label{sec:evaluation}
 
-The Project-Level Code Completion task from the Long Code Arena benchmark \parencite{bogomolov2024}, detailed in Section~\ref{sec:benchmarks}, is selected to establish an evaluation setup. We focus on the \textit{large-context set}, emphasizing two primary line types: \textit{inproject} and \textit{infile}. The exact match metric is employed to evaluate the models' performance on these line types separately and is reported on a scale from 0 to 100. The completion lines are obtained from the model using a greedy decoding sampling strategy.
+The Project-Level Code Completion task from the Long Code Arena benchmark \parencite{bogomolov2024}, detailed in \sectionref{sec:benchmarks}, is selected to establish an evaluation setup. We focus on the \textit{large-context set}, emphasizing two primary line types: \textit{inproject} and \textit{infile}. The exact match metric is employed to evaluate the models' performance on these line types separately and is reported on a scale from 0 to 100. The completion lines are obtained from the model using a greedy decoding sampling strategy.
 
 Two baseline composers are selected from the aforementioned list: File-Level (FL) and Path Distance (PD). For \hyperref[rq:rq-a2]{RQ.A2}, \hyperref[rq:rq-b1]{RQ.B1}, and \hyperref[rq:rq-b2]{RQ.B2}, we denote the composer used to obtain a model checkpoint as the original composer (Or).
 
@@ -57,7 +57,7 @@ Differences in metric values compared to \citet{sapronov2025} are evident. This 
 
 \section{Composition Impact on Inference}\label{sec:composition-impact-on-inference}
 
-To measure the impact of context composition strategies on the quality of code completion during Code LLM inference, we evaluate the DeepSeek-Coder-Base 1.3B model \parencite{guo2024} using all previously listed composers. The results are presented in Table~\ref{tab:dseek-inference}.
+To measure the impact of context composition strategies on the quality of code completion during Code LLM inference, we evaluate the DeepSeek-Coder-Base 1.3B model \parencite{guo2024} using all previously listed composers. The results are presented in \tableref{tab:dseek-inference}.
 
 \begin{table}[htbp]
     \centering
@@ -79,12 +79,12 @@ A noticeable difference is observed, allowing us to infer that the context provi
 
 \section{Fine-Tuning on Compositions}\label{sec:fine-tuning-on-compositions}
 
-To estimate the impact of the context composition strategy employed during model fine-tuning, we subject the same model from the previous section to training with various composers. After fine-tuning, we benchmark the model to produce Table~\ref{tab:dseek-fine-tuning}.
+To estimate the impact of the context composition strategy employed during model fine-tuning, we subject the same model from the previous section to training with various composers. After fine-tuning, we benchmark the model to produce \tableref{tab:dseek-fine-tuning}.
 
 \begin{table}[htbp]
     \centering
     \includegraphics[width=\textwidth]{tables/rq-a2.pdf}
-    \caption{Exact Match scores of DeepSeek-Coder-Base 1.3B fine-tuned with different context composition strategies. The rows indicate the composer used to obtain the model checkpoint. The columns represent different evaluation setups: PD for Path Distance, FL for File-Level, and Or for the composer used during fine-tuning. All sequences are truncated to 16K tokens. The blank cells refer to the Table~\ref{tab:dseek-inference}.}\label{tab:dseek-fine-tuning}
+    \caption{Exact Match scores of DeepSeek-Coder-Base 1.3B fine-tuned with different context composition strategies. The rows indicate the composer used to obtain the model checkpoint. The columns represent different evaluation setups: PD for Path Distance, FL for File-Level, and Or for the composer used during fine-tuning. All sequences are truncated to 16K tokens. The blank cells refer to the \tableref{tab:dseek-inference}.}\label{tab:dseek-fine-tuning}
 \end{table}
 
 The marginal differences in metric values suggest that this particular model is sufficiently trained and is not significantly affected by subsequent fine-tuning.
@@ -95,7 +95,7 @@ Additionally, we explored different setups to address the issue of the model's r
 
 \section{Effect of Context Extension}\label{sec:effect-of-context-extension}
 
-We assess the impact of repository-level pre-training on the previously obtained in-context learning capabilities of the model using the composition strategies accessible to OpenCoder-1.5B-Base, which has an original context size limitation of 4K tokens. The summarized results are presented in Table~\ref{tab:ocoder-in-context-retention}. For the extended version, which includes the effects observed with \textit{reversed} and \textit{irrelevant} order modifications, refer to Table~\ref{tab:ocoder-extension-extended}.
+We assess the impact of repository-level pre-training on the previously obtained in-context learning capabilities of the model using the composition strategies accessible to OpenCoder-1.5B-Base, which has an original context size limitation of 4K tokens. The summarized results are presented in \tableref{tab:ocoder-in-context-retention}. For the extended version, which includes the effects observed with \textit{reversed} and \textit{irrelevant} order modifications, refer to \tableref{tab:ocoder-extension-extended}.
 
 \begin{table}[htbp]
     \centering
@@ -113,7 +113,7 @@ Three main observations can be drawn from the table to address \hyperref[rq:rq-b
 
 \section{Influence of Composition on Context Extension}\label{sec:influence-of-composition-on-context-extension}
 
-In this section, we address the final research question \hyperref[rq:rq-b2]{RQ.B2} by evaluating the checkpoints obtained after context extension fine-tuning, using various composers to construct the training context. Our conclusions are drawn from Table~\ref{tab:ocoder-extension}, which is a subset of the comprehensive Table~\ref{tab:ocoder-extension-extended}.
+In this section, we address the final research question \hyperref[rq:rq-b2]{RQ.B2} by evaluating the checkpoints obtained after context extension fine-tuning, using various composers to construct the training context. Our conclusions are drawn from \tableref{tab:ocoder-extension}, which is a subset of the comprehensive \tableref{tab:ocoder-extension-extended}.
 
 \begin{table}[htbp]
     \centering
@@ -130,7 +130,7 @@ To summarize the outcomes of our study, we present the following observations:
 \item The Duplication composer proves its uncompetitiveness even when compared to the entirely irrelevant context obtained from Random Tokens. This suggests that the data must present at least some degree of challenge to the model in order to foster the development of additional capabilities.
 \end{enumerate}
 
-The main practical contribution of this research is the identification of a low-resource approach to repository-level pre-training. Context extension fine-tuning can be restricted to the Path Distance composer, requiring only 1B training tokens, while the File-Level presents an even more resource-efficient alternative, necessitating just 73M training tokens. We further demonstrate the utility of this setup by comparing it with DeepSeek-Coder-Base 1.3B, which used 8.4B tokens for repository-level pre-training, and Qwen2.5-Coder-1.5B~\parencite{hui2024}, which employed 300B tokens during the same stage. Figure~\ref{fig:model-comparison} visualizes this comparison, and Figure~\ref{fig:beyond-training-window-inproject} illustrates the performance scaling beyond the training context window for all four models.
+The main practical contribution of this research is the identification of a low-resource approach to repository-level pre-training. Context extension fine-tuning can be restricted to the Path Distance composer, requiring only 1B training tokens, while the File-Level presents an even more resource-efficient alternative, necessitating just 73M training tokens. We further demonstrate the utility of this setup by comparing it with DeepSeek-Coder-Base 1.3B, which used 8.4B tokens for repository-level pre-training, and Qwen2.5-Coder-1.5B~\parencite{hui2024}, which employed 300B tokens during the same stage. \figureref{fig:model-comparison} visualizes this comparison, and \figureref{fig:beyond-training-window-inproject} illustrates the performance scaling beyond the training context window for all four models.
 
 \begin{figure}[ht]
     \centering
@@ -143,8 +143,8 @@ The main practical contribution of this research is the identification of a low-
     \includegraphics[width=\textwidth]{figures/beyond-training-window-inproject.pdf}
     \caption{Evaluation of the performance 
     scaling beyond the context extension 
-    window. The \textit{inproject} line type from the LCA benchmark is selected for visualization; the corresponding Figure~\ref{fig:beyond-training-window-infile} presents results for the \textit{infile} category. ``1K'' refers to 1,024 tokens. The \raisebox{-0.3ex}{\FiveStarOpen} markers denote the context length used during repository-level pre-training stage.}\label{fig:beyond-training-window-inproject}
-\end{figure}
+    window. The \textit{inproject} line type from the LCA benchmark is selected for visualization; the corresponding \figureref{fig:beyond-training-window-infile} presents results for the \textit{infile} category. ``1K'' refers to 1,024 tokens. The \raisebox{-0.3ex}{\FiveStarOpen} markers denote the context length used during repository-level pre-training stage.}\label{fig:beyond-training-window-inproject}
+\end{figure}  % TODO: connect with Code Llama findings
 
 \section{Supplementary Results}
 
@@ -152,13 +152,13 @@ To diversify the research, this section provides a supplementary analysis of the
 
 \subsection{Influence of Order Modifications}
 
-The same conclusions regarding the preservation of ICL capabilities after the repository-level pre-training stage and the impact of composition on context extension apply to both the \textit{reversed} and \textit{irrelevant} order modifications. For example, although the checkpoint obtained with Lines IoU \textit{irrelevant} context extension during inference yields an exact match score that is half that of its \textit{original} and \textit{reversed} counterparts, it achieves equivalent performance when the composer is switched to Path Distance. Table~\ref{tab:ocoder-extension-extended} presents all metric values related to this observation.
+The same conclusions regarding the preservation of ICL capabilities after the repository-level pre-training stage and the impact of composition on context extension apply to both the \textit{reversed} and \textit{irrelevant} order modifications. For example, although the checkpoint obtained with Lines IoU \textit{irrelevant} context extension during inference yields an exact match score that is half that of its \textit{original} and \textit{reversed} counterparts, it achieves equivalent performance when the composer is switched to Path Distance. \tableref{tab:ocoder-extension-extended} presents all metric values related to this observation.
 
 \subsection{Gradient Masking}\label{sec:gradient-masking}
 
 To avoid training on out-of-distribution lines, we consistently apply gradient masking to non-completion tokens when training with composers that produce distributions dissimilar to the completion file. Although this design choice is intuitive, the applicability of this technique to runs with inlier composers remains an open question.
 
-To examine the impact of including all losses in the optimization process for the inlier composers, we conduct training runs both with and without masking. Table~\ref{tab:dseek-gradient-masking} shows the results of this experiment for the DeepSeek-Coder-Base 1.3B, and Table~\ref{tab:ocoder-gradient-masking} for the OpenCoder-1.5B-Base model. We then consider all these values except those for the Duplication composer to perform a one-sided paired t-test with the alternative hypothesis that the mean exact match of models trained with gradient masking is lower than that for full loss training. The reported \(p\)-value is \(1.9 \times 10^{-5}\), so we reject the null hypothesis at a significance level of \(\alpha = 0.05\). Figure~\ref{fig:gradient-masking} visualizes the distribution of these metric differences.
+To examine the impact of including all losses in the optimization process for the inlier composers, we conduct training runs both with and without masking. \tableref{tab:dseek-gradient-masking} shows the results of this experiment for the DeepSeek-Coder-Base 1.3B, and \tableref{tab:ocoder-gradient-masking} for the OpenCoder-1.5B-Base model. We then consider all these values except those for the Duplication composer to perform a one-sided paired t-test with the alternative hypothesis that the mean exact match of models trained with gradient masking is lower than that for full loss training. The reported \(p\)-value is \(1.9 \times 10^{-5}\), so we reject the null hypothesis at a significance level of \(\alpha = 0.05\). \figureref{fig:gradient-masking} visualizes the distribution of these metric differences.
 
 \begin{figure}[ht]
     \centering
@@ -167,16 +167,6 @@ To examine the impact of including all losses in the optimization process for th
 \end{figure}
 
 Another observation is that disabling gradient masking eliminates the detrimental properties of the Duplication composer. We attribute this to the model being required to perform well on the first instance of the completion file presented in the context, which does not have access to the ground truth lines to copy from.
-
-% TODO: composer quality analysis: (adjust the section description if added)
-% api_gain := infile_fl16k
-% auxiliary_grounding_gain := infile_or16k - api_gain
-% inproject_fl16k + auxiliary_grounding_gain + x * api_gain = inproject_or16k
-% x = (inproject_or16k - inproject_fl16k - auxiliary_grounding_gain) / api_gain
-% retrieval_quality := x
-% retrieval_quality = (inproject_or16k - inproject_fl16k - infile_or16k + infile_fl16k) / infile_fl16k
-% iou_quality = 18.6 %
-% path_distance_quality = 11.6 %
 
 \section{Limitations and Future Work}
 

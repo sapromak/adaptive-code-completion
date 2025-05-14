@@ -8,7 +8,7 @@ This section begins with an explanation of the independent building blocks of th
 
 \subsection{Building Blocks}
 
-As stated in Section~\ref{sec:training-stages}, we define the context composer as a function that takes a repository snapshot and a completion file and returns a string that represents the project context. This function is decomposed into seven abstract blocks:
+As stated in \sectionref{sec:training-stages}, we define the context composer as a function that takes a repository snapshot and a completion file and returns a string that represents the project context. This function is decomposed into seven abstract blocks:
 
 \begin{enumerate}
     \item \textbf{File Filtering} determines which files to include in the subsequent data processing pipeline. For instance, it can filter out files with empty content or files with certain extensions.
@@ -20,7 +20,7 @@ As stated in Section~\ref{sec:training-stages}, we define the context composer a
     \item \textbf{Context Postprocessing} modifies the context as a unified string. For instance, line dropout can be applied by this block.
 \end{enumerate}
 
-Each of these blocks has its own abstract class and serves as a foundation for concrete implementations. This design allows for several different transformations associated with a single block type to be part of a single context composer, eliminates code duplication and allows for greater flexibility in composer creation. The directed graph presented in Figure~\ref{fig:composer-blocks} visualizes the order in which these instances can be applied.
+Each of these blocks has its own abstract class and serves as a foundation for concrete implementations. This design allows for several different transformations associated with a single block type to be part of a single context composer, eliminates code duplication and allows for greater flexibility in composer creation. The directed graph presented in \figureref{fig:composer-blocks} visualizes the order in which these instances can be applied.
 
 \begin{figure}[ht]
     \centering
@@ -52,7 +52,7 @@ All context composers utilized in the \nameref{chap:research-investigation} chap
 
 \subsection{Order Modifications}
 
-To increase the diversity of experiments conducted to address \hyperref[rq:rq-b1]{RQ.B1} and \hyperref[rq:rq-b2]{RQ.B2}, two additional file ordering modifications are considered alongside the \textit{original} mode, as illustrated in Figure~\ref{fig:order-modes}:
+To increase the diversity of experiments conducted to address \hyperref[rq:rq-b1]{RQ.B1} and \hyperref[rq:rq-b2]{RQ.B2}, two additional file ordering modifications are considered alongside the \textit{original} mode, as illustrated in \figureref{fig:order-modes}:
 
 \begin{itemize}
     \item \textit{reversed}: The retrieved files that fit within the model's context window are reordered in reverse. Consequently, the most relevant file appears at the beginning of the context window.
